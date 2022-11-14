@@ -22,6 +22,8 @@ function Account() {
                 localStorage.removeItem('auth_token');
                 localStorage.removeItem('auth_name');
                 localStorage.removeItem('auth_email');
+                localStorage.removeItem('auth_address');
+                localStorage.removeItem('auth_phone');
                 swal('Đăng xuất thành công', res.data.message, "success");
                 history("/");
             }
@@ -38,6 +40,8 @@ function Account() {
     // Xử lý thông tin khách hàng
     var name = localStorage.getItem("auth_name");
     var email = localStorage.getItem("auth_email");
+    var address = localStorage.getItem("auth_address");
+    var phone = localStorage.getItem("auth_phone");
     return (
         <React.Fragment>
             <Header />
@@ -82,12 +86,12 @@ function Account() {
                                 <div className='container__account-name'>
                                     <span>Địa chỉ </span>
                                     <span>:</span>
-                                    <span>180 Cao Lỗ, Phường 4,Quận 8</span>
+                                    <span>{address}</span>
                                 </div>
                                 <div className='container__account-name'>
                                     <span>Điện thoại </span>
                                     <span>:</span>
-                                    <span>0378189209</span>
+                                    <span>{phone}</span>
                                 </div>
                                 <Link to="/address" className='app_container-edit'>
                                     <div className='app_container-edit--text' >Chỉnh sửa</div>
