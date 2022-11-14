@@ -5,11 +5,8 @@ import { useNavigate } from 'react-router-dom'
 import { Link } from "react-router-dom";
 import { faArrowRight, faChevronRight, faEnvelope, faLock, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import "../../../assets/frontend/css/grid.css";
-import Footer from "../../../layouts/frontend/Footer";
-import Header from "../../../layouts/frontend/Header";
-function Register() {
 
+function AddAccount() {
     const history = useNavigate();
     const [registerInput, setRegister] = useState({
         name: '',
@@ -49,8 +46,8 @@ function Register() {
                             localStorage.removeItem('auth_token');
                             localStorage.removeItem('auth_name');
                             localStorage.removeItem('auth_email');
-                            localStorage.removeItem('auth_address');
-                            localStorage.removeItem('auth_phone');
+                            localStorage.setItem('auth_address');
+                            localStorage.setItem('auth_phone');
                         }
                     });
                 }
@@ -64,20 +61,12 @@ function Register() {
 
     return (
         <React.Fragment>
-            <Header />
             <div className="app__container">
                 <div className="grid wide">
-                    <div className="row">
-                        <div className="app__container--category">
-                            <Link to="/" className="app__container--link">Trang chủ</Link>
-                            <FontAwesomeIcon icon={faChevronRight} />
-                            <p className="app__container--text">Đăng ký</p>
-                        </div>
-                    </div>
                     <div className="">
                         <div className="app__container--formLogin">
                             <h1 className="formLogin__heading">
-                                ĐĂNG KÝ
+                                Tạo tài khoản
                             </h1>
                             <form onSubmit={registerSubmit}>
                                 <div className="formLogin__email">
@@ -117,23 +106,16 @@ function Register() {
                                 <span className='error fs-4 text'>{registerInput.error_list.phone ? "Vui lòng nhập số điện thoại của bạn!" : ""}</span>
                                 <div className="formLogin__btn">
                                     <button type="submit" className="formLogin__btn--login">
-                                        Đăng ký
+                                        Tạo tài khoản
                                     </button>
                                 </div>
                             </form>
-                            <div className="formLogin__register">
-                                <Link to="/login" className="formLogin__register--link">
-                                    Quay về
-                                </Link>
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <Footer />
         </React.Fragment>
     );
 }
 
-export default Register;
-
+export default AddAccount;

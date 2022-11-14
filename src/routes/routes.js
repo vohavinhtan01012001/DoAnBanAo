@@ -1,4 +1,4 @@
-import Account from "../components/admin/Account";
+/* import Account from "../components/admin/Account";
 import Category from "../components/admin/category/Category";
 import EditCategory from "../components/admin/category/EditCategory";
 import ViewCategory from "../components/admin/category/ViewCategory";
@@ -15,4 +15,4 @@ const routes = [
     {path: '/admin/account', name:'Account', component: Account}
 ]
 
-export default routes;
+export default routes; */

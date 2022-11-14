@@ -37,6 +37,8 @@ function Login() {
                     localStorage.setItem('auth_token', res.data.token);
                     localStorage.setItem('auth_email', res.data.email);
                     localStorage.setItem('auth_name', res.data.username);
+                    localStorage.setItem('auth_address', res.data.address);
+                    localStorage.setItem('auth_phone', res.data.phone);
                     swal('Đăng nhập thành công', res.data.message, 'success');
                     if(res.data.role === 'admin'){
                         history('/admin/dashboard');

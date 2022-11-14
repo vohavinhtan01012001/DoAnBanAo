@@ -467,9 +467,14 @@ html {
 
 .header__menu-link2 {
     text-decoration: none;
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     color: var(--white-color);
+    display: block;
+}
 
+.header__menu-link2:hover {
+    cursor: pointer;
+    color: var(--aqua-color);
 }
 
 /* .header__menu--login::after{
@@ -528,9 +533,12 @@ html {
     overflow: hidden;
 }
 
-.slide__img {
-    display: inline-block;
-    animation: imgSideIn ease-in 0.4s;
+.slide__img{
+    /* display: inline-block;
+    animation: imgSideIn ease-in 0.4s; */
+    max-width: 1300px;
+    max-height: 400px;
+    margin: 0 auto;
 }
 
 /* #slide__img{
@@ -630,16 +638,24 @@ html {
     display: block;
     margin: 0 10px;
     font-size: 1.6rem;
+    background-color: var(--aqua-color);
+    padding: 10px;
+    border-radius: 5px;
+    width: 80px;
+    color: var(--white-color);
 }
+
+
 
 .documents__time-hh {
     font-weight: 700;
+    font-size: 1.6rem;
 }
 
 .documents__time-text {
     font-style: italic;
-    color: #444;
     font-weight: 600;
+    font-size: 1.6rem;
 }
 
 .content__product {
@@ -647,6 +663,9 @@ html {
     box-shadow: 0px 3px 14px rgb(0 0 0 / 15%);
     margin-top: 25px;
     overflow: hidden;
+/*     width: 300px;
+    height: 500px;
+    margin: 25px auto; */
 }
 
 .content__product:hover {
@@ -770,6 +789,7 @@ html {
     text-align: center;
     border-radius: 20px;
     padding: 15px;
+    background-color: var(--aqua-color);
 }
 
 .content__btn a {
@@ -1080,12 +1100,15 @@ html {
 }
 
 .tshirts__category--text {
-    margin-left: 12px;
+    margin-left: 5px;
 }
 
 .tshirts__category--minus {
     margin-left: 30%;
     font-size: 2rem;
+    height: 50px;
+    line-height: 50px;
+    cursor: pointer;
 }
 
 .tshirts__category--plus {
@@ -1811,6 +1834,16 @@ html {
 /* Tablet */
 @media(min-width:740px) and (max-width:1023px) {
 
+    .m-4 {
+        flex: 0 0 auto;
+        width: 33.33333333%;
+    }
+
+    .col-3{
+        flex: 0 0 auto;
+        width: 33.33333333%;
+    }
+
     .header__content-logo img {
         max-width: 100px;
     }
@@ -1836,6 +1869,12 @@ html {
 
 /* Mobile */
 @media(max-width:739px) {
+
+    .c-12 {
+        flex: 0 0 auto;
+        width: 100%;
+    }
+
     .header__content {
         position: fixed;
         top: 0;
@@ -1948,6 +1987,17 @@ html {
         margin: 15px 0;
     }
 
+    /* Tshirst */
+    .tshirts__category--title{
+        position: relative;
+    }
+
+    .tshirts__category--minus{
+        position: absolute;
+        right: 10px;
+        top: 0;
+    }
+
     /* error */
     .page404 {
         width: 100%;
@@ -1955,4 +2005,3 @@ html {
         margin-right: 0;
     }
 }
-

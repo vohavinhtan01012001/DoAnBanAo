@@ -44,11 +44,9 @@ function EditCategory() {
                 setError([])
             }
             else if(res.data.status === 422){
-                swal("All fields are mandetory","","error");
                 setError(res.data.errors);
             }
             else if(res.data.status === 404){
-                swal("Error", res.data.message,"error");
                 history('admin/view-category');
             }
         })
@@ -59,10 +57,10 @@ function EditCategory() {
     }
 
     return ( 
-        <div className="container-fluid px-4">
+        <div className="container px-4">
             <div className="card mt-4">
                 <div className="card-header">
-                    <h2>Chỉnh sửa sản phẩm 
+                    <h2>Cập nhật loại sản phẩm 
                         <Link to="/admin/view-category" className="btn btn-primary btn-lg float-end  fs-4 text">Quay lại</Link>
                     </h2>
                 </div>
@@ -73,7 +71,7 @@ function EditCategory() {
                             <div className="form-group-lg mb-4">
                                     <label>Tên</label>
                                     <input type="text" name="name" onChange={handleInput} value={categoryInput.name} className="form-control form-control-lg fs-4 text" />
-                                    <span className='text-danger'>{error.slug}</span>
+                                    <span className='text-danger'>{error.name ? "Vui lòng nhập tên loại sản phẩm!": ""}</span>
                                 </div>
                                 <div className="form-group-lg mb-4">
                                     <label>Miêu tả</label>

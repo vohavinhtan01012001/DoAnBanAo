@@ -23,18 +23,15 @@ function MasterLayout(){
         }
     }
 
-    var sidebar = document.querySelector('.Sidebar__admin--menu');
-    var container = document.querySelector('.container__admin--main');
-    var navbar = document.querySelector('.navbar__admin');
+
     var menuAdminTabletMobile ="";
+    var bodymodal = "";
     if(onMenu){
         menuAdminTabletMobile = <Sidebar onCloseClick={hanldClose}/>;
-        /* navbar.style.width = '100%';
-        navbar.style.left = '30%' ? '30%' : '0';
-        container.style.left = '30%'; */
-        /* sidebar.style.right = '77%'; */
+        bodymodal = <div onClick={hanldClose}  className="body_modal"></div>
     }
     else{
+        bodymodal = "";
         menuAdminTabletMobile = "";
     }
 
@@ -50,6 +47,7 @@ function MasterLayout(){
                 </main>
                 <Footer />
             </div>
+            {bodymodal}
         </div>
     )
 }

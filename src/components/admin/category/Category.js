@@ -9,7 +9,7 @@ function Category() {
     const [categoryInput, setCategory] = useState({
         name: '',
         descrip: '',
-        error_list: [],
+        error_list: '',
     });
 
     const handleInput = (e) => {
@@ -38,22 +38,8 @@ function Category() {
 
     }
 
-    var display_errors = [];
-    if (categoryInput.error_list) {
-        display_errors = [
-            categoryInput.error_list.name,
-        ]
-    }
-
     return (
         <div className="container-lg px-4">
-
-            {
-                display_errors.map((item, index) => {
-                    return (<p className="mb-1" key={index}>{item}</p>)
-                })
-            }
-
             <div className="card mt-4">
                 <div className="card-header">
                     <h2>Thêm loại sản phẩm
@@ -67,6 +53,7 @@ function Category() {
                                 <div className="form-group-lg mb-4">
                                     <label>Tên</label>
                                     <input type="text" name="name" onChange={handleInput} value={categoryInput.name} className="form-control form-control-lg fs-4 text" />
+                                    <span className='error'>{categoryInput.error_list ? "Vui lòng nhập tên loại sản phẩm!" : ""}</span>
                                 </div>
                                 <div className="form-group-lg mb-4">
                                     <label>Miêu tả</label>

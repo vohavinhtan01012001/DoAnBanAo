@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
 import "../../assets/frontend/css/grid.css";
 import "../../assets/frontend/css/style.css";
@@ -16,11 +16,32 @@ import {
     faUserAlt,
     faUserCircle,
 } from '@fortawesome/free-solid-svg-icons';
+import axios from "axios";
 
 function Header() {
     const [onSearch, setOnSearch] = useState(false);
     const [onMenu, setOnMenu] = useState(false);
     const [onMenu2, setOnMenu2] = useState(false);
+    const [categorylist, setCategorylist] = useState([]);
+
+    //Xử lý dữ liệu loại sản phẩm
+    useEffect(() => {
+        let isMounted = true;
+
+        axios.get(`/api/view-category`).then(res => {
+            if (isMounted) {
+                if (res.status === 200) {
+                    setCategorylist(res.data.category)
+                    console.log(categorylist);
+                }
+            }
+        });
+
+        return () => {
+            isMounted = false
+        };
+
+    }, []);
     //xử lý search
     const handleSearchClose = () => {
         if (onSearch) {
@@ -64,21 +85,11 @@ function Header() {
     if (onMenu2) {
         iconMenuMobile2 = (<FontAwesomeIcon icon={faAngleDown} />);
         menuMobile2 = (<ul className='header__menu-list2'>
-            <li className='haeder__menu-item2'>
-                <Link to="/" className='header__menu-link2'>T-SHIRTS</Link>
-            </li>
-            <li className='haeder__menu-item2'>
-                <Link to="/" className='header__menu-link2'>SHIRTS</Link>
-            </li>
-            <li className='haeder__menu-item2'>
-                <Link to="/" className='header__menu-link2'>SWEATERS</Link>
-            </li>
-            <li className='haeder__menu-item2'>
-                <Link to="/" className='header__menu-link2'>HOODIES</Link>
-            </li>
-            <li className='haeder__menu-item2'>
-                <Link to="/" className='header__menu-link2'>SHORTS</Link>
-            </li>
+            {categorylist.map((item, index) => {
+                return (<li key={index} className='haeder__menu-item2'>
+                    <Link to={`/${item.name}`} className='header__menu-link2'>{item.name}</Link>
+                </li>)
+            })}
         </ul>)
     }
     else {
@@ -180,7 +191,7 @@ function Header() {
                 <Link to="" className='header__menu-link'>GIỚI THIỆU</Link>
             </li>
             <li className='header__menu-item'>
-                <Link to="https://www'facebook.com'phat.ngo.5454" className='header__menu-link'>FANPAGE</Link>
+                <Link to="/https://www'facebook.com'phat.ngo.5454" className='header__menu-link'>FANPAGE</Link>
             </li>
             <li className='header__menu-item'>
                 <Link to="" className='header__menu-link'>INTAGRAM</Link>
@@ -210,7 +221,7 @@ function Header() {
     )
 
 
-    
+
 
     return (
         <header className='header'>
@@ -273,21 +284,14 @@ function Header() {
                                     <FontAwesomeIcon icon={faAngleDown} />
                                 </div>
                                 <ul className='header__navbar-list2'>
-                                    <li className='haeder__navbar-item2'>
-                                        <Link to="./tshirts.html" className='header__navbar-link2'>T-SHIRTS</Link>
-                                    </li>
-                                    <li className='haeder__navbar-item2'>
-                                        <Link to="./shirt.html" className='header__navbar-link2'>SHIRTS</Link>
-                                    </li>
-                                    <li className='haeder__navbar-item2'>
-                                        <Link to="" className='header__navbar-link2'>SWEATERS</Link>
-                                    </li>
-                                    <li className='haeder__navbar-item2'>
-                                        <Link to="" className='header__navbar-link2'>HOODIES</Link>
-                                    </li>
-                                    <li className='haeder__navbar-item2'>
-                                        <Link to="" className='header__navbar-link2'>SHORTS</Link>
-                                    </li>
+                                    {
+                                        categorylist.map((item, index) => {
+                                            return(<li className='haeder__navbar-item2'>
+                                                <Link to={`/${item.name}`} className='header__navbar-link2'>{item.name}</Link>
+                                            </li>)
+                                        })
+                                    }
+                                    
                                 </ul>
                             </div>
                         </li>
@@ -301,10 +305,10 @@ function Header() {
                             <Link to="" className='header__navbar-link'>GIỚI THIỆU</Link>
                         </li>
                         <li className='header__navbar-item'>
-                            <Link to="https://www.facebook.com/phat.ngo.5454" className='header__navbar-link'>FANPAGE</Link>
+                            <a href="https://www.facebook.com/phat.ngo.5454" target="_blank" rel="noreferrer" className='header__navbar-link'>FANPAGE</a>
                         </li>
                         <li className='header__navbar-item'>
-                            <Link to="" className='header__navbar-link'>INTAGRAM</Link>
+                            <a href="https://www.instagram.com/" target="_blank" rel="noreferrer" className='header__navbar-link'>INTAGRAM</a>
                         </li>
                     </ul>
                     {handleScroll}
