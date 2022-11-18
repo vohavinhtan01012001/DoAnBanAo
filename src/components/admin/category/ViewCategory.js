@@ -66,20 +66,6 @@ function ViewCategory() {
                                     deleteCategory(e, item.id);
                                 }
                             }} className="btn btn-danger btn-lg">Xóa</button>
-                            {/* <Modal id={item.id} className='fs-4 text' show={show} onHide={handleClose} animation={false}>
-                                <Modal.Header closeButton>
-                                    <Modal.Title>Thông báo</Modal.Title>
-                                </Modal.Header>
-                                <Modal.Body>Bạn có chắc muốn xóa không?</Modal.Body>
-                                <Modal.Footer>
-                                    <Button className='fs-4 text' variant="secondary" onClick={handleClose}>
-                                        Thoát
-                                    </Button>
-                                    <Button className='fs-4 text' variant="primary" onClick={(e) => { deleteCategory(e, item.id); setShow(false) }} >
-                                        Xóa
-                                    </Button>
-                                </Modal.Footer>
-                            </Modal> */}
                         </td>
                     </tr>
 

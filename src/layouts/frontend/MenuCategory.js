@@ -12,7 +12,7 @@ function MenuCategory() {
     useEffect(() => {
         let isMounted = true;
 
-        axios.get(`/api/view-category`).then(res => {
+        axios.get(`/api/home-category`).then(res => {
             if (isMounted) {
                 if (res.status === 200) {
                     setCategorylist(res.data.category)
@@ -45,7 +45,7 @@ function MenuCategory() {
         listMenu = (<ul className="tshirts__category--list">
             {categorylist.map((item, index) => {
                 return (
-                    <li key={index} className="tshirts__category--item"><Link to={`/${item.name}`}>{item.name}</Link></li>
+                    <li key={index} className="tshirts__category--item"><Link to={`/category/${item.name}`}>{item.name}</Link></li>
                 )
             })
             }

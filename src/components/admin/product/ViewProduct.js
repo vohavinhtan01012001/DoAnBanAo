@@ -54,10 +54,14 @@ function ViewProduct() {
                     <td className='fs-4 text'>{item.id}</td>
                     <td className='fs-4 text'>{item.name}</td>
                     <td className='fs-4 text'>{item.categorys.name}</td>
-                    <td className='fs-4 text'>{item.price}</td>
-                    <td className='fs-4 text'>{item.size}</td>
-                    <td className='fs-4 text'>{item.quantity}</td>
+                    <td className='fs-4 text'>{item.price}.000đ</td>
+                    <td className='fs-4 text'>{item.quantityM}</td>
+                    <td className='fs-4 text'>{item.quantityL}</td>
+                    <td className='fs-4 text'>{item.quantityXL}</td>
                     <td><img src={`http://localhost:8000/${item.image}`} width="50px" alt={item.name} /></td>
+                    <td><img src={`http://localhost:8000/${item.image2}`} width="50px" alt={item.name} /></td>
+                    <td><img src={`http://localhost:8000/${item.image3}`} width="50px" alt={item.name} /></td>
+                    <td><img src={`http://localhost:8000/${item.image4}`} width="50px" alt={item.name} /></td>
                     <td>
                         <Link to={`../edit-product/${item.id}`} className="btn btn-success btn-sm fs-4 text">Chỉnh sửa</Link>
                     </td>
@@ -87,9 +91,13 @@ function ViewProduct() {
                                     <th>Tên sản phẩm</th>
                                     <th>Loại sản phẩm</th>
                                     <th>Giá bán</th>
-                                    <th>Kích thước</th>
-                                    <th>Số lượng</th>
+                                    <th>Số lượng(M)</th>
+                                    <th>Số lượng(L)</th>
+                                    <th>Số lượng(XL)</th>
                                     <th>Hình ảnh</th>
+                                    <th>Hình ảnh 2</th>
+                                    <th>Hình ảnh 3</th>
+                                    <th>Hình ảnh 4</th>
                                     <th>Chỉnh sửa</th>
                                     <th>Xóa</th>
                                 </tr>

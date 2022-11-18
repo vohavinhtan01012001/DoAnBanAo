@@ -43,7 +43,7 @@ function Register() {
                     localStorage.setItem('auth_address', res.data.address);
                     localStorage.setItem('auth_phone', res.data.phone);
                     swal("Đăng ký Thành công", res.data.message, "success");
-                    history('/');
+                    history('/login');
                     axios.post('/api/logout').then(res => {
                         if (res.data.status === 200) {
                             localStorage.removeItem('auth_token');

@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom"
+import { BrowserRouter as Router, Route, Routes, Navigate, useParams } from "react-router-dom"
 import Dashboard from "./components/admin/Dashboard";
 import Profile from "./components/admin/Profile";
 import Login from "./components/frontend/auth/Login";
@@ -20,12 +20,10 @@ import EditProduct from "./components/admin/product/EditProduct";
 import AddAccount from "./components/admin/account/AddAccount";
 import ViewAccount from "./components/admin/account/ViewAccount";
 import EditAccount from "./components/admin/account/EditAccount";
-import Tshirts from "./components/frontend/category/Tshirts";
-import Shirts from "./components/frontend/category/Shirts";
-import Sweaters from "./components/frontend/category/Sweaters";
-import Hoodies from "./components/frontend/category/Hoodies";
-import Jacker from "./components/frontend/category/Jacker";
-import Polo from "./components/frontend/category/Polo";
+import CategoryList from "./components/frontend/CategoryList";
+import ProductDetails from "./components/frontend/ProductDetails";
+import Cart from "./components/frontend/Cart";
+
 
 axios.defaults.baseURL = "http://localhost:8000";
 axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -37,18 +35,16 @@ axios.interceptors.request.use(function (config) {
   return config;
 });
 
+
 function App() {
   return (
     <div className="App">
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/t-shirts" element={<Tshirts />} />
-          <Route path="/shirts" element={<Shirts />} />
-          <Route path="/sweaters" element={<Sweaters />} />
-          <Route path="/hoodies" element={<Hoodies />} />
-          <Route path="/jacker" element={<Jacker />} />
-          <Route path="/polo" element={<Polo />} />
+          <Route path="/:categoryName/:id" element={<ProductDetails />} />
+          <Route path="/category/:slug" element={<CategoryList />} />
+          <Route path="/cart" element={<Cart />} />
           <Route path="/403" element={<Page403 />} />
           <Route path="/404" element={<Page404 />} />
           <Route path="/login" element={localStorage.getItem('auth_token') ? <Navigate to="/" /> : <Login />} />
