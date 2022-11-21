@@ -6,17 +6,24 @@ import Footer from "../../layouts/frontend/Footer";
 import Header from "../../layouts/frontend/Header";
 import axios from "axios";
 import swal from "sweetalert";
-import Form from 'react-bootstrap/Form';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import ToggleButton from 'react-bootstrap/ToggleButton';
 
 function ProductDetails() {
 
     const history = useNavigate();
     const [loading, setLoading] = useState(true);
     const [product, setProduct] = useState([]);
-    const [quantity, setQuantity] = useState(1);
+    const [quantity, setQuantity] = useState(0);
     const [viewProduct, setViewProduct] = useState([]);
     const [viewImg, setViewImg] = useState([]);
-    const [onSize, setOnSize] = useState([]);
+    const [radioValue, setRadioValue] = useState('1');
+
+    const radios = [
+        { name: 'M', value: 'M' },
+        { name: 'L', value: 'L' },
+        { name: 'XL', value: 'XL' },
+    ];
     //xử lý số lượng
     const hanldeMinusQuantity = () => {
         if (quantity > 1) {
@@ -25,6 +32,18 @@ function ProductDetails() {
     }
 
     const hanldePlusQuantity = () => {
+        if (radioValue == "M" && product.quantityM <= quantity) {
+            swal("warning", `Size ${radioValue} chỉ còn ${product.quantityM} sản phẩm`, "warning");
+            return
+        }
+        if (radioValue == "L" && product.quantityL <= quantity) {
+            swal("warning", `Size ${radioValue} chỉ còn ${product.quantityL} sản phẩm`, "warning");
+            return
+        }
+        if (radioValue == "XL" && product.quantityXL <= quantity) {
+            swal("warning", `Size ${radioValue} chỉ còn ${product.quantityXL} sản phẩm`, "warning");
+            return
+        }
         setQuantity(prevCount => prevCount + 1);
     };
 
@@ -142,18 +161,52 @@ function ProductDetails() {
         </div>)
     }
 
-    //Xử lý chuyển size
-    const hanldeSizeclick = (e) => {
-        if (e.target.className == "select__size--option activity") {
-            e.target.classList.remove("activity");
+
+
+    //xử lý add cart
+    const submitAddtocart = (e) => {
+        e.preventDefault();
+        if (radioValue == "1") {
+            swal("Warning", "Vui lòng chọn kích thước", "warning");
+            return;
         }
-        else {
-            e.target.classList.add('activity')
+        const data = {
+            product_id: product.id,
+            size: radioValue,
+            product_qty: quantity,
         }
-        console.log(e.target.className /* == "activity" ? true : false */)
+
+
+        axios.post(`/api/add-to-cart`, data).then(res => {
+            if (res.data.status === 201) {
+                //tạo cart
+                swal("Success", res.data.message, "success");
+            } else if (res.data.status === 409) {
+                //Đẫ thêm vào giỏ hàng rồi
+                swal("Success", res.data.message, "success");
+            } else if (res.data.status === 401) {
+                //chưa dăng nhập
+                swal("Error", res.data.message, "error");
+            } else if (res.data.status === 404) {
+                //Not Found
+                swal("Warning", res.data.message, "warning");
+            }
+        });
+
     }
 
-
+    //Xử lý còn sản phẩm không 
+    /* var buttonQuantity = "";
+    if (quantity > 0) {
+        buttonQuantity = (<>
+            <input type="button" value="-" onClick={hanldeMinusQuantity} className="qty-btn" />
+            <div className="qty-btn fs-4 text text-center lh-lg p-2">{radioValue == 1 ? "" : quantity}</div>
+            <input type="button" value="+" onClick={hanldePlusQuantity} className="qty-btn" />
+        </>)
+    }
+    else {
+        buttonQuantity = <h2>size này không còn sản phẩm</h2>
+    } */
 
     return (
         <React.Fragment>
@@ -165,7 +218,7 @@ function ProductDetails() {
                             <div className="app__container--category">
                                 <Link to="/" className="app__container--link">Trang chủ</Link>
                                 <FontAwesomeIcon icon={faChevronRight} />
-                                <p className="app__container--text">T-SHIRTS</p>
+                                <Link to={`/category/${categoryName}`} className="app__container--link">{categoryName}</Link>
                                 <FontAwesomeIcon icon={faChevronRight} />
                                 <p className="app__container--text">{product.name}</p>
                             </div>
@@ -220,43 +273,60 @@ function ProductDetails() {
                                     </li>
                                 </ul> */}
                                 <div>
-                                    {['radio'].map((type) => (
-                                        <div key={`inline-${type}`} className="mb-3 fs-2 text">
-                                            <Form.Check
-                                                inline
-                                                label="M"
-                                                name="size"
-                                                type={type}
-                                                id={`inline-${type}-1`}
-                                            />
-                                            <Form.Check
-                                                inline
-                                                label="L"
-                                                name="size"
-                                                type={type}
-                                                id={`inline-${type}-2`}
-                                            />
-                                            <Form.Check
-                                                inline
-                                                label="XL"
-                                                name="size"
-                                                type={type}
-                                                id={`inline-${type}-3`}
-                                            />
-                                        </div>
-                                    ))}
+                                    {/* <div key={1} className="mb-3 fs-2 text">
+                                        <Form.Check
+                                            inline
+                                            label="M"
+                                            name="size"
+                                            type="radio"
+                                            value="M"
+                                            onClick={(e)=>{e.target}}
+                                        />
+                                        <Form.Check
+                                            inline
+                                            label="L"
+                                            name="size"
+                                            type="radio"
+                                            value="L"
+                                        />
+                                        <Form.Check
+                                            inline
+                                            label="XL"
+                                            name="size"
+                                            type="radio"
+                                            value="XL"
+                                        />
+                                    </div> */}
+                                    <ButtonGroup>
+                                        {radios.map((radio, idx) => (
+                                            <ToggleButton
+                                                key={idx}
+                                                id={`radio-${idx}`}
+                                                type="radio"
+                                                variant={idx % 2 ? 'outline-success' : 'outline-danger'}
+                                                name="radio"
+                                                value={radio.value}
+                                                checked={radioValue === radio.value}
+                                                onChange={(e) => setRadioValue(e.currentTarget.value,setQuantity(0))}
+                                                className="fs-4 text"
+                                                style={{ marginLeft: "20px", width: "40px", height: "40px", lineHeight: "30px", borderRadius: "50%", fontWeight: "bold" }}
+                                            >
+                                                {radio.name}
+                                            </ToggleButton>
+                                        ))}
+                                    </ButtonGroup>
                                 </div>
                                 <div>
                                     <div className="select-wrapper clearfix fs-4 text">
                                         <label>Số lượng</label>
                                         <div className="input-group fs-4 text">
                                             <input type="button" value="-" onClick={hanldeMinusQuantity} className="qty-btn" />
-                                            <div className="qty-btn fs-4 text text-center lh-lg p-2">{quantity}</div>
+                                            <div className="qty-btn fs-4 text text-center lh-lg p-2">{radioValue==1? "":quantity}</div>
                                             <input type="button" value="+" onClick={hanldePlusQuantity} className="qty-btn" />
                                         </div>
                                     </div>
                                     <div className="clearfix button__buy">
-                                        <button type="button" className="btn-style-add add-to-cart btn__cart">
+                                        <button type="button" onClick={submitAddtocart} className="btn-style-add add-to-cart btn__cart">
                                             <FontAwesomeIcon className="button__buy--icon" icon={faCartShopping} />
                                             <span className="txt">Thêm vào giỏ</span>
                                         </button>

@@ -1029,7 +1029,9 @@ html {
     position: fixed;
     top: 85%;
     right: 3%;
-    display: none;
+    display: block;
+    cursor: pointer;
+    color: var(--white-color);
     animation: topSideIn ease-in 0.2s;
 }
 
@@ -1046,13 +1048,13 @@ html {
 
 }
 
-.top a {
+.top button {
     color: var(--white-color);
     text-decoration: none;
     display: block;
 }
 
-.top a:active {
+.top button:active {
     color: var(--white-color);
     background-color: var(--aqua-color);
 }
@@ -1868,6 +1870,16 @@ html {
     box-shadow: 3px 3px 8px rgb(95 95 95);
 }
 
+.button__size{
+    width: 40px;
+    line-height: 30px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 20px;
+    font-weight: bold;
+}
+
+
 @keyframes boxIden {
     from {
         transform: translateY(0);
@@ -2005,10 +2017,6 @@ html {
     }
 
     /*  */
-    .top:hover {
-        cursor: pointer;
-        background-color: #0d77ac;
-    }
 }
 
 
@@ -2059,6 +2067,8 @@ html {
     /* .box__banner{
         display: block;
     } */
+
+
 }
 
 /* Tablet */

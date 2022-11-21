@@ -44,6 +44,8 @@ function Tshirts() {
         };
     }, [slug, history]);
 
+
+
     var showProductsList = "";
     if (loading) {
         return (<div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>)
@@ -91,7 +93,65 @@ function Tshirts() {
             }
         }
     }
-
+/* var productList = product;
+    const handleOption = (option) => {
+        if (option.target.value == "Giá:Tăng dần") {
+            var max = 0;
+            var tmp;
+            for (var i = 0; i < product.length - 1; i++) {
+                for (var j = i + 1; j < product.length; j++) {
+                    if (product[i].price < product[j].price) {
+                        tmp = product[i];
+                        product[i] = product[j];
+                        product[j] = tmp;
+                    }
+                }
+            }
+            productList = product;
+            
+            if (productCount) {
+                showProductsList = product.map((item, index) => {
+                    return (
+                        <div key={index} className="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                            <div className="content__product">
+                                <Link to={`/${item.categorys.name}/${item.id}`} className="content__product-item">
+                                    <img src={`http://localhost:8000/${item.image}`}
+                                        className="content__product-img">
+                                    </img>
+                                    <p className="content__product-text">
+                                        {item.name}
+                                    </p>
+                                </Link>
+                                <div className="content-product-item2">
+                                    <div className="content__product-text2">
+                                        VERGENCY
+                                    </div>
+                                    <div className="content__product-evaluate">
+                                        <FontAwesomeIcon icon={faStar} />
+                                        <FontAwesomeIcon icon={faStar} />
+                                        <FontAwesomeIcon icon={faStar} />
+                                        <FontAwesomeIcon icon={faStar} />
+                                        <FontAwesomeIcon icon={faStar} />
+                                    </div>
+                                    <div className="content__product-price">
+                                        <div className="content__product-price--item1">{item.price}.000đ</div>
+                                        <del className="content__product-price--item2">390.000đ</del>
+                                    </div>
+                                    <div className="content__product-new">new</div>
+                                    <div className="content__product-sale">-78%</div>
+                                </div>
+                            </div>
+                        </div>
+                    )
+                })
+            }
+            else {
+                showProductsList = <h1 className="error">Chưa có sản phẩm này</h1>
+            }
+        }
+    }
+    console.log(productList);
+ */
     return (
         <React.Fragment>
             <Header />
@@ -99,9 +159,9 @@ function Tshirts() {
                 <div className="grid wide">
                     <div className="row">
                         <div className="app__container--category">
-                            <Link to="./index.html" className="app__container--link">Trang chủ</Link>
+                            <Link to="/" className="app__container--link">Trang chủ</Link>
                             <FontAwesomeIcon icon={faChevronRight} />
-                            <Link to="./index.html" className="app__container--link">Danh mục</Link>
+                            <div className="app__container--link">Danh mục</div>
                             <FontAwesomeIcon icon={faChevronRight} />
                             <p className="app__container--text">{category.name}</p>
                         </div>
@@ -116,7 +176,7 @@ function Tshirts() {
                                 <div className="tshirts__title--sort">
                                     <p className="tshirts__title--text">Sắp xếp theo:</p>
                                     <div className="tshirts__title--option">
-                                        <select id="search" className="tshirts__title--select">
+                                        <select /* onChange={handleOption} */  id="search" className="tshirts__title--select">
                                             <option >Mới nhất</option>
                                             <option >Sản phẩm nổi bật</option>
                                             <option >Giá:Tăng dần</option>

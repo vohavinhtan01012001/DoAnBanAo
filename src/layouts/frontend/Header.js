@@ -18,12 +18,12 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
 
-function Header() {
+function Header(quantity) {
     const [onSearch, setOnSearch] = useState(false);
     const [onMenu, setOnMenu] = useState(false);
     const [onMenu2, setOnMenu2] = useState(false);
     const [categorylist, setCategorylist] = useState([]);
-
+    const [cart, setCart] = useState([]);
     //Xử lý dữ liệu loại sản phẩm
     useEffect(() => {
         let isMounted = true;
@@ -41,6 +41,7 @@ function Header() {
         };
 
     }, []);
+
     //xử lý search
     const handleSearchClose = () => {
         if (onSearch) {
@@ -79,6 +80,7 @@ function Header() {
         }
     };
 
+   
     var menuMobile2 = "";
     var iconMenuMobile2 = "";
     if (onMenu2) {
@@ -220,6 +222,28 @@ function Header() {
     )
 
 
+    useEffect(() => {
+
+        let isMounted = true;
+
+        axios.get(`/api/cart`).then(res => {
+            if (isMounted) {
+                if (res.data.status === 200) {
+                    setCart(res.data.cart);
+                }
+            }
+        });
+
+        return () => {
+            isMounted = false
+        };
+    }, []);
+
+    var sumQuatity = 0;
+    cart.map((item) => {
+        sumQuatity = sumQuatity + item.product_qty;
+        return ( sumQuatity );
+    });
 
 
     return (
@@ -263,7 +287,7 @@ function Header() {
                                 <li className='header__content-item2'>
                                     <Link to="/cart" className='header__content-cart'>
                                         <FontAwesomeIcon icon={faShoppingCart} />
-                                        <p>0</p>
+                                        <p>{sumQuatity}</p>
                                     </Link >
                                 </li>
                             </ul>
