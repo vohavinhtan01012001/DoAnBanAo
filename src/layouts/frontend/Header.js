@@ -18,21 +18,20 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
 
-function Header() {
+function Header(quantity) {
     const [onSearch, setOnSearch] = useState(false);
     const [onMenu, setOnMenu] = useState(false);
     const [onMenu2, setOnMenu2] = useState(false);
     const [categorylist, setCategorylist] = useState([]);
-
+    const [cart, setCart] = useState([]);
     //Xử lý dữ liệu loại sản phẩm
     useEffect(() => {
         let isMounted = true;
 
-        axios.get(`/api/view-category`).then(res => {
+        axios.get(`/api/home-category`).then(res => {
             if (isMounted) {
                 if (res.status === 200) {
                     setCategorylist(res.data.category)
-                    console.log(categorylist);
                 }
             }
         });
@@ -42,6 +41,7 @@ function Header() {
         };
 
     }, []);
+
     //xử lý search
     const handleSearchClose = () => {
         if (onSearch) {
@@ -80,6 +80,7 @@ function Header() {
         }
     };
 
+   
     var menuMobile2 = "";
     var iconMenuMobile2 = "";
     if (onMenu2) {
@@ -87,7 +88,7 @@ function Header() {
         menuMobile2 = (<ul className='header__menu-list2'>
             {categorylist.map((item, index) => {
                 return (<li key={index} className='haeder__menu-item2'>
-                    <Link to={`/${item.name}`} className='header__menu-link2'>{item.name}</Link>
+                    <Link to={`/category/${item.name}`} className='header__menu-link2'>{item.name}</Link>
                 </li>)
             })}
         </ul>)
@@ -169,7 +170,7 @@ function Header() {
                 {authAccountMobile}
             </li>
             <li className='header__menu-item'>
-                <Link to="/" className='header__menu-link'>TRANG CHỦ</Link>
+                <Link to="/home" className='header__menu-link'>TRANG CHỦ</Link>
             </li>
             <li className='header__menu-item'>
                 <div onClick={handleMenu2} className='header__menu-shop'>
@@ -191,7 +192,7 @@ function Header() {
                 <Link to="" className='header__menu-link'>GIỚI THIỆU</Link>
             </li>
             <li className='header__menu-item'>
-                <Link to="/https://www'facebook.com'phat.ngo.5454" className='header__menu-link'>FANPAGE</Link>
+                <a href="https://www.facebook.com/phat.ngo.5454" target="_blank" rel="noreferrer" className='header__navbar-link'>FANPAGE</a>
             </li>
             <li className='header__menu-item'>
                 <Link to="" className='header__menu-link'>INTAGRAM</Link>
@@ -221,6 +222,28 @@ function Header() {
     )
 
 
+    useEffect(() => {
+
+        let isMounted = true;
+
+        axios.get(`/api/cart`).then(res => {
+            if (isMounted) {
+                if (res.data.status === 200) {
+                    setCart(res.data.cart);
+                }
+            }
+        });
+
+        return () => {
+            isMounted = false
+        };
+    }, []);
+
+    var sumQuatity = 0;
+    cart.map((item) => {
+        sumQuatity = sumQuatity + item.product_qty;
+        return ( sumQuatity );
+    });
 
 
     return (
@@ -262,10 +285,10 @@ function Header() {
                                     {authAccount}
                                 </li>
                                 <li className='header__content-item2'>
-                                    <div className='header__content-cart'>
+                                    <Link to="/cart" className='header__content-cart'>
                                         <FontAwesomeIcon icon={faShoppingCart} />
-                                        <p>0</p>
-                                    </div>
+                                        <p>{sumQuatity}</p>
+                                    </Link >
                                 </li>
                             </ul>
                         </li>
@@ -286,12 +309,12 @@ function Header() {
                                 <ul className='header__navbar-list2'>
                                     {
                                         categorylist.map((item, index) => {
-                                            return(<li className='haeder__navbar-item2'>
-                                                <Link to={`/${item.name}`} className='header__navbar-link2'>{item.name}</Link>
+                                            return (<li key={index} className='haeder__navbar-item2'>
+                                                <Link to={`/category/${item.name}`} className='header__navbar-link2'>{item.name}</Link>
                                             </li>)
                                         })
                                     }
-                                    
+
                                 </ul>
                             </div>
                         </li>

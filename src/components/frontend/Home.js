@@ -1,18 +1,20 @@
-import { faEnvelope, faHandHoldingUsd, faLock, faPhoneVolume, faStar, faSync, faTruckMoving } from "@fortawesome/free-solid-svg-icons";
+import { faHandHoldingUsd, faPhoneVolume, faStar, faSync, faTruckMoving } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Carousel from 'react-bootstrap/Carousel';
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Footer from "../../layouts/frontend/Footer";
 import Header from "../../layouts/frontend/Header";
-import Slider from "../../assets/frontend/img/slide/1.jpg";
+import Slider1 from "../../assets/frontend/img/slide/1.jpg";
+import Slider2 from "../../assets/frontend/img/slide/2.jpg";
 
 function Home() {
     const [viewProduct, setViewProduct] = useState([]);
     useEffect(() => {
         let isMounted = true;
 
-        axios.get(`/api/view-product`).then(res => {
+        axios.get(`/api/home-product`).then(res => {
             if (isMounted) {
                 if (res.data.status === 200) {
                     setViewProduct(res.data.products);
@@ -24,25 +26,27 @@ function Home() {
         };
     }, []);
 
-
-
     return (
         <React.Fragment>
             <Header />
             <div className="container">
                 <div className="slide">
-                    {/* <ul class="riot-slider" data-do-console-log="true" data-use-material-icons="true"
-                        data-is-auto-play="true" data-do-show-buttons="none" data-do-swipe-on-touchscreen="true"
-                        data-button-number-display="never" data-previous-next-display="sides" data-theme="default"
-                        data-slide-hold-seconds="3">
-                        <li>
-                            <img src="../../../img/slide/1.jpg" alt="Alt Text" />
-                        </li>
-                        <li>
-                            <img src="/img/slide/2.jpg" alt="Alt Text" />
-                        </li>
-                    </ul> */}
-                    <img src={Slider} className="slide__img2" />
+                    <Carousel>
+                        <Carousel.Item interval={2000}>
+                            <img
+                                className="d-block w-100"
+                                src={Slider1}
+                                alt="First slide"
+                            />
+                        </Carousel.Item>
+                        <Carousel.Item interval={2000}>
+                            <img
+                                className="d-block w-100"
+                                src={Slider2}
+                                alt="Second slide"
+                            />
+                        </Carousel.Item>
+                    </Carousel>
                 </div>
                 <div className="documents">
                     <div className="grid wide">
@@ -173,7 +177,7 @@ function Home() {
                                             <div key={index} className="col-lg-3 col-md-4 col-sm-4 col-xs-6 ">
                                                 <div className="content__product">
 
-                                                    <Link to="" className="content__product-item">
+                                                    <Link to={`/${item.categorys.name}/${item.id}`} className="content__product-item">
                                                         <img src={`http://localhost:8000/${item.image}`}
                                                             className="content__product-img">
                                                         </img>
@@ -209,7 +213,7 @@ function Home() {
                         <div className="row">
                             <div className="col l-12 m-12 c-12">
                                 <div className="content__btn">
-                                    <Link to="/t-shirts">XEM TẤT CẢ</Link>
+                                    <Link to="/category/t-shirts">XEM TẤT CẢ</Link>
                                 </div>
                             </div>
                         </div>
@@ -236,7 +240,7 @@ function Home() {
                             <div className="col-lg-3 col-md-4 col-sm-4 col-xs-6">
                                 <div className="content__category">
                                     <div className="content__category-item">
-                                        <Link to="/t-shirts" className="content__category-link">
+                                        <Link to="/category/t-shirts" className="content__category-link">
                                             <img src="//theme.hstatic.net/200000305259/1000869166/14/banner_index_1.jpg?v=43"
                                                 alt="Banner 1" />
                                         </Link>
@@ -246,7 +250,7 @@ function Home() {
                             <div className="col-lg-3 col-md-4 col-sm-4 col-xs-6">
                                 <div className="content__category">
                                     <div className="content__category-item">
-                                        <Link to="/shirts" className="content__category-link">
+                                        <Link to="/category/shirts" className="content__category-link">
                                             <img src="//theme.hstatic.net/200000305259/1000869166/14/banner_index_2.jpg?v=43"
                                                 alt="Banner 1" />
                                         </Link>
@@ -256,7 +260,7 @@ function Home() {
                             <div className="col-lg-3 col-md-4 col-sm-4 col-xs-6">
                                 <div className="content__category">
                                     <div className="content__category-item">
-                                        <Link to="/sweaters" className="content__category-link">
+                                        <Link to="/category/sweaters" className="content__category-link">
                                             <img src="//theme.hstatic.net/200000305259/1000869166/14/banner_index_3.jpg?v=43"
                                                 alt="Banner 1" />
                                         </Link>
@@ -266,7 +270,7 @@ function Home() {
                             <div className="col-lg-3 col-md-4 col-sm-4 col-xs-6">
                                 <div className="content__category">
                                     <div className="content__category-item">
-                                        <Link to="/hoodies" className="content__category-link">
+                                        <Link to="/category/hoodies" className="content__category-link">
                                             <img src="//theme.hstatic.net/200000305259/1000869166/14/banner_index_4.jpg?v=43"
                                                 alt="Banner 1" />
                                         </Link>
@@ -274,7 +278,7 @@ function Home() {
                                 </div>
                             </div>
                         </div>
-                        <div className="row">
+                        {/* <div className="row">
                             <div className="col l-12 m-12 c-12">
                                 <div className="content__foorter-slogan">
                                     <div className="content__foorter-left"></div>
@@ -289,7 +293,7 @@ function Home() {
                                     <div className="content__footer-right"></div>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 <div className="content__foorter">
