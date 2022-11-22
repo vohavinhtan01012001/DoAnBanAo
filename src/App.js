@@ -23,6 +23,9 @@ import EditAccount from "./components/admin/account/EditAccount";
 import CategoryList from "./components/frontend/CategoryList";
 import ProductDetails from "./components/frontend/ProductDetails";
 import Cart from "./components/frontend/Cart";
+import Blog from "./components/frontend/static/Blog";
+import Contact from "./components/frontend/static/Contact";
+import About from "./components/frontend/static/About";
 
 
 axios.defaults.baseURL = "http://localhost:8000";
@@ -45,6 +48,9 @@ function App() {
           <Route path="/:categoryName/:id" element={<ProductDetails />} />
           <Route path="/category/:slug" element={<CategoryList />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/about" element={<About />} />
           <Route path="/403" element={<Page403 />} />
           <Route path="/404" element={<Page404 />} />
           <Route path="/login" element={localStorage.getItem('auth_token') ? <Navigate to="/" /> : <Login />} />

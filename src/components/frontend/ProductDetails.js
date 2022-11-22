@@ -431,7 +431,7 @@ function ProductDetails() {
                         <div className="col-lg-4 col-sm-12 col-xs-12 box__banner mb15">
                             <div className=" ">
                                 <div className="box-banner-index text-center mb15">
-                                    <Link to="/collections/all">
+                                    <Link to="/category/t-shirts">
                                         <img src="//theme.hstatic.net/200000305259/1000963148/14/banner_product_2_grande.jpg?v=44" className="dt-width-100 lazyloaded" width="360" height="200" data-src="//theme.hstatic.net/200000305259/1000963148/14/banner_product_2_grande.jpg?v=44" alt="banner 2" title="banner 2" />
                                     </Link>
                                 </div>
@@ -440,7 +440,7 @@ function ProductDetails() {
                         <div className="col-lg-4 col-sm-12 col-xs-12 box__banner mb15">
                             <div className=" ">
                                 <div className="box-banner-index text-center mb15">
-                                    <Link to="/collections/all">
+                                    <Link to="/category/t-shirts">
                                         <img src="//theme.hstatic.net/200000305259/1000963148/14/banner_product_3_grande.jpg?v=44" className="dt-width-100 lazyloaded" width="360" height="200" data-src="//theme.hstatic.net/200000305259/1000963148/14/banner_product_3_grande.jpg?v=44" alt="banner 3" title="banner 3" />
                                     </Link>
                                 </div>
@@ -449,7 +449,7 @@ function ProductDetails() {
                         <div className="col-lg-4 col-sm-12 col-xs-12 box__banner mb15">
                             <div className=" ">
                                 <div className="box-banner-index text-center mb15">
-                                    <Link to="/collections/all">
+                                    <Link to="/category/t-shirts">
                                         <img src="//theme.hstatic.net/200000305259/1000963148/14/banner_product_1_grande.jpg?v=44" className="dt-width-100 lazyloaded" width="360" height="200" data-src="//theme.hstatic.net/200000305259/1000963148/14/banner_product_1_grande.jpg?v=44" alt="banner 1" title="banner 1" />
                                     </Link>
                                 </div>

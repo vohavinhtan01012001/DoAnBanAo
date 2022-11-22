@@ -170,7 +170,7 @@ function Header(quantity) {
                 {authAccountMobile}
             </li>
             <li className='header__menu-item'>
-                <Link to="/home" className='header__menu-link'>TRANG CHỦ</Link>
+                <Link to="/" className='header__menu-link'>TRANG CHỦ</Link>
             </li>
             <li className='header__menu-item'>
                 <div onClick={handleMenu2} className='header__menu-shop'>
@@ -183,13 +183,13 @@ function Header(quantity) {
                 </div>
             </li>
             <li className='header__menu-item'>
-                <Link to="" className='header__menu-link'>BLOG</Link>
+                <Link to="/blog" className='header__menu-link'>BLOG</Link>
             </li>
             <li className='header__menu-item'>
-                <Link to="" className='header__menu-link'>LIÊN HỆ</Link>
+                <Link to="/contact" className='header__menu-link'>LIÊN HỆ</Link>
             </li>
             <li className='header__menu-item'>
-                <Link to="" className='header__menu-link'>GIỚI THIỆU</Link>
+                <Link to="/about" className='header__menu-link'>GIỚI THIỆU</Link>
             </li>
             <li className='header__menu-item'>
                 <a href="https://www.facebook.com/phat.ngo.5454" target="_blank" rel="noreferrer" className='header__navbar-link'>FANPAGE</a>
@@ -319,13 +319,13 @@ function Header(quantity) {
                             </div>
                         </li>
                         <li className='header__navbar-item'>
-                            <Link to="" className='header__navbar-link'>BLOG</Link>
+                            <Link to="/blog" className='header__navbar-link'>BLOG</Link>
                         </li>
                         <li className='header__navbar-item'>
-                            <Link to="" className='header__navbar-link'>LIÊN HỆ</Link>
+                            <Link to="/contact" className='header__navbar-link'>LIÊN HỆ</Link>
                         </li>
                         <li className='header__navbar-item'>
-                            <Link to="" className='header__navbar-link'>GIỚI THIỆU</Link>
+                            <Link to="/about" className='header__navbar-link'>GIỚI THIỆU</Link>
                         </li>
                         <li className='header__navbar-item'>
                             <a href="https://www.facebook.com/phat.ngo.5454" target="_blank" rel="noreferrer" className='header__navbar-link'>FANPAGE</a>
