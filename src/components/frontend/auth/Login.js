@@ -39,13 +39,15 @@ function Login() {
                     localStorage.setItem('auth_name', res.data.username);
                     localStorage.setItem('auth_address', res.data.address);
                     localStorage.setItem('auth_phone', res.data.phone);
-                    swal('Đăng nhập thành công', res.data.message, 'success');
                     if(res.data.role === 'admin'){
-                        history('/admin/dashboard');
+                        history('/admin/view-product');
+                        window.location.reload();
                     }
                     else{
                         history('/');
+                        window.location.reload();
                     }
+                    swal('Đăng nhập thành công', res.data.message, 'success');
                 }
                 else if (res.data.status === 401) {
                     swal('Thông báo', res.data.message, 'warning');

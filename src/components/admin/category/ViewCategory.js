@@ -31,11 +31,10 @@ function ViewCategory() {
     //Xử lý xóa
     const deleteCategory = (e, id) => {
         e.preventDefault();
-        const thisclicked = e.currentTarget;
+        const thisClicked = e.target.closest('tr');
         axios.delete(`/api/delete-category/${id}`).then(res => {
             if (res.data.status === 200) {
-                swal('Success', res.data.message, "success");
-                thisclicked.closest("tr").remove();
+                thisClicked.closest('tr').remove();
             }
             else if (res.data.status === 404) {
                 swal('Success', res.data.message, "success");
@@ -62,9 +61,28 @@ function ViewCategory() {
                         </td>
                         <td>
                             <button type="button" onClick={(e) => {
-                                if (window.confirm('Bạn có chắc muốn xóa không?')) {
-                                    deleteCategory(e, item.id);
-                                }
+                                swal({
+                                    title: "Thông báo!",
+                                    text: "Bạn có chắc muốn xóa không!",
+                                    icon: "warning",
+                                    buttons: [
+                                        'No',
+                                        'Yes'
+                                    ],
+                                    dangerMode: true,
+                                }).then(function (isConfirm) {
+                                    if (isConfirm) {
+                                        swal({
+                                            title: 'Thành công!',
+                                            text: 'Đã xóa thành công!',
+                                            icon: 'success'
+                                        }).then(function () {
+                                            deleteCategory(e, item.id);
+                                        });
+                                    } else {
+
+                                    }
+                                })
                             }} className="btn btn-danger btn-lg">Xóa</button>
                         </td>
                     </tr>
@@ -86,7 +104,7 @@ function ViewCategory() {
                             <tr>
                                 <th>ID</th>
                                 <th>Tên</th>
-                                <th>Miêu tả</th>
+                                <th>Mô tả</th>
                                 <th>Chỉnh sửa</th>
                                 <th>Xóa</th>
                             </tr>

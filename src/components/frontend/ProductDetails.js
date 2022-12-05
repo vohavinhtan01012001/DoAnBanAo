@@ -1,4 +1,4 @@
-import { faCartShopping, faCheck, faChevronRight, faStar } from "@fortawesome/free-solid-svg-icons";
+import { faCar, faCartShopping, faCheck, faChevronRight, faHandHoldingUsd, faPhoneVolume, faStar, faSync, faTruckMoving } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -8,6 +8,10 @@ import axios from "axios";
 import swal from "sweetalert";
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ToggleButton from 'react-bootstrap/ToggleButton';
+import img1 from '../../assets/frontend/img/detail/img1.png';
+import img2 from '../../assets/frontend/img/detail/img2.png';
+import img3 from '../../assets/frontend/img/detail/img3.png';
+import img4 from '../../assets/frontend/img/detail/img4.png';
 
 function ProductDetails() {
 
@@ -96,30 +100,32 @@ function ProductDetails() {
         return (<div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>)
     }
     else {
-
         count = 0;
         productList = viewProduct.map((item) => {
-            if (item.id != id && item.categorys.name === categoryName && count < 6) {
-                count = count + 1;
-                return (productList = (<li key={item.id} >
-                    <div className="flexbox-grid-default">
-                        <div className="abc flexbox-auto-100px">
-                            <Link to={`/${item.categorys.name}/${item.id}`}>
-                                <img className="dt-width-100" width="100" height="100" src={`http://localhost:8000/${item.image}`} />
-                            </Link>
+            if (item.id != id && item.categorys.name === categoryName) 
+            {
+                if ((item.quantityM != 0 || item.quantityL != 0 || item.quantityXL != 0)  && count < 6) {
+                    count = count + 1;
+                    return (productList = (<li key={item.id} >
+                        <div className="flexbox-grid-default">
+                            <div className="abc flexbox-auto-100px">
+                                <Link to={`/${item.categorys.name}/${item.id}`}>
+                                    <img className="dt-width-100" width="100" height="100" src={`http://localhost:8000/${item.image}`} />
+                                </Link>
+                            </div>
+                            <div className="flexbox-content pd-l-10">
+                                <Link to={`/${item.categorys.name}/${item.id}`}>
+                                    <h2>{item.name}</h2>
+                                    <p className="product-box-price-related clearfix flexbox-grid-default">
+                                        <span className="price-new-related flexbox-content text-left">{item.price}.000₫</span>
+                                        <del className="price-old-related flexbox-content">420,000₫</del>
+                                    </p>
+                                </Link>
+                            </div>
                         </div>
-                        <div className="flexbox-content pd-l-10">
-                            <Link to={`/${item.categorys.name}/${item.id}`}>
-                                <h2>{item.name}</h2>
-                                <p className="product-box-price-related clearfix flexbox-grid-default">
-                                    <span className="price-new-related flexbox-content text-left">{item.price}.000₫</span>
-                                    <del className="price-old-related flexbox-content">420,000₫</del>
-                                </p>
-                            </Link>
-                        </div>
-                    </div>
-                </li>)
-                )
+                    </li>)
+                    )
+                }
             }
         })
     }
@@ -163,11 +169,15 @@ function ProductDetails() {
 
 
 
-    //xử lý add cart
+    //xử lý onclick giỏ hàng
     const submitAddtocart = (e) => {
         e.preventDefault();
         if (radioValue == "1") {
             swal("Warning", "Vui lòng chọn kích thước", "warning");
+            return;
+        }
+        if (quantity <= 0) {
+            swal("Warning", "Số lượng ít nhất là 1", "warning");
             return;
         }
         const data = {
@@ -183,6 +193,42 @@ function ProductDetails() {
                 swal("Success", res.data.message, "success");
             } else if (res.data.status === 409) {
                 //Đẫ thêm vào giỏ hàng rồi
+                swal("Success", res.data.message, "success");
+            } else if (res.data.status === 401) {
+                //chưa dăng nhập
+                swal("Error", res.data.message, "error");
+            } else if (res.data.status === 404) {
+                //Not Found
+                swal("Warning", res.data.message, "warning");
+            }
+        });
+
+    }
+
+    //xử lý onclick mua ngay
+    const submitAddtocartPay = (e) => {
+        e.preventDefault();
+        if (radioValue == "1") {
+            swal("Warning", "Vui lòng chọn kích thước", "warning");
+            return;
+        }
+        if (quantity <= 0) {
+            swal("Warning", "Số lượng ít nhất là 1", "warning");
+            return;
+        }
+        const data = {
+            product_id: product.id,
+            size: radioValue,
+            product_qty: quantity,
+        }
+        axios.post(`/api/add-to-cart`, data).then(res => {
+            if (res.data.status === 201) {
+                //tạo cart
+                history("/cart")
+                swal("Success", res.data.message, "success");
+            } else if (res.data.status === 409) {
+                //Đẫ thêm vào giỏ hàng rồi
+                history("/cart")
                 swal("Success", res.data.message, "success");
             } else if (res.data.status === 401) {
                 //chưa dăng nhập
@@ -260,43 +306,7 @@ function ProductDetails() {
                                 <del><h4>420,000₫</h4></del>
                             </div>
                             <form id="add-item-form" action="/cart/add" method="post" className="variants clearfix variant-style">
-                                {/* <ul className="select__size">
-                                    <li className="select__size--item">
-                                        <input type="radio" className="select__size--option" onClick={hanldeSizeclick} value="M" />
-                                        <label className="select__size--label">M</label>
-                                    </li>
-                                    <li className="select__size--item">
-                                        <input type="radio" className="select__size--option" onClick={hanldeSizeclick} value="L" />
-                                    </li>
-                                    <li className="select__size--item">
-                                        <input type="radio" className="select__size--option" onClick={hanldeSizeclick} value="XL" />
-                                    </li>
-                                </ul> */}
                                 <div>
-                                    {/* <div key={1} className="mb-3 fs-2 text">
-                                        <Form.Check
-                                            inline
-                                            label="M"
-                                            name="size"
-                                            type="radio"
-                                            value="M"
-                                            onClick={(e)=>{e.target}}
-                                        />
-                                        <Form.Check
-                                            inline
-                                            label="L"
-                                            name="size"
-                                            type="radio"
-                                            value="L"
-                                        />
-                                        <Form.Check
-                                            inline
-                                            label="XL"
-                                            name="size"
-                                            type="radio"
-                                            value="XL"
-                                        />
-                                    </div> */}
                                     <ButtonGroup>
                                         {radios.map((radio, idx) => (
                                             <ToggleButton
@@ -307,7 +317,7 @@ function ProductDetails() {
                                                 name="radio"
                                                 value={radio.value}
                                                 checked={radioValue === radio.value}
-                                                onChange={(e) => setRadioValue(e.currentTarget.value,setQuantity(0))}
+                                                onChange={(e) => setRadioValue(e.currentTarget.value, setQuantity(0))}
                                                 className="fs-4 text"
                                                 style={{ marginLeft: "20px", width: "40px", height: "40px", lineHeight: "30px", borderRadius: "50%", fontWeight: "bold" }}
                                             >
@@ -321,7 +331,7 @@ function ProductDetails() {
                                         <label>Số lượng</label>
                                         <div className="input-group fs-4 text">
                                             <input type="button" value="-" onClick={hanldeMinusQuantity} className="qty-btn" />
-                                            <div className="qty-btn fs-4 text text-center lh-lg p-2">{radioValue==1? "":quantity}</div>
+                                            <div className="qty-btn fs-4 text text-center lh-lg p-2">{radioValue == 1 ? "" : quantity}</div>
                                             <input type="button" value="+" onClick={hanldePlusQuantity} className="qty-btn" />
                                         </div>
                                     </div>
@@ -330,7 +340,7 @@ function ProductDetails() {
                                             <FontAwesomeIcon className="button__buy--icon" icon={faCartShopping} />
                                             <span className="txt">Thêm vào giỏ</span>
                                         </button>
-                                        <button type="button" className="btn-style-buynow addnow btn__cart">
+                                        <button type="button" onClick={submitAddtocartPay} className="btn-style-add add-to-cart btn__cart">
                                             <FontAwesomeIcon className="button__buy--icon" icon={faCheck} />
                                             <span className="txt">Mua ngay</span>
                                         </button>
@@ -338,19 +348,20 @@ function ProductDetails() {
                                 </div>
                             </form>
                         </div>
-                        <div className="col-lg-2 col-xs-12 pd-none-box-service mb15 fs-4 text">
+                    </div>
+                    <div className="row">
+                        <div className="col-lg-12 col-xs-12 pd-none-box-service mb15 fs-4 text">
                             <div className="box-service-product">
                                 <div className="header-box-service-product text-center">
                                     <div className="title">TIẾP ĐÓN</div>
                                     <div className="content">Được phục vụ Quý Khách hàng là niềm vinh dự đối với chúng tôi.</div>
                                 </div>
                                 <div className="content-box-service-product row">
-
                                     <div className="col-lg-12 col-sm-3 col-xs-12">
                                         <div className="border-service-product">
                                             <div className="flexbox-grid-default">
-                                                <div className="flexbox-auto-45px flexbox-align-self-center">
-                                                    <img className="dt-width-auto" width="32" height="32" src="//theme.hstatic.net/200000305259/1000963148/14/icon-service-1.png?v=19" />
+                                                <div className="documents__content-icon">
+                                                    <FontAwesomeIcon icon={faTruckMoving} />
                                                 </div>
                                                 <div className="flexbox-content des-service-product">
                                                     <div className="title">GIAO HÀNG TOÀN QUỐC</div>
@@ -362,8 +373,8 @@ function ProductDetails() {
                                     <div className="col-lg-12 col-sm-3 col-xs-12">
                                         <div className="border-service-product">
                                             <div className="flexbox-grid-default">
-                                                <div className="flexbox-auto-45px flexbox-align-self-center">
-                                                    <img className="dt-width-auto" width="32" height="32" src="//theme.hstatic.net/200000305259/1000963148/14/icon-service-2.png?v=19" />
+                                                <div className="documents__content-icon">
+                                                    <FontAwesomeIcon icon={faSync} />
                                                 </div>
                                                 <div className="flexbox-content des-service-product">
                                                     <div className="title">CHÍNH SÁCH ĐỔI TRẢ HÀNG</div>
@@ -375,8 +386,8 @@ function ProductDetails() {
                                     <div className="col-lg-12 col-sm-3 col-xs-12">
                                         <div className="border-service-product">
                                             <div className="flexbox-grid-default">
-                                                <div className="flexbox-auto-45px flexbox-align-self-center">
-                                                    <img className="dt-width-auto" width="32" height="32" src="//theme.hstatic.net/200000305259/1000963148/14/icon-service-3.png?v=19" />
+                                                <div className="documents__content-icon">
+                                                    <FontAwesomeIcon icon={faHandHoldingUsd} />
                                                 </div>
                                                 <div className="flexbox-content des-service-product">
                                                     <div className="title">GIAO HÀNG NHẬN TIỀN VÀ KIỂM KÊ ĐƠN HÀNG</div>
@@ -388,8 +399,8 @@ function ProductDetails() {
                                     <div className="col-lg-12 col-sm-3 col-xs-12">
                                         <div className="border-service-product">
                                             <div className="flexbox-grid-default">
-                                                <div className="flexbox-auto-45px flexbox-align-self-center">
-                                                    <img className="dt-width-auto" width="32" height="32" src="//theme.hstatic.net/200000305259/1000963148/14/icon-service-4.png?v=19" />
+                                                <div className="documents__content-icon">
+                                                    <FontAwesomeIcon icon={faPhoneVolume} />
                                                 </div>
                                                 <div className="flexbox-content des-service-product">
                                                     <div className="title">ĐẶT HÀNG ONLINE VÀ KIỂM TRA ĐƠN HÀNG VUI LÒNG LIÊN HỆ</div>
@@ -411,7 +422,7 @@ function ProductDetails() {
                                 <div className="product__comment--description">
                                     <p className="">{product.description}
                                     </p>
-                                    <img src="//file.hstatic.net/200000305259/file/vgc-tee_size_chart_2022-01_8aa53b04f78c4d8a8b25f012856cd5a9_master.jpg" width="600" height="600" className="dt-width-auto"></img>
+                                    <img src={img1} width="600" height="600" className="dt-width-auto"></img>
                                 </div>
                             </div>
                         </div>
@@ -432,7 +443,7 @@ function ProductDetails() {
                             <div className=" ">
                                 <div className="box-banner-index text-center mb15">
                                     <Link to="/category/t-shirts">
-                                        <img src="//theme.hstatic.net/200000305259/1000963148/14/banner_product_2_grande.jpg?v=44" className="dt-width-100 lazyloaded" width="360" height="200" data-src="//theme.hstatic.net/200000305259/1000963148/14/banner_product_2_grande.jpg?v=44" alt="banner 2" title="banner 2" />
+                                        <img src={img2} width="360" height="200" alt="banner 2" title="banner 2" />
                                     </Link>
                                 </div>
                             </div>
@@ -441,7 +452,7 @@ function ProductDetails() {
                             <div className=" ">
                                 <div className="box-banner-index text-center mb15">
                                     <Link to="/category/t-shirts">
-                                        <img src="//theme.hstatic.net/200000305259/1000963148/14/banner_product_3_grande.jpg?v=44" className="dt-width-100 lazyloaded" width="360" height="200" data-src="//theme.hstatic.net/200000305259/1000963148/14/banner_product_3_grande.jpg?v=44" alt="banner 3" title="banner 3" />
+                                        <img src={img3} className="dt-width-100 lazyloaded" width="360" height="200" alt="banner 3" title="banner 3" />
                                     </Link>
                                 </div>
                             </div>
@@ -450,7 +461,7 @@ function ProductDetails() {
                             <div className=" ">
                                 <div className="box-banner-index text-center mb15">
                                     <Link to="/category/t-shirts">
-                                        <img src="//theme.hstatic.net/200000305259/1000963148/14/banner_product_1_grande.jpg?v=44" className="dt-width-100 lazyloaded" width="360" height="200" data-src="//theme.hstatic.net/200000305259/1000963148/14/banner_product_1_grande.jpg?v=44" alt="banner 1" title="banner 1" />
+                                        <img src={img4} className="dt-width-100 lazyloaded" width="360" height="200" alt="banner 1" title="banner 1" />
                                     </Link>
                                 </div>
                             </div>

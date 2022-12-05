@@ -30,7 +30,7 @@ function Contact() {
                             <div className="page-left-title">
                                 <i className="fa fa-envelope"></i><span>Để lại lời nhắn cho chúng tôi</span>
                             </div>
-                            <form accept-charset="UTF-8" action="/contact" className="contact-form" method="post">
+                            <form className="contact-form" method="post">
                                 <input name="form_type" type="hidden" value="contact" />
                                 <input name="utf8" type="hidden" value="✓" />
                                 <div className="contact-form page-form-contact">

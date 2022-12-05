@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link, Router, useNavigate } from 'react-router-dom';
 import "../../assets/frontend/css/grid.css";
 import "../../assets/frontend/css/style.css";
 import logo from "../../assets/frontend/img/logo/imageLogo.png";
@@ -18,12 +18,16 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
 
-function Header(quantity) {
+function Header(props) {
+    const history = useNavigate();
     const [onSearch, setOnSearch] = useState(false);
     const [onMenu, setOnMenu] = useState(false);
     const [onMenu2, setOnMenu2] = useState(false);
     const [categorylist, setCategorylist] = useState([]);
     const [cart, setCart] = useState([]);
+
+
+
     //Xử lý dữ liệu loại sản phẩm
     useEffect(() => {
         let isMounted = true;
@@ -31,7 +35,7 @@ function Header(quantity) {
         axios.get(`/api/home-category`).then(res => {
             if (isMounted) {
                 if (res.status === 200) {
-                    setCategorylist(res.data.category)
+                    setCategorylist(res.data.category);
                 }
             }
         });
@@ -56,11 +60,22 @@ function Header(quantity) {
             setOnSearch(false);
         }
     }
+
     var inputSearch = "";
+    const handleInput = (e) => {
+        if (e.key === 'Enter') {
+            props.parentCallback(e.target.value);
+        }
+    }
+
+    /* const handleClickSearch = (e) => {
+        e.preventDefault();
+    } */
+
     if (onSearch) {
         inputSearch = (<div className="header__content-put">
-            <input type="text" id='header__content-inputid' className="header__content-input"
-                placeholder="Nhập để tìm kiếm sản phẩm..." />
+            <input name="name" /* value={search} */ type="text" id='header__content-inputid' className="header__content-input fs-4 text"
+                placeholder="Tìm kiếm..." /* onChange={handleInputChange} */ onKeyDown={handleInput} />
             <div className="header__content-input--close" onClick={handleSearchClose}>
                 <FontAwesomeIcon icon={faClose} />
             </div>
@@ -80,7 +95,7 @@ function Header(quantity) {
         }
     };
 
-   
+
     var menuMobile2 = "";
     var iconMenuMobile2 = "";
     if (onMenu2) {
@@ -242,9 +257,9 @@ function Header(quantity) {
     var sumQuatity = 0;
     cart.map((item) => {
         sumQuatity = sumQuatity + item.product_qty;
-        return ( sumQuatity );
+        return (sumQuatity);
     });
-
+    
 
     return (
         <header className='header'>
@@ -275,11 +290,11 @@ function Header(quantity) {
                             <ul className='header__content-list2'>
                                 <li className='header__content-item2'>
                                     {inputSearch}
-                                    <div className='header__content-label' onClick={handleSearch}>
+                                    <Link to='/search' className='header__content-label' onClick={handleSearch}>
                                         <div className='header__content-search'>
                                             <FontAwesomeIcon icon={faSearch} />
                                         </div>
-                                    </div>
+                                    </Link>
                                 </li>
                                 <li className='header__content-item2'>
                                     {authAccount}

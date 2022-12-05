@@ -4,6 +4,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import swal from "sweetalert";
+import Button from 'react-bootstrap/Button';
 import Footer from "../../layouts/frontend/Footer";
 import Header from "../../layouts/frontend/Header";
 
@@ -57,6 +58,7 @@ function Cart() {
         );
         updateCartQuantity(cart_id, "inc");
     }
+    //upload số lượng
     function updateCartQuantity(cart_id, scope) {
         axios.put(`/api/cart-updatequantity/${cart_id}/${scope}`).then(res => {
             if (res.data.status === 200) {
@@ -65,15 +67,14 @@ function Cart() {
         });
     }
 
+    //xóa product
     const deleteCartItem = (e, cart_id) => {
         e.preventDefault();
 
-        const thisClicked = e.currentTarget;
-        thisClicked.innerText = "Đang xóa...";
+        const thisClicked = e.target.closest('nav');
 
         axios.delete(`/api/delete-cartitem/${cart_id}`).then(res => {
             if (res.data.status === 200) {
-                swal("Success", res.data.message, "success");
                 thisClicked.closest("nav").remove();
             }
             else if (res.data.status === 404) {
@@ -118,7 +119,8 @@ function Cart() {
         if (cart.length > 0) {
             productList = cart.map((item, index) => {
                 sumPrice += (item.product.price * item.product_qty);
-                return (sumPrice,
+                return (
+                    sumPrice,
                     <nav key={index} className="cart__product--item">
                         <div>
                             <Link to={`/${item.product.categorys.name}/${item.product_id}`} className="cart__product--link">
@@ -142,23 +144,46 @@ function Cart() {
                             </div>
                             <div className="cart__product--contentLeft">
                                 <div onClick={(e) => {
-                                    if (window.confirm('Bạn có chắc muốn xóa không?')) {
+                                    /* if (window.confirm('Bạn có chắc muốn xóa không?')) {
                                         deleteCartItem(e, item.id);
-                                    }
-                                }} className="cart__product--delete" style={{cursor:'pointer'}}>Xóa sản phẩm</div>
+                                    } */
+                                    swal({
+                                        title: "Thông báo!",
+                                        text: "Bạn có chắc muốn xóa không!",
+                                        icon: "warning",
+                                        buttons: [
+                                            'Không',
+                                            'Có'
+                                        ],
+                                        dangerMode: true,
+                                    }).then(function (isConfirm) {
+                                        if (isConfirm) {
+                                            swal({
+                                                title: 'Thành công!',
+                                                text: 'Đã xóa thành công!',
+                                                icon: 'success'
+                                            }).then(function () {
+                                                deleteCartItem(e, item.id);
+                                            });
+                                        } else {
+
+                                        }
+                                    })
+                                }} className="cart__product--delete" style={{ cursor: 'pointer' }}>Xóa sản phẩm</div>
                                 <div className="cart__product--money">{item.product.price * item.product_qty}.000đ</div>
                             </div>
                         </div>
-                    </nav>)
+                    </nav>
+                )
             })
             note = (<div className="cart__note">
                 <h2 className="cart__note--text">Ghi chú đơn hàng</h2>
                 <textarea name="txtComment" id="txtComment" className="fs-3 text" rows="8" cols="80"></textarea>
             </div>)
             productConti = (
-                <div className="cart__other">
-                    <Link to="/category/t-shirts" className="cart__other--text">TIẾP TỤC MUA SẢN PHẨM KHÁC</Link>
-                </div>
+                <Button className="cart__other" style={{background:"black",border:"none"}}>
+                    <Link to="/category/t-shirts" className="cart__other--text" style={{color:"white"}}>TIẾP TỤC MUA SẢN PHẨM KHÁC</Link>
+                </Button>
             )
             pay = (<div className="cart__order">
                 <h1 className="cart__order--text">
@@ -173,18 +198,22 @@ function Cart() {
                             {sumPrice}.000đ
                         </h2>
                     </div>
-                    <div className="cart__order--paying">
-                        <Link to="/" className="cart__order--link">
+                    <Button className="cart__order--paying" style={{background:"red",border:"none"}}>
+                        <Link to="/pay" className="cart__order--link" style={{color:"white"}}>
                             THANH TOÁN
                         </Link>
-                    </div>
+                    </Button>
                 </div>
             </div>)
         }
         else {
-            productList = (<h1 className="error">Chưa có sản phẩm nào</h1>)
+            productList = (<h2 className="error">Giỏ hàng của bạn đang trống!</h2>)
             note = ""
-            productConti = ""
+            productConti = (
+                <div className="cart__other">
+                    <Link to="/category/t-shirts" className="cart__other--text">TIẾP TỤC MUA SẢN PHẨM KHÁC</Link>
+                </div>
+            )
             pay = ""
         }
     }
@@ -215,7 +244,6 @@ function Cart() {
                         <div className="row">
                             <div className="col-lg-8 col-sm-12 col-xs-12">
                                 <div className="cart__product">
-
                                     {productList}
                                 </div>
                                 <div className="col-lg-8 col-sm-12 col-xs-12">

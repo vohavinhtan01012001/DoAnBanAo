@@ -75,23 +75,6 @@ function Sidebar({ onCloseClick }) {
         }
     };
 
-    var listMenuAccount = "";
-    var iconMenuAccount = "";
-    if (menuAdminAccount) {
-        iconMenuAccount = (<FontAwesomeIcon icon={faAngleDown} className="menu__admin--icon" />)
-        listMenuAccount = (<ul className='header__menu-list2'>
-            <li className='haeder__menu-item2'>
-                <Link to="/admin/add-Account" className='header__menu-link2'>Tạo tài khoản</Link>
-            </li>
-            <li className='haeder__menu-item2'>
-                <Link to="/admin/view-Account" className='header__menu-link2'>Danh sách tài khoản</Link>
-            </li>
-        </ul>)
-    }
-    else {
-        iconMenuAccount = (<FontAwesomeIcon icon={faAngleRight} className="menu__admin--icon" />)
-        listMenuAccount = "";
-    }
 
     return (
         <nav className="Sidebar__admin">
@@ -107,12 +90,6 @@ function Sidebar({ onCloseClick }) {
                             <FontAwesomeIcon icon={faUserCircle} />
                         </div>
                         <p>Admin</p>
-                    </Link>
-                </li>
-                <li className="admin__menu--account">
-                    <Link to="/admin/dashboard" className="admin__menu--account-link">
-                        <FontAwesomeIcon icon={faHouse} className="account__link--icon" />
-                        <p>Thống kê</p>
                     </Link>
                 </li>
                 <li className="admin__menu--account">
@@ -140,22 +117,16 @@ function Sidebar({ onCloseClick }) {
                     </div>
                 </li>
                 <li className="admin__menu--account">
-                    <Link to="" className="admin__menu--account-link">
+                    <Link to="/admin/order" className="admin__menu--account-link">
                         <FontAwesomeIcon icon={faBox} className="account__link--icon" />
                         <p>Quản lý đơn hàng</p>
                     </Link>
                 </li>
                 <li className="admin__menu--account">
-                    <div onClick={handleMenuAccount} className="admin__menu--account-listMenu">
-                        <div className="admin__menu--account-link">
-                            <div className="admin__menu--account-text">
-                                <FontAwesomeIcon icon={faUsersGear} className="account__link--icon" />
-                                <p>Quản lý Tài khoản</p>
-                            </div>
-                            {iconMenuAccount}
-                        </div>
-                        {listMenuAccount}
-                    </div>
+                    <Link to="/admin/view-account" className="admin__menu--account-link">
+                        <FontAwesomeIcon icon={faUsersGear} className="account__link--icon" />
+                        <p>Quản lý tài khoản</p>
+                    </Link>
                 </li>
             </ul>
         </nav>

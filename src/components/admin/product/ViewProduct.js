@@ -29,15 +29,13 @@ function ViewProduct() {
     //Xử lý xóa
     const deleteProduct = (e, id) => {
         e.preventDefault();
-        const thisclicked = e.currentTarget;
+        const thisclicked = e.target.closest('tr');
         axios.delete(`/api/delete-product/${id}`).then(res => {
             if (res.data.status === 200) {
-                swal('Success', res.data.message, "success");
                 thisclicked.closest("tr").remove();
             }
             else if (res.data.status === 404) {
-                swal('Success', res.data.message, "success");
-                thisclicked.innerText = "Xóa";
+                swal('Error', res.data.message, "error");
             }
         })
     }
@@ -65,10 +63,30 @@ function ViewProduct() {
                     <td>
                         <Link to={`../edit-product/${item.id}`} className="btn btn-success btn-sm fs-4 text">Chỉnh sửa</Link>
                     </td>
-                    <td><button type="button" onClick={(e) => {
-                        if (window.confirm('Bạn có chắc muốn xóa không?')) {
-                            deleteProduct(e, item.id);
-                        }
+                    <td>
+                        <button type="button" onClick={(e) => {
+                         swal({
+                            title: "Thông báo!",
+                            text: "Bạn có chắc muốn xóa không!",
+                            icon: "warning",
+                            buttons: [
+                                'Có',
+                                'Không'
+                            ],
+                            dangerMode: true,
+                        }).then(function (isConfirm) {
+                            if (isConfirm) {
+                                swal({
+                                    title: 'Thành công!',
+                                    text: 'Đã xóa thành công!',
+                                    icon: 'success'
+                                }).then(function () {
+                                    deleteProduct(e, item.id);
+                                });
+                            } else {
+
+                            }
+                        })
                     }} className='btn btn-danger btn-sm fs-4 text'>Xóa</button></td>
                 </tr >
             )
@@ -78,7 +96,7 @@ function ViewProduct() {
         <div className="container px-4 mt-3">
             <div className="card">
                 <div className="card-header">
-                    <h2>Xem sản phẩm
+                    <h2>Danh sách sản phẩm
                         <Link to="/admin/add-product" className="btn btn-primary btn-lg float-end fs-4 text">Thêm sản phẩm</Link>
                     </h2>
                 </div>

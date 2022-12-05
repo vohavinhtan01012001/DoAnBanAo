@@ -8,12 +8,17 @@ import Footer from "../../layouts/frontend/Footer";
 import Header from "../../layouts/frontend/Header";
 import Slider1 from "../../assets/frontend/img/slide/1.jpg";
 import Slider2 from "../../assets/frontend/img/slide/2.jpg";
+import Tshirt from "../../assets/frontend/img/category/t-shirt.png";
+import Shirt from "../../assets/frontend/img/category/shirt.png";
+import Hoodie from "../../assets/frontend/img/category/hoodie.png";
+import Sweater from "../../assets/frontend/img/category/sweater.png";
+import Im from "../../assets/frontend/img/detail/lss.png";
+
 
 function Home() {
     const [viewProduct, setViewProduct] = useState([]);
     useEffect(() => {
         let isMounted = true;
-
         axios.get(`/api/home-product`).then(res => {
             if (isMounted) {
                 if (res.data.status === 200) {
@@ -25,7 +30,86 @@ function Home() {
             isMounted = false
         };
     }, []);
+    const display_products = viewProduct.map((item, index) => {
+        if (item.quantityM == 0 && item.quantityL == 0 && item.quantityXL == 0) {
+            return (
+                index < 10 ?
+                    <div key={index} className="col-lg-3 col-md-4 col-sm-4 col-xs-6 ">
+                        <div className="content__product">
+                            <div className="content__product-item">
+                                <img src={`http://localhost:8000/${item.image}`}
+                                    className="content__product-img">
+                                </img>
+                                <img src={Im}
+                                    className="content__product-img2">
+                                </img>
+                                <p className="content__product-text">
+                                    {item.name}
+                                </p>
+                            </div>
+                            <div className="content-product-item2">
+                                <div className="content__product-text2">
+                                    VERGENCY
+                                </div>
+                                <div className="content__product-evaluate">
+                                    <FontAwesomeIcon icon={faStar} />
+                                    <FontAwesomeIcon icon={faStar} />
+                                    <FontAwesomeIcon icon={faStar} />
+                                    <FontAwesomeIcon icon={faStar} />
+                                    <FontAwesomeIcon icon={faStar} />
+                                </div>
+                                <div className="content__product-price">
+                                    <div className="content__product-price--item1 error">
+                                        Hết hàng
+                                    </div>
+                                </div>
+                                <div className="content__product-new">new</div>
+                                <div className="content__product-sale">-78%</div>
+                            </div>
+                        </div>
+                    </div>
+                    : ""
+            )
+        }
+        else {
+            return (
+                index < 10 ?
+                    <div key={index} className="col-lg-3 col-md-4 col-sm-4 col-xs-6 ">
+                        <div className="content__product">
 
+                            <Link to={`/${item.categorys.name}/${item.id}`} className="content__product-item">
+                                <img src={`http://localhost:8000/${item.image}`}
+                                    className="content__product-img">
+                                </img>
+                                <p className="content__product-text">
+                                    {item.name}
+                                </p>
+                            </Link>
+                            <div className="content-product-item2">
+                                <div className="content__product-text2">
+                                    VERGENCY
+                                </div>
+                                <div className="content__product-evaluate">
+                                    <FontAwesomeIcon icon={faStar} />
+                                    <FontAwesomeIcon icon={faStar} />
+                                    <FontAwesomeIcon icon={faStar} />
+                                    <FontAwesomeIcon icon={faStar} />
+                                    <FontAwesomeIcon icon={faStar} />
+                                </div>
+                                <div className="content__product-price">
+                                    <div className="content__product-price--item1">{item.price}.000đ</div>
+                                    <del className="content__product-price--item2">390.000đ</del>
+                                </div>
+                                <div className="content__product-new">new</div>
+                                <div className="content__product-sale">-78%</div>
+                            </div>
+                        </div>
+                    </div>
+                    : ""
+            )
+        }
+
+    });
     return (
         <React.Fragment>
             <Header />
@@ -120,7 +204,6 @@ function Home() {
                                         </p>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                         <div className="row">
@@ -167,48 +250,10 @@ function Home() {
                         </div>
                     </div>
                 </div>
-                <div id="main-content" className="">
+                <div id="main-content" >
                     <div className="grid wide content">
                         <div className="row">
-                            {
-                                viewProduct.map((item, index) => {
-                                    return (
-                                        index < 10 ?
-                                            <div key={index} className="col-lg-3 col-md-4 col-sm-4 col-xs-6 ">
-                                                <div className="content__product">
-
-                                                    <Link to={`/${item.categorys.name}/${item.id}`} className="content__product-item">
-                                                        <img src={`http://localhost:8000/${item.image}`}
-                                                            className="content__product-img">
-                                                        </img>
-                                                        <p className="content__product-text">
-                                                            {item.name}
-                                                        </p>
-                                                    </Link>
-                                                    <div className="content-product-item2">
-                                                        <div className="content__product-text2">
-                                                            VERGENCY
-                                                        </div>
-                                                        <div className="content__product-evaluate">
-                                                            <FontAwesomeIcon icon={faStar} />
-                                                            <FontAwesomeIcon icon={faStar} />
-                                                            <FontAwesomeIcon icon={faStar} />
-                                                            <FontAwesomeIcon icon={faStar} />
-                                                            <FontAwesomeIcon icon={faStar} />
-                                                        </div>
-                                                        <div className="content__product-price">
-                                                            <div className="content__product-price--item1">{item.price}.000đ</div>
-                                                            <del className="content__product-price--item2">390.000đ</del>
-                                                        </div>
-                                                        <div className="content__product-new">new</div>
-                                                        <div className="content__product-sale">-78%</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            : ""
-                                    )
-                                })
-                            }
+                            {display_products}
                         </div>
                         <div className="row">
                             <div className="col l-12 m-12 c-12">
@@ -241,7 +286,7 @@ function Home() {
                                 <div className="content__category">
                                     <div className="content__category-item">
                                         <Link to="/category/t-shirts" className="content__category-link">
-                                            <img src="//theme.hstatic.net/200000305259/1000869166/14/banner_index_1.jpg?v=43"
+                                            <img src={Tshirt}
                                                 alt="Banner 1" />
                                         </Link>
                                     </div>
@@ -251,7 +296,7 @@ function Home() {
                                 <div className="content__category">
                                     <div className="content__category-item">
                                         <Link to="/category/shirts" className="content__category-link">
-                                            <img src="//theme.hstatic.net/200000305259/1000869166/14/banner_index_2.jpg?v=43"
+                                            <img src={Shirt}
                                                 alt="Banner 1" />
                                         </Link>
                                     </div>
@@ -261,7 +306,7 @@ function Home() {
                                 <div className="content__category">
                                     <div className="content__category-item">
                                         <Link to="/category/sweaters" className="content__category-link">
-                                            <img src="//theme.hstatic.net/200000305259/1000869166/14/banner_index_3.jpg?v=43"
+                                            <img src={Sweater}
                                                 alt="Banner 1" />
                                         </Link>
                                     </div>
@@ -271,7 +316,7 @@ function Home() {
                                 <div className="content__category">
                                     <div className="content__category-item">
                                         <Link to="/category/hoodies" className="content__category-link">
-                                            <img src="//theme.hstatic.net/200000305259/1000869166/14/banner_index_4.jpg?v=43"
+                                            <img src={Hoodie}
                                                 alt="Banner 1" />
                                         </Link>
                                     </div>
@@ -298,7 +343,6 @@ function Home() {
                 </div>
                 <div className="content__foorter">
                     <div className="grid wide">
-
                         <div className="row">
                             <div className="col m-4 c-12">
                                 <div className="content__logo-imgs">

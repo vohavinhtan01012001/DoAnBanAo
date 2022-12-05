@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Map, { Marker, Popup } from 'react-map-gl';
 
 function MapBox() {
-    const [showPopup, togglePopup] = React.useState(false);
+    const [showPopup, togglePopup] = useState(false);
     //10.738221051343983, 106.67783517358028
     //10.733920308928775, 106.67940158365393
     return <React.Fragment>

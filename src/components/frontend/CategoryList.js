@@ -7,6 +7,7 @@ import swal from "sweetalert";
 import Footer from "../../layouts/frontend/Footer";
 import Header from "../../layouts/frontend/Header";
 import MenuCategory from "../../layouts/frontend/MenuCategory";
+import Im from "../../assets/frontend/img/detail/lss.png";
 
 function Tshirts() {
     const history = useNavigate();
@@ -44,6 +45,13 @@ function Tshirts() {
         };
     }, [slug, history]);
 
+    var his = "";
+    const handleOption = (e) => {
+        if (e.target.value === 'Tên: A--Z') {
+            his = e.target.value;
+        }
+        return his;
+    }
 
 
     var showProductsList = "";
@@ -53,105 +61,92 @@ function Tshirts() {
     else {
         {
             if (productCount) {
+                /* product.sort(function (a, b) {
+                    let left = a.name;
+                    let right = b.name;
+                    return left === right ? 0 : left > right ? 1 : -1;
+                }); */
                 showProductsList = product.map((item, index) => {
-                    return (
-                        <div key={index} className="col-lg-4 col-md-4 col-sm-6 col-xs-6">
-                            <div className="content__product">
-                                <Link to={`/${item.categorys.name}/${item.id}`} className="content__product-item">
-                                    <img src={`http://localhost:8000/${item.image}`}
-                                        className="content__product-img">
-                                    </img>
-                                    <p className="content__product-text">
-                                        {item.name}
-                                    </p>
-                                </Link>
-                                <div className="content-product-item2">
-                                    <div className="content__product-text2">
-                                        VERGENCY
+                    if (item.quantityM == 0 && item.quantityL == 0 && item.quantityXL == 0) {
+                        return (
+                            <div key={index} className="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                                <div className="content__product">
+                                    <div className="content__product-item">
+                                        <img src={`http://localhost:8000/${item.image}`}
+                                            className="content__product-img">
+                                        </img>
+                                        <img src={Im}
+                                            className="content__product-img2">
+                                        </img>
+                                        <p className="content__product-text">
+                                            {item.name}
+                                        </p>
                                     </div>
-                                    <div className="content__product-evaluate">
-                                        <FontAwesomeIcon icon={faStar} />
-                                        <FontAwesomeIcon icon={faStar} />
-                                        <FontAwesomeIcon icon={faStar} />
-                                        <FontAwesomeIcon icon={faStar} />
-                                        <FontAwesomeIcon icon={faStar} />
+                                    <div className="content-product-item2">
+                                        <div className="content__product-text2">
+                                            VERGENCY
+                                        </div>
+                                        <div className="content__product-evaluate">
+                                            <FontAwesomeIcon icon={faStar} />
+                                            <FontAwesomeIcon icon={faStar} />
+                                            <FontAwesomeIcon icon={faStar} />
+                                            <FontAwesomeIcon icon={faStar} />
+                                            <FontAwesomeIcon icon={faStar} />
+                                        </div>
+                                        <div className="content__product-price">
+                                            <div className="content__product-price--item1 error">
+                                                Hết hàng
+                                            </div>
+                                        </div>
+                                        <div className="content__product-new">new</div>
+                                        <div className="content__product-sale">-78%</div>
                                     </div>
-                                    <div className="content__product-price">
-                                        <div className="content__product-price--item1">{item.price}.000đ</div>
-                                        <del className="content__product-price--item2">390.000đ</del>
-                                    </div>
-                                    <div className="content__product-new">new</div>
-                                    <div className="content__product-sale">-78%</div>
                                 </div>
                             </div>
-                        </div>
-                    )
-                })
-            }
-            else {
-                showProductsList = <h1 className="error">Chưa có sản phẩm này</h1>
-            }
-        }
-    }
-/* var productList = product;
-    const handleOption = (option) => {
-        if (option.target.value == "Giá:Tăng dần") {
-            var max = 0;
-            var tmp;
-            for (var i = 0; i < product.length - 1; i++) {
-                for (var j = i + 1; j < product.length; j++) {
-                    if (product[i].price < product[j].price) {
-                        tmp = product[i];
-                        product[i] = product[j];
-                        product[j] = tmp;
+                        )
                     }
-                }
-            }
-            productList = product;
-            
-            if (productCount) {
-                showProductsList = product.map((item, index) => {
-                    return (
-                        <div key={index} className="col-lg-4 col-md-4 col-sm-6 col-xs-6">
-                            <div className="content__product">
-                                <Link to={`/${item.categorys.name}/${item.id}`} className="content__product-item">
-                                    <img src={`http://localhost:8000/${item.image}`}
-                                        className="content__product-img">
-                                    </img>
-                                    <p className="content__product-text">
-                                        {item.name}
-                                    </p>
-                                </Link>
-                                <div className="content-product-item2">
-                                    <div className="content__product-text2">
-                                        VERGENCY
+                    else {
+                        return (
+                            <div key={index} className="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                                <div className="content__product">
+                                    <Link to={`/${item.categorys.name}/${item.id}`} className="content__product-item">
+                                        <img src={`http://localhost:8000/${item.image}`}
+                                            className="content__product-img">
+                                        </img>
+                                        <p className="content__product-text">
+                                            {item.name}
+                                        </p>
+                                    </Link>
+                                    <div className="content-product-item2">
+                                        <div className="content__product-text2">
+                                            VERGENCY
+                                        </div>
+                                        <div className="content__product-evaluate">
+                                            <FontAwesomeIcon icon={faStar} />
+                                            <FontAwesomeIcon icon={faStar} />
+                                            <FontAwesomeIcon icon={faStar} />
+                                            <FontAwesomeIcon icon={faStar} />
+                                            <FontAwesomeIcon icon={faStar} />
+                                        </div>
+                                        <div className="content__product-price">
+                                            <div className="content__product-price--item1">{item.price}.000đ</div>
+                                            <del className="content__product-price--item2">390.000đ</del>
+                                        </div>
+                                        <div className="content__product-new">new</div>
+                                        <div className="content__product-sale">-78%</div>
                                     </div>
-                                    <div className="content__product-evaluate">
-                                        <FontAwesomeIcon icon={faStar} />
-                                        <FontAwesomeIcon icon={faStar} />
-                                        <FontAwesomeIcon icon={faStar} />
-                                        <FontAwesomeIcon icon={faStar} />
-                                        <FontAwesomeIcon icon={faStar} />
-                                    </div>
-                                    <div className="content__product-price">
-                                        <div className="content__product-price--item1">{item.price}.000đ</div>
-                                        <del className="content__product-price--item2">390.000đ</del>
-                                    </div>
-                                    <div className="content__product-new">new</div>
-                                    <div className="content__product-sale">-78%</div>
                                 </div>
                             </div>
-                        </div>
-                    )
+                        )
+                    }
                 })
             }
             else {
-                showProductsList = <h1 className="error">Chưa có sản phẩm này</h1>
+                showProductsList = <h2 className="error" style={{ textAlign: "center", paddingTop: "30px" }}>Hiện tại sản phẩm đang cập nhật. Bạn quay lại sau nhé !</h2>
             }
         }
     }
-    console.log(productList);
- */
+
     return (
         <React.Fragment>
             <Header />
@@ -176,13 +171,13 @@ function Tshirts() {
                                 <div className="tshirts__title--sort">
                                     <p className="tshirts__title--text">Sắp xếp theo:</p>
                                     <div className="tshirts__title--option">
-                                        <select /* onChange={handleOption} */  id="search" className="tshirts__title--select">
+                                        <select onClick={handleOption} id="search" className="tshirts__title--select">
                                             <option >Mới nhất</option>
                                             <option >Sản phẩm nổi bật</option>
                                             <option >Giá:Tăng dần</option>
                                             <option >Giá:Giảm dần</option>
-                                            <option >Tên: A--Z </option>
-                                            <option >Tên: Z--A </option>
+                                            <option >Tên: A--Z</option>
+                                            <option >Tên: Z--A</option>
                                             <option >Cũ nhất</option>
                                             <option >Bán chạy nhất</option>
                                         </select>
@@ -191,9 +186,7 @@ function Tshirts() {
                             </div>
                             <div className="tshirts__content">
                                 <div className="row">
-
                                     {showProductsList}
-
                                 </div>
                             </div>
                             {/*  <div className="tshirts__more">
