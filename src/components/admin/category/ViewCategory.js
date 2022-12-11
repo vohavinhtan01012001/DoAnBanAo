@@ -8,6 +8,7 @@ function ViewCategory() {
 
     const [loading, setLoading] = useState(true);
     const [categorylist, setCategorylist] = useState([]);
+    /* const [viewProduct, setProduct] = useState([]); */
 
 
     useEffect(() => {
@@ -28,20 +29,22 @@ function ViewCategory() {
 
     }, []);
 
-    //Xử lý xóa
-    const deleteCategory = (e, id) => {
-        e.preventDefault();
-        const thisClicked = e.target.closest('tr');
-        axios.delete(`/api/delete-category/${id}`).then(res => {
-            if (res.data.status === 200) {
-                thisClicked.closest('tr').remove();
-            }
-            else if (res.data.status === 404) {
-                swal('Success', res.data.message, "success");
-            }
-        })
-    }
-
+    /*     useEffect(() => {
+            let isMounted = true;
+            document.title = "View Product";
+    
+            axios.get(`/api/view-product`).then(res => {
+                if (isMounted) {
+                    if (res.data.status === 200) {
+                        setProduct(res.data.products);
+                        setLoading(false);
+                    }
+                }
+            });
+            return () => {
+                isMounted = false
+            };
+        }, []); */
 
 
     var viewcategory_HTMLTABLE = "";
@@ -49,46 +52,20 @@ function ViewCategory() {
         return <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
     }
     else {
-        viewcategory_HTMLTABLE =
-            categorylist.map((item, index) => {
-                return (
-                    <tr id={item.id} key={index}>
-                        <td className='fs-4 text'>{item.id}</td>
-                        <td className='fs-4 text'>{item.name}</td>
-                        <td className='fs-4 text'>{item.description}</td>
-                        <td>
-                            <Link to={`../edit-category/${item.id}`} className="btn btn-success btn-lg">Chỉnh sửa</Link>
-                        </td>
-                        <td>
-                            <button type="button" onClick={(e) => {
-                                swal({
-                                    title: "Thông báo!",
-                                    text: "Bạn có chắc muốn xóa không!",
-                                    icon: "warning",
-                                    buttons: [
-                                        'No',
-                                        'Yes'
-                                    ],
-                                    dangerMode: true,
-                                }).then(function (isConfirm) {
-                                    if (isConfirm) {
-                                        swal({
-                                            title: 'Thành công!',
-                                            text: 'Đã xóa thành công!',
-                                            icon: 'success'
-                                        }).then(function () {
-                                            deleteCategory(e, item.id);
-                                        });
-                                    } else {
+        viewcategory_HTMLTABLE = categorylist.map((item, index) => {
+            return (
+                <tr id={item.id} key={index}>
+                    <td className='fs-4 text'>{item.id}</td>
+                    <td className='fs-4 text'>{item.name}</td>
+                    <td className='fs-4 text'>{item.description}</td>
+                    <td>
+                        <Link to={`../edit-category/${item.id}`} className="btn btn-success btn-lg">Chỉnh sửa</Link>
+                    </td>
+                    <td className='fs-4 text'><Link to={`${item.id}`} className="btn btn-success btn-lg">Xem sản phẩm </Link></td>
+                </tr>
 
-                                    }
-                                })
-                            }} className="btn btn-danger btn-lg">Xóa</button>
-                        </td>
-                    </tr>
-
-                )
-            });
+            )
+        });
     }
     return (
         <div className="container px-4">
@@ -106,7 +83,7 @@ function ViewCategory() {
                                 <th>Tên</th>
                                 <th>Mô tả</th>
                                 <th>Chỉnh sửa</th>
-                                <th>Xóa</th>
+                                <th>Xem sản phẩm có trong loại</th>
                             </tr>
                         </thead>
                         <tbody>

@@ -26,6 +26,14 @@ import Pay from "./components/frontend/Pay";
 import Order from "./components/admin/order/Order";
 import DetailOrder from "./components/admin/order/DetailOrder";
 import Search from "./components/frontend/Search";
+import OrderItems from "./components/frontend/order/OrderItems";
+import ViewProductCate from "./components/admin/category/ViewProductCate";
+import AddAccount from "./components/admin/account/AddAccount";
+import ViewPromotion from "./components/admin/promotion/ViewPromotion";
+import AddPromotion from "./components/admin/promotion/AddPromotion";
+import EditPromotion from "./components/admin/promotion/EditPromotion";
+import AddProductPor from "./components/admin/promotion/AddProductPor";
+import ViewProductPor from "./components/admin/promotion/ViewProductPor";
 
 
 axios.defaults.baseURL = "http://localhost:8000";
@@ -69,6 +77,7 @@ function App() {
           <Route path="/blog" element={<Blog />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
+          <Route path="order/:id" element={<OrderItems />} />
           <Route path="/pay" element={<Pay />} />
           <Route path="/search" element={<Search />} />
           <Route path="/403" element={<Page403 />} />
@@ -80,13 +89,20 @@ function App() {
           <Route path="/admin" name="Admin" element={<AdminPrivateRoute />} >
             <Route path='/admin/add-category' element={<Category />} />
             <Route path='/admin/view-category' element={<ViewCategory />} />
+            <Route path='/admin/view-category/:id' element={<ViewProductCate />} />
             <Route path='/admin/edit-category/:id' element={<EditCategory />} />
             <Route path='/admin/add-product' element={<AddProduct />} />
             <Route path='/admin/view-product' element={<ViewProduct />} />
             <Route path='/admin/edit-product/:id' element={<EditProduct />} />
             <Route path='/admin/view-account' element={<ViewAccount />} />
+            <Route path='/admin/add-account' element={<AddAccount />} />
             <Route path='/admin/order' element={<Order />} />
             <Route path='/admin/detail-order/:id' element={<DetailOrder />} />
+            <Route path='/admin/view-promotion' element={<ViewPromotion />} />
+            <Route path='/admin/view-promotion/:id' element={<ViewProductPor />} />
+            <Route path='/admin/add-promotion' element={<AddPromotion />} />
+            <Route path='/admin/edit-promotion/:id' element={<EditPromotion />} />
+            <Route path='/admin/upload-productPor/:id' element={<AddProductPor />} />
           </Route>
         </Routes>
       </Router>

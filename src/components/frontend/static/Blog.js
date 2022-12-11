@@ -26,13 +26,13 @@ function Blog() {
                             <h2 className="text-center">Chưa có bài viết nào trong mục này</h2>
                         </div>
                         <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12 pd5">
-                            <div class="blog-sidebar mb15">
-                                <div class="wrapper-article-list">
-                                    <div class="product__comment">
-                                        <h2 class="title-group">Bài viết mới nhất</h2>
+                            <div className="blog-sidebar mb15">
+                                <div className="wrapper-article-list">
+                                    <div className="product__comment">
+                                        <h2 className="title-group">Bài viết mới nhất</h2>
                                     </div>
                                 </div>
-                                <ul class="list-article-new">
+                                <ul className="list-article-new">
                                 </ul>
                             </div>
                             <div className="col-lg-4 col-sm-12 col-xs-12 box__banner mb15">

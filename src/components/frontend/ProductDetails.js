@@ -102,28 +102,35 @@ function ProductDetails() {
     else {
         count = 0;
         productList = viewProduct.map((item) => {
-            if (item.id != id && item.categorys.name === categoryName) 
-            {
-                if ((item.quantityM != 0 || item.quantityL != 0 || item.quantityXL != 0)  && count < 6) {
+            if (item.id != id && item.categorys.name === categoryName) {
+                if ((item.quantityM != 0 || item.quantityL != 0 || item.quantityXL != 0) && count < 6) {
                     count = count + 1;
-                    return (productList = (<li key={item.id} >
-                        <div className="flexbox-grid-default">
-                            <div className="abc flexbox-auto-100px">
-                                <Link to={`/${item.categorys.name}/${item.id}`}>
-                                    <img className="dt-width-100" width="100" height="100" src={`http://localhost:8000/${item.image}`} />
-                                </Link>
+                    return (productList = (
+                        <li key={item.id} >
+                            <div className="flexbox-grid-default">
+                                <div className="abc flexbox-auto-100px">
+                                    <Link to={`/${item.categorys.name}/${item.id}`}>
+                                        <img className="dt-width-100" width="100" height="100" src={`http://localhost:8000/${item.image}`} />
+                                    </Link>
+                                </div>
+                                <div className="flexbox-content pd-l-10">
+                                    <Link to={`/${item.categorys.name}/${item.id}`}>
+                                        <h2>{item.name}</h2>
+                                        <p className="product-box-price-related clearfix flexbox-grid-default">
+                                            {
+                                                item.promotion ?
+                                                    <>
+                                                        <span className="price-new-related flexbox-content text-left">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format((item.price * item.promotion.discount) / 100)}</span>
+                                                        <del className="price-old-related flexbox-content">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</del>
+                                                    </> :
+                                                    <span className="price-new-related flexbox-content text-left">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</span>
+                                            }
+                                        </p>
+                                    </Link>
+                                </div>
                             </div>
-                            <div className="flexbox-content pd-l-10">
-                                <Link to={`/${item.categorys.name}/${item.id}`}>
-                                    <h2>{item.name}</h2>
-                                    <p className="product-box-price-related clearfix flexbox-grid-default">
-                                        <span className="price-new-related flexbox-content text-left">{item.price}.000₫</span>
-                                        <del className="price-old-related flexbox-content">420,000₫</del>
-                                    </p>
-                                </Link>
-                            </div>
-                        </div>
-                    </li>)
+                        </li>
+                    )
                     )
                 }
             }
@@ -302,8 +309,14 @@ function ProductDetails() {
                                 <FontAwesomeIcon icon={faStar} />
                             </div>
                             <div className="product-price" id="price-preview">
-                                <h2 className="error">{product.price}.000đ</h2>
-                                <del><h4>420,000₫</h4></del>
+                                {
+                                    product.promotion ?
+                                        <>
+                                            <h2 className="error">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format((product.price * product.promotion.discount) / 100)}</h2>
+                                            <del><h4>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.price)}</h4></del>
+                                        </> :
+                                        <h2 className="error">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.price)}</h2>
+                                }
                             </div>
                             <form id="add-item-form" action="/cart/add" method="post" className="variants clearfix variant-style">
                                 <div>

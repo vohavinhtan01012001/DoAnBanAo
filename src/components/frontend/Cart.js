@@ -133,7 +133,7 @@ function Cart() {
                                 <Link to={`/${item.product.categorys.name}/${item.product_id}`} className="cart__product--name">{item.product.name}</Link>
                                 <p className="cart__product--size">{item.size}</p>
                                 <div className="cart__product--price">
-                                    <p className="cart__product--priceNow">{item.product.price}.000đ</p>
+                                    <p className="cart__product--priceNow">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.product.price)}</p>
                                     <del>(420.000đ)</del>
                                 </div>
                                 <div className="input-group fs-4 text">
@@ -170,7 +170,7 @@ function Cart() {
                                         }
                                     })
                                 }} className="cart__product--delete" style={{ cursor: 'pointer' }}>Xóa sản phẩm</div>
-                                <div className="cart__product--money">{item.product.price * item.product_qty}.000đ</div>
+                                <div className="cart__product--money">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.product.price * item.product_qty)}</div>
                             </div>
                         </div>
                     </nav>
@@ -195,7 +195,7 @@ function Cart() {
                             Tổng tiền
                         </h2>
                         <h2 className="cart__order--price">
-                            {sumPrice}.000đ
+                        {Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(sumPrice)}
                         </h2>
                     </div>
                     <Button className="cart__order--paying" style={{background:"red",border:"none"}}>

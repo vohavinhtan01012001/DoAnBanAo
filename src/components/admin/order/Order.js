@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import swal from "sweetalert";
 
 function Order() {
+    document.title = "Danh sách đơn hàng";
     const history = useNavigate();
     const [loading, setLoading] = useState(true);
     const [orders, setOrders] = useState([]);
@@ -11,8 +12,6 @@ function Order() {
     //đổ dữ liệu order
     useEffect(() => {
         let isMounted = true;
-        document.title = "Danh sách đơn hàng";
-
         axios.get(`/api/orders`).then(res => {
             if (isMounted) {
                 if (res.data.status === 200) {
@@ -41,6 +40,10 @@ function Order() {
                     <td className='fs-4 text'>{item.name}</td>
                     <td className='fs-4 text'>{item.phone}</td>
                     <td className='fs-4 text'>{item.address}</td>
+                    {item.status == 0 ?
+                    <td className='fs-4 text' style={{color:'red',fontWeight:"bold",fontSize:"1.6rem"}}>Chưa xác nhận</td>:
+                    <td className='fs-4 text'style={{color:'#0ccf0f',fontWeight:"bold",fontSize:"1.6rem"}}>Đã xác nhận</td>}
+                    
                     <td>
                         <Link to={`../detail-order/${item.id}`} className="btn btn-success btn-sm fs-4 text">Xem chi tiết</Link>
                     </td>
@@ -65,6 +68,7 @@ function Order() {
                                     <th>Tên khách hàng</th>
                                     <th>Số điện thoại</th>
                                     <th>Địa chỉ</th>
+                                    <th>Trạng thái đơn hàng</th>
                                     <th>Xem chi tiết đơn hàng</th>
                                 </tr>
                             </thead>

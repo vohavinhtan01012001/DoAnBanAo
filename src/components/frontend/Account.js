@@ -12,12 +12,8 @@ import Header from '../../layouts/frontend/Header';
 function Account() {
     const history = useNavigate();
     const [loading, setLoading] = useState(true);
-    const [product, setProduct] = useState([]);
+    const [order, setOrder] = useState([]);
 
-    /*     const [account,setAccount] = useState({
-            name:'',
-            email:'',
-        }); */
     const logoutSubmit = (e) => {
         e.preventDefault();
         axios.post('/api/logout').then(res => {
@@ -36,29 +32,19 @@ function Account() {
     }
 
 
-    /*     axios.get('/sanctum/csrf-cookie').then(response => {
-            axios.post("/api/login").then(res => {
-                if (res.data.status === 200) {
-                    name = res.data.username
-                }
-            })
-            }); */
-
     // Xử lý thông tin khách hàng
     var name = localStorage.getItem("auth_name");
     var email = localStorage.getItem("auth_email");
     var address = localStorage.getItem("auth_address");
     var phone = localStorage.getItem("auth_phone");
 
-    //Đổ dữ liệu products
+
     useEffect(() => {
-
         let isMounted = true;
-
-        axios.get(`/api/view-orderItems`).then(res => {
+        axios.get(`/api/home-order`).then(res => {
             if (isMounted) {
                 if (res.data.status === 200) {
-                    setProduct(res.data.orderItems);
+                    setOrder(res.data.orders);
                     setLoading(false);
                 }
             }
@@ -67,46 +53,50 @@ function Account() {
         return () => {
             isMounted = false
         };
-    }, [history]);
-
+    }, [])
     var display_products = "";
     var display_ship = "";
     var sumPrice = 0;
+    var indexShow = 0;
+    var i = 0;
     if (loading) {
         return (<div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>)
     }
     else {
-        if (product.length > 0) {
-            display_products = product.map((item, index) => {
-                sumPrice += item.product.price * (item.qtyM + item.qtyL + item.qtyXL)
-                return (
-                    <nav key={index} className="cart__product--item" style={{ paddingTop: "20px" }}>
-                        <div>
-                            <div className="cart__product--link2">
-                                <img src={`http://localhost:8000/${item.product.image}`}
-                                    alt="" className="cart__product--img" style={{ width: "80px", borderRadius: "10px" }} />
-                                <p className='cart_product--link--text'>{item.qtyM + item.qtyL + item.qtyXL}</p>
+        if (order.length > 0) {
+            display_products = order.map((item, index) => {
+                if (item.user.email == email) {
+                    indexShow = indexShow + 1;
+                    return (
+                        <div key={index} className='app__container-product' style={{ marginBottom: "20px" }}>
+                            <div style={{ fontWeight: "bold", paddingLeft: "20px", paddingBottom: "20px", color: "#333", display: "block" }}>
+                                <h2 style={{ fontWeight: "bold", marginRight: "10px" }}>Đơn hàng {indexShow} </h2>
+                                <div className='container__account-name' style={{ fontWeight: "bold", color: "#333" }}>
+                                    <span>Tên người nhận </span>
+                                    <span>:</span>
+                                    <span>{item.name}</span>
+                                </div>
+                                <div className='container__account-name' style={{ fontWeight: "bold", color: "#333" }}>
+                                    <span>Địa chỉ người nhận </span>
+                                    <span>:</span>
+                                    <span>{item.address}</span>
+                                </div>
+                                <div className='container__account-name' style={{ fontWeight: "bold", color: "#333" }}>
+                                    <span>Số điện thoại </span>
+                                    <span>:</span>
+                                    <span>{item.phone}</span>
+                                </div>
                             </div>
+                            <Link to={`/order/${item.id}`} className='container__account-name' style={{ fontWeight: "bold", color: "#333",textAlign:"end", textDecoration: "none" }}>
+                                <span className='app_container-edit--text'>Xem chi tiết</span>
+                            </Link>
                         </div>
-                        <div className="cart__product--content">
-                            <div className="cart__product--contentRight">
-                                <div className="cart__product--name" style={{ color: "#737373" }}>{item.product.name}</div>
-                                <p className="cart__product--size" style={{ color: "#737373" }}>{item.qtyM > 0 ? "M" : item.qtyL > 0 ? "L" : item.qtyXL > 0 ? "XL" : ""}</p>
-                            </div>
-                            <div className="cart__product--contentLeft">
-                                <p className="cart__product--money" style={{ color: "#737373" }}>{item.product.price * (item.qtyM + item.qtyL + item.qtyXL)}.000đ</p>
-                            </div>
-                        </div>
-                    </nav>
-                )
+                    )
+                }
+                else{
+                    i = index;
+                }
             })
-            display_ship = (<div>
-                <h2 /* className='product__notyet--text' */ style={{ fontWeight: "bold", textAlign: "end", paddingTop: "20px", color: "#737373" }}>Tổng tiền: {sumPrice + 30}.000đ</h2>
-            <h2 /* className='product__notyet--text' */ style={{ fontWeight: "bold", textAlign: "end", paddingTop: "20px", color: "#737373" }}>(Đã cộng thêm tiền vận chuyển) </h2>
-            </div>)
-        }
-        else {
-            display_products = <h2 className='product__notyet--text' style={{ fontWeight: "bold", paddingTop: "20px", color: "#737373" }}>Bạn chưa đặt mua sản phẩm</h2>
         }
     }
     return (
@@ -134,29 +124,29 @@ function Account() {
                     </div>
                     <div className='row'>
                         <div className='col-lg-8 col-md-12 col-xs-12 pd5'>
-                            <div className='app__container-product'>
-                                {display_products}
-                                {display_ship}
-                            </div>
+                            <h2 style={{ fontWeight: "bold", paddingTop: "20px" }}>Danh sách đơn hàng</h2>
+                            {/* {display_products[i - 1] == undefined || display_products[i + 1] == undefined ? <h2 style={{ paddingTop: "20px", color: "#333",textAlign:"center" }}>Bạn chưa đặt mua sản phẩm nào!</h2> : display_products } */}
+                            {display_products}
                         </div>
                         <div className='col-lg-4 col-md-12 col-xs-12 pd5'>
+                            <h2 style={{ fontWeight: "bold", paddingTop: "20px" }}>Thông tin của bạn</h2>
                             <div className='app_container-account'>
-                                <div className='container__account-name'  style={{ fontWeight: "bold", paddingTop: "20px", color: "#737373" }}>
+                                <div className='container__account-name' style={{ fontWeight: "bold", paddingTop: "20px", color: "#333" }}>
                                     <span>Họ tên </span>
                                     <span>:</span>
                                     <span>{name}</span>
                                 </div>
-                                <div className='container__account-name'  style={{ fontWeight: "bold", paddingTop: "20px", color: "#737373" }}>
+                                <div className='container__account-name' style={{ fontWeight: "bold", paddingTop: "20px", color: "#333" }}>
                                     <span>Email </span>
                                     <span>:</span>
                                     <span>{email}</span>
                                 </div>
-                                <div className='container__account-name'  style={{ fontWeight: "bold", paddingTop: "20px", color: "#737373" }}>
+                                <div className='container__account-name' style={{ fontWeight: "bold", paddingTop: "20px", color: "#333" }}>
                                     <span>Địa chỉ </span>
                                     <span>:</span>
                                     <span>{address}</span>
                                 </div>
-                                <div className='container__account-name'  style={{ fontWeight: "bold", paddingTop: "20px", color: "#737373" }}>
+                                <div className='container__account-name' style={{ fontWeight: "bold", paddingTop: "20px", color: "#333" }}>
                                     <span>Điện thoại </span>
                                     <span>:</span>
                                     <span>{phone}</span>

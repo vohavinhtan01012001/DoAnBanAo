@@ -47,10 +47,8 @@ function Pay() {
             isMounted = false
         };
     }, [history]);
-    console.log(cart)
     if(cart.length == 0 ){
         history('/cart')
-        return;
     }
 
     const handleInput = (e) => {
@@ -84,6 +82,13 @@ function Pay() {
         e.preventDefault();
         if (!onAddress) {
             setAddress(true);
+        }
+    }
+
+    const handlAccountFalse = (e) => {
+        e.preventDefault();
+        if(onAddress) {
+            setAddress(false);
         }
     }
 
@@ -178,7 +183,7 @@ function Pay() {
                                 <p className="cart__product--size" style={{ color: "#737373" }}>{item.size}</p>
                             </div>
                             <div className="cart__product--contentLeft">
-                                <p className="cart__product--money" style={{ color: "#737373" }}>{item.product.price * item.product_qty}.000đ</p>
+                                <p className="cart__product--money" style={{ color: "#737373" }}>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.product.price * item.product_qty)}</p>
                             </div>
                         </div>
                     </nav>
@@ -205,9 +210,14 @@ function Pay() {
                                 </li>
 
                             </ul>
-                            <Button onClick={handlAccount} className='fs-3 text' variant="primary" type="button">
-                                Lấy thông tin của bạn
-                            </Button>
+                            <div style={{display:"flex",alignItems:"center"}}>
+                                <Button onClick={handlAccount} className='fs-3 text' variant="primary" type="button">
+                                    Lấy thông tin của bạn
+                                </Button>
+                                <Button onClick={handlAccountFalse} className='fs-3 text' variant="primary" type="button" style={{background:"#aaa",border:"none",padding:"5px",marginLeft:"20px"}}>
+                                    Sửa thông tin
+                                </Button>
+                            </div>
                             <Form className='fs-4 text' style={{ paddingTop: "30px" }}>
                                 {formAddress}
                                 <div className="ship" style={{ paddingTop: "30px" }}>
@@ -242,8 +252,8 @@ function Pay() {
                                 <p>Phí vận chuyển</p>
                             </div>
                             <div className='pay__product--item fs-3 text'>
-                                <p>{sumPrice}.000đ</p>
-                                <p>30.000đ</p>
+                                <p>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(sumPrice)}</p>
+                                <p>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(30000)}</p>
                             </div>
                         </div>
                         <div className='pay__product' style={{ borderBottom: "none", paddingTop: "10px" }}>
@@ -251,7 +261,7 @@ function Pay() {
                                 <h2 style={{ fontWeight: "bold" }}>Tổng tiền</h2>
                             </div>
                             <div className='pay__product--item fs-3 text'>
-                                <h2 style={{ fontWeight: "bold" }}>{sumPrice + 30}.000đ</h2>
+                                <h2 style={{ fontWeight: "bold" }}>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(sumPrice + 30000)}</h2>
                             </div>
                         </div>
                     </div>

@@ -183,7 +183,6 @@ function AddProduct() {
                             </div>
                         </div>
                         <button type="submit" className="btn btn-primary btn-lg px-4 mt-2 float-end fs-4 text">Thêm sản phẩm</button>
-
                     </form>
                 </div>
             </div>

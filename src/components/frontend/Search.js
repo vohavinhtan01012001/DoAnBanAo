@@ -35,78 +35,80 @@ function Search() {
          return (<div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>)
      }
      else { */
-    showProductsList = product.map((item, index) => {
-        if (item.quantityM == 0 && item.quantityL == 0 && item.quantityXL == 0) {
-            return (<div key={index} className="col-lg-3 col-md-4 col-sm-6 col-xs-6">
-                <div className="content__product">
-                    <div className="content__product-item">
-                        <img src={`http://localhost:8000/${item.image}`}
-                            className="content__product-img">
-                        </img>
-                        <img src={Im}
-                            className="content__product-img2">
-                        </img>
-                        <p className="content__product-text">
-                            {item.name}
-                        </p>
-                    </div>
-                    <div className="content-product-item2">
-                        <div className="content__product-text2">
-                            VERGENCY
-                        </div>
-                        <div className="content__product-evaluate">
-                            <FontAwesomeIcon icon={faStar} />
-                            <FontAwesomeIcon icon={faStar} />
-                            <FontAwesomeIcon icon={faStar} />
-                            <FontAwesomeIcon icon={faStar} />
-                            <FontAwesomeIcon icon={faStar} />
-                        </div>
-                        <div className="content__product-price">
-                            <div className="content__product-price--item1 error">
-                                Hết hàng
-                            </div>
-                        </div>
-                        <div className="content__product-new">new</div>
-                        <div className="content__product-sale">-78%</div>
-                    </div>
-                </div>
-            </div>)
-        }
-        else {
-            return (<div key={index} className="col-lg-3 col-md-4 col-sm-6 col-xs-6">
-                <div className="content__product">
 
-                    <Link to={`/${item.categorys.name}/${item.id}`} className="content__product-item">
-                        <img src={`http://localhost:8000/${item.image}`}
-                            className="content__product-img">
-                        </img>
-                        <p className="content__product-text">
-                            {item.name}
-                        </p>
-                    </Link>
-                    <div className="content-product-item2">
-                        <div className="content__product-text2">
-                            VERGENCY
+    if (product.length > 0) {
+        showProductsList = product.map((item, index) => {
+            if (item.quantityM == 0 && item.quantityL == 0 && item.quantityXL == 0) {
+                return (<div key={index} className="col-lg-3 col-md-4 col-sm-6 col-xs-6">
+                    <div className="content__product">
+                        <div className="content__product-item">
+                            <img src={`http://localhost:8000/${item.image}`}
+                                className="content__product-img">
+                            </img>
+                            <img src={Im}
+                                className="content__product-img2">
+                            </img>
+                            <p className="content__product-text">
+                                {item.name}
+                            </p>
                         </div>
-                        <div className="content__product-evaluate">
-                            <FontAwesomeIcon icon={faStar} />
-                            <FontAwesomeIcon icon={faStar} />
-                            <FontAwesomeIcon icon={faStar} />
-                            <FontAwesomeIcon icon={faStar} />
-                            <FontAwesomeIcon icon={faStar} />
+                        <div className="content-product-item2">
+                            <div className="content__product-text2">
+                                VERGENCY
+                            </div>
+                            <div className="content__product-evaluate">
+                                <FontAwesomeIcon icon={faStar} />
+                                <FontAwesomeIcon icon={faStar} />
+                                <FontAwesomeIcon icon={faStar} />
+                                <FontAwesomeIcon icon={faStar} />
+                                <FontAwesomeIcon icon={faStar} />
+                            </div>
+                            <div className="content__product-price">
+                                <div className="content__product-price--item1 error">
+                                    Hết hàng
+                                </div>
+                            </div>
+                            <div className="content__product-new">new</div>
+                            <div className="content__product-sale">-78%</div>
                         </div>
-                        <div className="content__product-price">
-                            <div className="content__product-price--item1">{item.price}.000đ</div>
-                            <del className="content__product-price--item2">390.000đ</del>
-                        </div>
-                        <div className="content__product-new">new</div>
-                        <div className="content__product-sale">-78%</div>
                     </div>
-                </div>
-            </div>)
-        }
-    })
-    /*  } */
+                </div>)
+            }
+            else {
+                return (<div key={index} className="col-lg-3 col-md-4 col-sm-6 col-xs-6">
+                    <div className="content__product">
+
+                        <Link to={`/${item.categorys.name}/${item.id}`} className="content__product-item">
+                            <img src={`http://localhost:8000/${item.image}`}
+                                className="content__product-img">
+                            </img>
+                            <p className="content__product-text">
+                                {item.name}
+                            </p>
+                        </Link>
+                        <div className="content-product-item2">
+                            <div className="content__product-text2">
+                                VERGENCY
+                            </div>
+                            <div className="content__product-evaluate">
+                                <FontAwesomeIcon icon={faStar} />
+                                <FontAwesomeIcon icon={faStar} />
+                                <FontAwesomeIcon icon={faStar} />
+                                <FontAwesomeIcon icon={faStar} />
+                                <FontAwesomeIcon icon={faStar} />
+                            </div>
+                            <div className="content__product-price">
+                                <div className="content__product-price--item1">{item.price}.000đ</div>
+                                <del className="content__product-price--item2">390.000đ</del>
+                            </div>
+                            <div className="content__product-new">new</div>
+                            <div className="content__product-sale">-78%</div>
+                        </div>
+                    </div>
+                </div>)
+            }
+        })
+    }
 
     return (
         <React.Fragment>

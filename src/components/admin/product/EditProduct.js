@@ -152,16 +152,6 @@ function EditProduct() {
                                     <input type="text" name="price" onChange={handleInput} value={productInput.price} className="form-control fs-4 text" />
                                     <small className="text-danger">{errorlist.price ? "Vui lòng nhập giá tiền!" : ""}</small>
                                 </div>
-                                {/* <div className="form-group mb-3">
-                                    <label>kích thước</label>
-                                    <select name="size" onChange={handleInput} value={productInput.size} className="form-control fs-4 text" >
-                                        <option>Kích thước</option>
-                                        <option>M</option>
-                                        <option>L</option>
-                                        <option>XL</option>
-                                    </select>
-                                    <small className="text-danger">{errorlist.size ? "Vui lòng nhập Kích thước!" : ""}</small>
-                                </div> */}
                                 <div className="form-group mb-3">
                                     <label>Số lượng(M)</label>
                                     <input type="text" name="quantityM" onChange={handleInput} value={productInput.quantityM} className="form-control fs-4 text" />
@@ -180,27 +170,27 @@ function EditProduct() {
                                 <div className="col-md-8 form-group mb-3">
                                     <label>Hình ảnh 1</label>
                                     <input type="file" name="image" onChange={handleImage} className="form-control fs-4 text" />
-                                    <small className="text-danger">{errorlist.image ? "Vui lòng nhập hình ảnh!" : ""}</small>
                                     <img src={`http://localhost:8000/${productInput.image}`} width="50px" alt={productInput.name} />
+                                    <small className="text-danger">{errorlist.image ? "Vui lòng nhập hình ảnh!" : ""}</small>
                                 </div>
                                 <div className="col-md-8 form-group mb-3">
                                     <label>Hình ảnh 2</label>
                                     <input type="file" name="image2" onChange={handleImage2} className="form-control fs-4 text" />
-                                    <small className="text-danger">{errorlist.image2 ? "Vui lòng nhập hình ảnh!" : ""}</small>
                                     <img src={`http://localhost:8000/${productInput.image2}`} width="50px" alt={productInput.name} />
+                                    <small className="text-danger">{errorlist.image2 ? "Vui lòng nhập hình ảnh!" : ""}</small>
                                     
                                 </div>
                                 <div className="col-md-8 form-group mb-3">
-                                    <label>Hình ảnh 3 </label>
+                                    <label>Hình ảnh 3</label>
                                     <input type="file" name="image3" onChange={handleImage3} className="form-control fs-4 text" />
-                                    <small className="text-danger">{errorlist.image3 ? "Vui lòng nhập hình ảnh!" : ""}</small>
                                     <img src={`http://localhost:8000/${productInput.image3}`} width="50px" alt={productInput.name} />
+                                    <small className="text-danger">{errorlist.image3 ? "Vui lòng nhập hình ảnh!" : ""}</small>
                                 </div>
                                 <div className="col-md-8 form-group mb-3">
                                     <label>Hình ảnh 4</label>
                                     <input type="file" name="image4" onChange={handleImage4} className="form-control fs-4 text" />
-                                    <small className="text-danger">{errorlist.image4 ? "Vui lòng nhập hình ảnh!" : ""}</small>
                                     <img src={`http://localhost:8000/${productInput.image4}`} width="50px" alt={productInput.name} />
+                                    <small className="text-danger">{errorlist.image4 ? "Vui lòng nhập hình ảnh!" : ""}</small>
                                 </div>
                                 <div className="form-group mb-3">
                                     <label>Mô tả chi tiết</label>
