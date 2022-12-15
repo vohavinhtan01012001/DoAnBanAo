@@ -69,7 +69,7 @@ function Search() {
                                 </div>
                             </div>
                             <div className="content__product-new">new</div>
-                            <div className="content__product-sale">-78%</div>
+                            {item.promotion ? <div className="content__product-sale">{"-"+item.promotion.discount+"%"}</div>:""}
                         </div>
                     </div>
                 </div>)
@@ -98,11 +98,13 @@ function Search() {
                                 <FontAwesomeIcon icon={faStar} />
                             </div>
                             <div className="content__product-price">
-                                <div className="content__product-price--item1">{item.price}.000đ</div>
-                                <del className="content__product-price--item2">390.000đ</del>
+                            {item.promotion ? 
+                                    <div className="content__product-price--item1">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format((item.price * (100 - item.promotion.discount))/100)}</div> : 
+                                    <div className="content__product-price--item1">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</div> }
+                                    {item.promotion ? <del className="content__product-price--item2">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</del>:""}
                             </div>
                             <div className="content__product-new">new</div>
-                            <div className="content__product-sale">-78%</div>
+                            {item.promotion ? <div className="content__product-sale">{"-"+item.promotion.discount+"%"}</div>:""}
                         </div>
                     </div>
                 </div>)

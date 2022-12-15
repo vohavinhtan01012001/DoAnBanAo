@@ -79,7 +79,6 @@ function AddProductPor() {
     const submitProduct = (e) => {
         e.preventDefault();
         const promotion_id = id;
-        console.log(promotionInput);
         const data = {
             promotion_id: promotion_id,
         }

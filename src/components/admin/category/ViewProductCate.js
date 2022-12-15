@@ -58,95 +58,129 @@ function ViewProductCate() {
     var display_Productdata = "";
     var display_DeleteButton = "";
     var indexA = 0;
+    var role = localStorage.getItem('auth_role');
     var category_name = "";
     if (loading) {
         return <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
     }
     else {
         if (viewProduct.length > 0) {
-            display_Productdata = viewProduct.map((item, index) => {
-                if (item.category_id == category_id) {
-                    indexA++;
-                    category_name = item.categorys.name.toLowerCase();
-                    return (
-                        <tr id={item.id} key={index}>
-                            <td className='fs-4 text'>{item.id}</td>
-                            <td className='fs-4 text'>{item.name}</td>
-                            <td className='fs-4 text'>{item.categorys.name}</td>
-                            <td className='fs-4 text'>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</td>
-                            <td className='fs-4 text'>{item.quantityM}</td>
-                            <td className='fs-4 text'>{item.quantityL}</td>
-                            <td className='fs-4 text'>{item.quantityXL}</td>
-                            <td><img src={`http://localhost:8000/${item.image}`} width="50px" alt={item.name} /></td>
-                            <td><img src={`http://localhost:8000/${item.image2}`} width="50px" alt={item.name} /></td>
-                            <td><img src={`http://localhost:8000/${item.image3}`} width="50px" alt={item.name} /></td>
-                            <td><img src={`http://localhost:8000/${item.image4}`} width="50px" alt={item.name} /></td>
-                            <td>{item.quantityL == 0 && item.quantityM == 0 && item.quantityXL == 0 ? <p style={{ color: 'red', fontWeight: "bold" }}>Hết hàng</p> : <p style={{ color: '#0ccf0f', fontWeight: "bold" }}>Còn hàng</p>}</td>
-                            <td>
-                                <Link to={`../edit-product/${item.id}`} className="btn btn-success btn-sm fs-4 text">Chỉnh sửa</Link>
-                            </td>
-                            <td>
-                                <button type="button" onClick={(e) => {
-                                    swal({
-                                        title: "Thông báo!",
-                                        text: "Bạn có chắc muốn xóa không!",
-                                        icon: "warning",
-                                        buttons: [
-                                            'Không',
-                                            'Có'
-                                        ],
-                                        dangerMode: true,
-                                    }).then(function (isConfirm) {
-                                        if (isConfirm) {
-                                            swal({
-                                                title: 'Thành công!',
-                                                text: 'Đã xóa thành công!',
-                                                icon: 'success'
-                                            }).then(function () {
-                                                deleteProduct(e, item.id);
-                                            });
-                                        } else {
+            if (role == 1) {
+                display_Productdata = viewProduct.map((item, index) => {
+                    if (item.category_id == category_id) {
+                        indexA++;
+                        category_name = item.categorys.name.toLowerCase();
+                        return (
+                            <tr id={item.id} key={index}>
+                                <td className='fs-4 text'>{item.id}</td>
+                                <td className='fs-4 text'>{item.name}</td>
+                                <td className='fs-4 text'>{item.categorys.name}</td>
+                                <td className='fs-4 text'>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</td>
+                                <td className='fs-4 text'>{item.quantityM}</td>
+                                <td className='fs-4 text'>{item.quantityL}</td>
+                                <td className='fs-4 text'>{item.quantityXL}</td>
+                                <td><img src={`http://localhost:8000/${item.image}`} width="50px" alt={item.name} /></td>
+                                <td><img src={`http://localhost:8000/${item.image2}`} width="50px" alt={item.name} /></td>
+                                <td><img src={`http://localhost:8000/${item.image3}`} width="50px" alt={item.name} /></td>
+                                <td><img src={`http://localhost:8000/${item.image4}`} width="50px" alt={item.name} /></td>
+                                <td>{item.quantityL == 0 && item.quantityM == 0 && item.quantityXL == 0 ? <p style={{ color: 'red', fontWeight: "bold" }}>Hết hàng</p> : <p style={{ color: '#0ccf0f', fontWeight: "bold" }}>Còn hàng</p>}</td>
+                                <td>
+                                    <Link to={`../edit-product/${item.id}`} className="btn btn-success btn-sm fs-4 text">Chỉnh sửa</Link>
+                                </td>
+                                <td>
+                                    <button type="button" onClick={(e) => {
+                                        swal({
+                                            title: "Thông báo!",
+                                            text: "Bạn có chắc muốn xóa không!",
+                                            icon: "warning",
+                                            buttons: [
+                                                'Không',
+                                                'Có'
+                                            ],
+                                            dangerMode: true,
+                                        }).then(function (isConfirm) {
+                                            if (isConfirm) {
+                                                swal({
+                                                    title: 'Thành công!',
+                                                    text: 'Đã xóa thành công!',
+                                                    icon: 'success'
+                                                }).then(function () {
+                                                    deleteProduct(e, item.id);
+                                                });
+                                            } else {
 
-                                        }
-                                    })
-                                }} className='btn btn-danger btn-sm fs-4 text'>Xóa</button></td>
-                        </tr >
-                    )
+                                            }
+                                        })
+                                    }} className='btn btn-danger btn-sm fs-4 text'>Xóa</button></td>
+                            </tr >
+                        )
+                    }
+                    else {
+                        display_Productdata = "";
+                    }
+                });
+                if (indexA > 0) {
+                    display_DeleteButton = (<button type="button" onClick={(e) => {
+                        swal('Warning', `Còn sản phẩm trong loại ${category_name} nên không xóa được `, 'warning')
+                    }} className='btn btn-danger btn-sm fs-4 text float-end p-3'>Xóa Loại sản phẩm</button>)
                 }
                 else {
-                    display_Productdata = "";
+                    display_DeleteButton = (<button type="button" onClick={(e) => {
+                        swal({
+                            title: "Thông báo!",
+                            text: "Bạn có chắc muốn xóa?",
+                            icon: "warning",
+                            buttons: [
+                                'Không',
+                                'Có'
+                            ],
+                            dangerMode: true,
+                        }).then(function (isConfirm) {
+                            if (isConfirm) {
+                                swal({
+                                    title: 'Thành công!',
+                                    text: 'Đã xóa thành công!',
+                                    icon: 'success'
+                                }).then(function () {
+                                    deleteCategory(e, category_id);
+                                });
+                            } else {
+
+                            }
+                        })
+                    }} className='btn btn-danger btn-sm fs-4 text float-end p-3'>Xóa Loại sản phẩm</button>)
                 }
-            });
-            if (indexA > 0) {
-                display_DeleteButton = (<button type="button" onClick={(e) => {
-                    swal('Warning', `Còn sản phẩm trong loại ${category_name} nên không xóa được `, 'warning')
-                }} className='btn btn-danger btn-sm fs-4 text float-end p-3'>Xóa Loại sản phẩm</button>)
             }
             else {
-                display_DeleteButton = (<button type="button" onClick={(e) => {
-                    swal({
-                        title: "Thông báo!",
-                        text: "Bạn có chắc muốn xóa?",
-                        icon: "warning",
-                        buttons: [
-                            'Không',
-                            'Có'
-                        ],
-                        dangerMode: true,
-                    }).then(function (isConfirm) {
-                        if (isConfirm) {
-                            swal({
-                                title: 'Thành công!',
-                                text: 'Đã xóa thành công!',
-                                icon: 'success'
-                            }).then(function () {
-                                deleteCategory(e, category_id);
-                            });
-                        } else {
-
-                        }
-                    })
-                }} className='btn btn-danger btn-sm fs-4 text float-end p-3'>Xóa Loại sản phẩm</button>)
+                display_Productdata = viewProduct.map((item, index) => {
+                    if (item.category_id == category_id) {
+                        indexA++;
+                        category_name = item.categorys.name.toLowerCase();
+                        return (
+                            <tr id={item.id} key={index}>
+                                <td className='fs-4 text'>{item.id}</td>
+                                <td className='fs-4 text'>{item.name}</td>
+                                <td className='fs-4 text'>{item.categorys.name}</td>
+                                <td className='fs-4 text'>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</td>
+                                <td className='fs-4 text'>{item.quantityM}</td>
+                                <td className='fs-4 text'>{item.quantityL}</td>
+                                <td className='fs-4 text'>{item.quantityXL}</td>
+                                <td><img src={`http://localhost:8000/${item.image}`} width="50px" alt={item.name} /></td>
+                                <td><img src={`http://localhost:8000/${item.image2}`} width="50px" alt={item.name} /></td>
+                                <td><img src={`http://localhost:8000/${item.image3}`} width="50px" alt={item.name} /></td>
+                                <td><img src={`http://localhost:8000/${item.image4}`} width="50px" alt={item.name} /></td>
+                                <td>{item.quantityL == 0 && item.quantityM == 0 && item.quantityXL == 0 ? <p style={{ color: 'red', fontWeight: "bold" }}>Hết hàng</p> : <p style={{ color: '#0ccf0f', fontWeight: "bold" }}>Còn hàng</p>}</td>
+                                <td>
+                                    <Link to={`../edit-product/${item.id}`} className="btn btn-success btn-sm fs-4 text">Chỉnh sửa</Link>
+                                </td>
+                            </tr >
+                        )
+                    }
+                    else {
+                        display_Productdata = "";
+                    }
+                });
+                display_DeleteButton = "";
             }
         }
         else {
@@ -180,7 +214,7 @@ function ViewProductCate() {
                                     <th>Hình ảnh 4</th>
                                     <th>Trạng thái sản phẩm</th>
                                     <th>Chỉnh sửa</th>
-                                    <th>Xóa</th>
+                                    {role == 1 ? <th>Xóa </th> : ""}
                                 </tr>
                             </thead>
                             <tbody>

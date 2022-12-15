@@ -59,7 +59,6 @@ function DetailOrder() {
         })
     }
 
-
     var sumPrice = 0;
     var display_detailOrder = "";
     var display_button = "";
@@ -80,6 +79,10 @@ function DetailOrder() {
                     <td className='fs-4 text'>{item.qtyL}</td>
                     <td className='fs-4 text'>{item.qtyXL}</td>
                     <td className='fs-4 text'>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</td>
+                    {item.product.promotion ?
+                        <td className='fs-4 text'>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format((item.price * (100 - item.product.promotion.discount))/100)}</td> :
+                        <td className='fs-4 text'>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</td>
+                    }
                     <td className='fs-4 text'>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.sumPrice)}</td>
                 </tr >
             )
@@ -131,7 +134,8 @@ function DetailOrder() {
                                     <th>Số lượng(M)</th>
                                     <th>Số lượng(L)</th>
                                     <th>Số lượng(XL)</th>
-                                    <th>Giá tiền mỗi sản phẩm</th>
+                                    <th>Giá tiền ban đầu</th>
+                                    <th>Giá tiền đã áp dụng khuyến mãi</th>
                                     <th>Tạm tính</th>
                                 </tr>
                             </thead>

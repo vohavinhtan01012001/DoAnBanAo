@@ -17,12 +17,15 @@ import Im from "../../assets/frontend/img/detail/lss.png";
 
 function Home() {
     const [viewProduct, setViewProduct] = useState([]);
+    const [loading, setLoading] = useState(true);
+
     useEffect(() => {
         let isMounted = true;
         axios.get(`/api/home-product`).then(res => {
             if (isMounted) {
                 if (res.data.status === 200) {
                     setViewProduct(res.data.products);
+                    setLoading(false);
                 }
             }
         });
@@ -30,88 +33,100 @@ function Home() {
             isMounted = false
         };
     }, []);
-    const display_products = viewProduct.map((item, index) => {
-        if (item.quantityM == 0 && item.quantityL == 0 && item.quantityXL == 0) {
-            return (
-                index < 10 ?
-                    <div key={index} className="col-lg-3 col-md-4 col-sm-4 col-xs-6 ">
-                        <div className="content__product">
-                            <div className="content__product-item">
-                                <img src={`http://localhost:8000/${item.image}`}
-                                    className="content__product-img">
-                                </img>
-                                <img src={Im}
-                                    className="content__product-img2">
-                                </img>
-                                <p className="content__product-text">
-                                    {item.name}
-                                </p>
-                            </div>
-                            <div className="content-product-item2">
-                                <div className="content__product-text2">
-                                    VERGENCY
+
+    var display_products = "";
+    if (loading) {
+        return (<div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>)
+    }
+    else {
+        viewProduct.sort(function (a, b) {
+            let left = a.id;
+            let right = b.id;
+            return left === right ? 0 : left < right ? 1 : -1;
+        });
+        display_products = viewProduct.map((item, index) => {
+            if (item.quantityM == 0 && item.quantityL == 0 && item.quantityXL == 0) {
+                return (
+                    index < 10 ?
+                        <div key={index} className="col-lg-3 col-md-4 col-sm-4 col-xs-6 ">
+                            <div className="content__product">
+                                <div className="content__product-item">
+                                    <img src={`http://localhost:8000/${item.image}`}
+                                        className="content__product-img">
+                                    </img>
+                                    <img src={Im}
+                                        className="content__product-img2">
+                                    </img>
+                                    <p className="content__product-text">
+                                        {item.name}
+                                    </p>
                                 </div>
-                                <div className="content__product-evaluate">
-                                    <FontAwesomeIcon icon={faStar} />
-                                    <FontAwesomeIcon icon={faStar} />
-                                    <FontAwesomeIcon icon={faStar} />
-                                    <FontAwesomeIcon icon={faStar} />
-                                    <FontAwesomeIcon icon={faStar} />
-                                </div>
-                                <div className="content__product-price">
-                                    <div className="content__product-price--item1 error">
-                                        Hết hàng
+                                <div className="content-product-item2">
+                                    <div className="content__product-text2">
+                                        VERGENCY
                                     </div>
+                                    <div className="content__product-evaluate">
+                                        <FontAwesomeIcon icon={faStar} />
+                                        <FontAwesomeIcon icon={faStar} />
+                                        <FontAwesomeIcon icon={faStar} />
+                                        <FontAwesomeIcon icon={faStar} />
+                                        <FontAwesomeIcon icon={faStar} />
+                                    </div>
+                                    <div className="content__product-price">
+                                        <div className="content__product-price--item1 error">
+                                            Hết hàng
+                                        </div>
+                                    </div>
+                                    <div className="content__product-new">new</div>
+                                    {item.promotion ? <div className="content__product-sale">{"-" + item.promotion.discount + "%"}</div> : ""}
                                 </div>
-                                <div className="content__product-new">new</div>
-                                {item.promotion ? <div className="content__product-sale">{item.promotion.discount+"%"}</div>:""}
                             </div>
                         </div>
-                    </div>
-                    : ""
-            )
-        }
-        else {
-            return (
-                index < 10 ?
-                    <div key={index} className="col-lg-3 col-md-4 col-sm-4 col-xs-6 ">
-                        <div className="content__product">
+                        : ""
+                )
+            }
+            else {
+                return (
+                    index < 10 ?
+                        <div key={index} className="col-lg-3 col-md-4 col-sm-4 col-xs-6 ">
+                            <div className="content__product">
 
-                            <Link to={`/${item.categorys.name}/${item.id}`} className="content__product-item">
-                                <img src={`http://localhost:8000/${item.image}`}
-                                    className="content__product-img">
-                                </img>
-                                <p className="content__product-text">
-                                    {item.name}
-                                </p>
-                            </Link>
-                            <div className="content-product-item2">
-                                <div className="content__product-text2">
-                                    VERGENCY
+                                <Link to={`/${item.categorys.name}/${item.id}`} className="content__product-item">
+                                    <img src={`http://localhost:8000/${item.image}`}
+                                        className="content__product-img">
+                                    </img>
+                                    <p className="content__product-text">
+                                        {item.name}
+                                    </p>
+                                </Link>
+                                <div className="content-product-item2">
+                                    <div className="content__product-text2">
+                                        VERGENCY
+                                    </div>
+                                    <div className="content__product-evaluate">
+                                        <FontAwesomeIcon icon={faStar} />
+                                        <FontAwesomeIcon icon={faStar} />
+                                        <FontAwesomeIcon icon={faStar} />
+                                        <FontAwesomeIcon icon={faStar} />
+                                        <FontAwesomeIcon icon={faStar} />
+                                    </div>
+                                    <div className="content__product-price">
+                                        {item.promotion ?
+                                            <div className="content__product-price--item1">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format((item.price * (100 - item.promotion.discount)) / 100)}</div> :
+                                            <div className="content__product-price--item1">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</div>}
+                                        {item.promotion ? <del className="content__product-price--item2">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</del> : ""}
+                                    </div>
+                                    <div className="content__product-new">new</div>
+                                    {item.promotion ? <div className="content__product-sale">{"-" + item.promotion.discount + "%"}</div> : ""}
                                 </div>
-                                <div className="content__product-evaluate">
-                                    <FontAwesomeIcon icon={faStar} />
-                                    <FontAwesomeIcon icon={faStar} />
-                                    <FontAwesomeIcon icon={faStar} />
-                                    <FontAwesomeIcon icon={faStar} />
-                                    <FontAwesomeIcon icon={faStar} />
-                                </div>
-                                <div className="content__product-price">
-                                    {item.promotion ? 
-                                    <div className="content__product-price--item1">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format((item.price * item.promotion.discount)/100)}</div> : 
-                                    <div className="content__product-price--item1">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</div> }
-                                    {item.promotion ? <del className="content__product-price--item2">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</del>:""}
-                                </div>
-                                <div className="content__product-new">new</div>
-                                {item.promotion ? <div className="content__product-sale">{item.promotion.discount+"%"}</div>:""}
                             </div>
                         </div>
-                    </div>
-                    : ""
-            )
-        }
+                        : ""
+                )
+            }
 
-    });
+        });
+    }
     return (
         <React.Fragment>
             <Header />

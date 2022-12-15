@@ -27,7 +27,6 @@ function Header(props) {
     const [cart, setCart] = useState([]);
 
 
-
     //Xử lý dữ liệu loại sản phẩm
     useEffect(() => {
         let isMounted = true;
@@ -207,10 +206,10 @@ function Header(props) {
                 <Link to="/about" className='header__menu-link'>GIỚI THIỆU</Link>
             </li>
             <li className='header__menu-item'>
-                <a href="https://www.facebook.com/phat.ngo.5454" target="_blank" rel="noreferrer" className='header__navbar-link'>FANPAGE</a>
+                <a href="https://www.facebook.com/phat.ngo.5454" target="_blank" rel="noreferrer" className='header__navbar-link' style={{textDecoration:"none",color:"white",fontSize:"1.6rem",display:"block",padding:"13px"}} >FANPAGE</a>
             </li>
             <li className='header__menu-item'>
-                <Link to="" className='header__menu-link'>INTAGRAM</Link>
+            <a href="https://www.instagram.com/" target="_blank" rel="noreferrer" className='header__navbar-link' style={{textDecoration:"none",color:"white",fontSize:"1.6rem",display:"block",padding:"13px"}} >INTAGRAM</a>
             </li>
         </ul>);
     }
@@ -235,10 +234,7 @@ function Header(props) {
             }
         })
     )
-
-
     useEffect(() => {
-
         let isMounted = true;
 
         axios.get(`/api/cart`).then(res => {
@@ -248,12 +244,12 @@ function Header(props) {
                 }
             }
         });
-
+        
         return () => {
             isMounted = false
         };
     }, []);
-
+    
     var sumQuatity = 0;
     cart.map((item) => {
         sumQuatity = sumQuatity + item.product_qty;

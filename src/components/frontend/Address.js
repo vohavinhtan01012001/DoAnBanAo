@@ -1,51 +1,69 @@
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import swal from "sweetalert";
 import Footer from "../../layouts/frontend/Footer";
 import Header from "../../layouts/frontend/Header";
 
 function Address() {
     const history = useNavigate();
-    const [address, setAddress] = useState({
-        name: "",
-        address: "",
-        phone: "",
-        error: "",
-    });
+    const [loading, setLoading] = useState(true);
+    const [addressInput,setAddress] = useState([]);
+    const [error, setError] = useState([]);
+    const { id } = useParams();
 
-    const handleInput = (e) => {
-        e.persist();
-        setAddress({ ...address, [e.target.name]: e.target.value });
-    }
-
-    const addressSubmit = (e) => {
-        e.preventDefault();
-        const data = {
-            name: address.name,
-            address: address.address,
-            phone: address.phone,
-        }
-        axios.get('/sanctum/csrf-cookie').then(response => {
-            axios.post('/api/address', data).then(res => {
-                if (res.data.status === 200) {
-                    localStorage.setItem('auth_token', res.data.token);
-                    localStorage.setItem('auth_name', res.data.username);
-                    localStorage.setItem('auth_address', res.data.address);
-                    localStorage.setItem('auth_phone', res.data.phone);
-                    swal("Thêm thành công", res.data.message, "success");
-                    history('/account');
-                    console.log(res.data.address)
-                }
-                else {
-                    setAddress({ ...address, error: res.data.validation_errors });
-                }
-            });
+    useEffect(() => {
+        const address_id = id;
+        console.log(address_id)
+        axios.get(`/api/edit-account/${address_id}`).then(res=>{
+            if(res.data.status === 200)
+            {
+                setAddress(res.data.user);
+            }
+            else if(res.data.status === 404)
+            {
+                swal("Error",res.data.message,"error");
+                history('/account');
+            }
+            setLoading(false);
         });
+
+    }, [id,history]);
+
+    const handleInput = (e)=>{
+        e.persist();
+        setAddress({...addressInput,[e.target.name]: e.target.value});
     }
 
+    const updateAddress = (e) => {
+        e.preventDefault();
+        const address_id = id;
+
+        const data = {
+            name: addressInput.name,
+            address: addressInput.address,
+            phone: addressInput.phone,
+        };
+        axios.put(`/api/upload-account/${address_id}`,data).then(res => {
+            if(res.data.status === 200){
+                swal("Success", res.data.message,'success');
+                setError([])
+            }
+            else if(res.data.status === 422){
+                setError(res.data.errors);
+            }
+            else if(res.data.status === 404){
+                swal("Success", res.data.message,'success');
+                history('/account');
+            }
+        })
+    }
+    
+    if (loading) {
+        return <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+    }
     return (
         <React.Fragment>
             <Header />
@@ -63,15 +81,15 @@ function Address() {
                     <div className='row'>
                         <div className='app__container--address'>
                             <h2 className="heading__text">Thông tin địa chỉ</h2>
-                            <form className="formAddress" onSubmit={addressSubmit}>
+                            <form className="formAddress" onSubmit={updateAddress}>
                                 <div className="formLogin__email">
-                                    <input type="text" onChange={handleInput} value={address.name} name="name" placeholder='Họ và tên' className="formLogin__email--input" />
+                                    <input type="text" onChange={handleInput} value={addressInput.name} name="name" placeholder='Họ và tên' className="formLogin__email--input" />
                                 </div>
                                 <div className="formLogin__email">
-                                    <input type="text" onChange={handleInput} value={address.address} name="address" placeholder="Địa chỉ" className="formLogin__password--input" />
+                                    <input type="text" onChange={handleInput} value={addressInput.address} name="address" placeholder="Địa chỉ" className="formLogin__password--input" />
                                 </div>
                                 <div className="formLogin__email">
-                                    <input type="text" onChange={handleInput} value={address.phone} name="phone" placeholder="Số điện thoại" className="formLogin__password--input" />
+                                    <input type="text" onChange={handleInput} value={addressInput.phone} name="phone" placeholder="Số điện thoại" className="formLogin__password--input" />
                                 </div>
                                 <div className="formAddress__btn">
                                     <button type="submit" className="formAddress__btn--Address">

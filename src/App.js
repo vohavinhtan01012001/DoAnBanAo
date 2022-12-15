@@ -85,7 +85,7 @@ function App() {
           <Route path="/login" element={localStorage.getItem('auth_token') ? <Navigate to="/" /> : <Login />} />
           <Route path="/register" element={localStorage.getItem('auth_token') ? <Navigate to="/" /> : <Register />} />
           <Route path="/account" element={localStorage.getItem('auth_token') ? <Account /> : <Navigate to="/" />} />
-          <Route path="/address" element={localStorage.getItem('auth_token') ? <Address /> : <Navigate to="/" />} />
+          <Route path="/address/:id" element={localStorage.getItem('auth_token') ? <Address /> : <Navigate to="/" />} />
           <Route path="/admin" name="Admin" element={<AdminPrivateRoute />} >
             <Route path='/admin/add-category' element={<Category />} />
             <Route path='/admin/view-category' element={<ViewCategory />} />

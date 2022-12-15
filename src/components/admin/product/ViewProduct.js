@@ -60,60 +60,87 @@ function ViewProduct() {
             }
         })
     }
-    console.log(viewProduct)
+    var role = localStorage.getItem('auth_role');
     var display_Productdata = "";
     if (loading) {
         return <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
     }
     else {
-        display_Productdata = viewProduct.map((item, index) => {
-            return (
-                <tr id={item.id} key={index}>
-                    <td className='fs-4 text'>{item.id}</td>
-                    <td className='fs-4 text'>{item.name}</td>
-                    <td className='fs-4 text'>{item.categorys.name}</td>
-                    <td className='fs-4 text'>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</td>
-                    <td className='fs-4 text'>{item.promotion ? item.promotion.discount+"%":"0%"}</td>
-                    <td className='fs-4 text'>{item.promotion ? Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format((item.price * item.promotion.discount)/100) : Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price) }</td>
-                    <td className='fs-4 text'>{item.quantityM}</td>
-                    <td className='fs-4 text'>{item.quantityL}</td>
-                    <td className='fs-4 text'>{item.quantityXL}</td>
-                    <td><img src={`http://localhost:8000/${item.image}`} width="50px" alt={item.name} /></td>
-                    <td><img src={`http://localhost:8000/${item.image2}`} width="50px" alt={item.name} /></td>
-                    <td><img src={`http://localhost:8000/${item.image3}`} width="50px" alt={item.name} /></td>
-                    <td><img src={`http://localhost:8000/${item.image4}`} width="50px" alt={item.name} /></td>
-                    <td>{item.quantityL == 0 && item.quantityM == 0 && item.quantityXL == 0 ? <p style={{ color: 'red', fontWeight: "bold" }}>Hết hàng</p> : <p style={{ color: '#0ccf0f', fontWeight: "bold" }}>Còn hàng</p>}</td>
-                    <td>
-                        <Link to={`../edit-product/${item.id}`} className="btn btn-success btn-sm fs-4 text">Chỉnh sửa</Link>
-                    </td>
-                    <td>
-                        <button type="button" onClick={(e) => {
-                            swal({
-                                title: "Thông báo!",
-                                text: "Bạn có chắc muốn xóa không!",
-                                icon: "warning",
-                                buttons: [
-                                    'Không',    
-                                    'Có'
-                                ],
-                                dangerMode: true,
-                            }).then(function (isConfirm) {
-                                if (isConfirm) {
-                                    swal({
-                                        title: 'Thành công!',
-                                        text: 'Đã xóa thành công!',
-                                        icon: 'success'
-                                    }).then(function () {
-                                        deleteProduct(e, item.id);
-                                    });
-                                } else {
-
-                                }
-                            })
-                        }} className='btn btn-danger btn-sm fs-4 text'>Xóa</button></td>
-                </tr >
-            )
-        });
+        if(role == 1){
+            display_Productdata = viewProduct.map((item, index) => {
+                return (
+                    <tr id={item.id} key={index}>
+                        <td className='fs-4 text'>{item.id}</td>
+                        <td className='fs-4 text'>{item.name}</td>
+                        <td className='fs-4 text'>{item.categorys.name}</td>
+                        <td className='fs-4 text'>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</td>
+                        <td className='fs-4 text'>{item.promotion ? item.promotion.discount+"%":"0%"}</td>
+                        <td className='fs-4 text'>{item.promotion ? Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format((item.price * (100 - item.promotion.discount))/100) : Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price) }</td>
+                        <td className='fs-4 text'>{item.quantityM}</td>
+                        <td className='fs-4 text'>{item.quantityL}</td>
+                        <td className='fs-4 text'>{item.quantityXL}</td>
+                        <td><img src={`http://localhost:8000/${item.image}`} width="50px" alt={item.name} /></td>
+                        <td><img src={`http://localhost:8000/${item.image2}`} width="50px" alt={item.name} /></td>
+                        <td><img src={`http://localhost:8000/${item.image3}`} width="50px" alt={item.name} /></td>
+                        <td><img src={`http://localhost:8000/${item.image4}`} width="50px" alt={item.name} /></td>
+                        <td>{item.quantityL == 0 && item.quantityM == 0 && item.quantityXL == 0 ? <p style={{ color: 'red', fontWeight: "bold" }}>Hết hàng</p> : <p style={{ color: '#0ccf0f', fontWeight: "bold" }}>Còn hàng</p>}</td>
+                        <td>
+                            <Link to={`../edit-product/${item.id}`} className="btn btn-success btn-sm fs-4 text">Chỉnh sửa</Link>
+                        </td>
+                        <td>
+                            <button type="button" onClick={(e) => {
+                                swal({
+                                    title: "Thông báo!",
+                                    text: "Bạn có chắc muốn xóa không!",
+                                    icon: "warning",
+                                    buttons: [
+                                        'Không',    
+                                        'Có'
+                                    ],
+                                    dangerMode: true,
+                                }).then(function (isConfirm) {
+                                    if (isConfirm) {
+                                        swal({
+                                            title: 'Thành công!',
+                                            text: 'Đã xóa thành công!',
+                                            icon: 'success'
+                                        }).then(function () {
+                                            deleteProduct(e, item.id);
+                                        });
+                                    } else {
+    
+                                    }
+                                })
+                            }} className='btn btn-danger btn-sm fs-4 text'>Xóa</button></td>
+                    </tr >
+                )
+            });
+        }
+        else{
+            display_Productdata = viewProduct.map((item, index) => {
+                return (
+                    <tr id={item.id} key={index}>
+                        <td className='fs-4 text'>{item.id}</td>
+                        <td className='fs-4 text'>{item.name}</td>
+                        <td className='fs-4 text'>{item.categorys.name}</td>
+                        <td className='fs-4 text'>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</td>
+                        <td className='fs-4 text'>{item.promotion ? item.promotion.discount+"%":"0%"}</td>
+                        <td className='fs-4 text'>{item.promotion ? Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format((item.price * (100 - item.promotion.discount))/100) : Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price) }</td>
+                        <td className='fs-4 text'>{item.quantityM}</td>
+                        <td className='fs-4 text'>{item.quantityL}</td>
+                        <td className='fs-4 text'>{item.quantityXL}</td>
+                        <td><img src={`http://localhost:8000/${item.image}`} width="50px" alt={item.name} /></td>
+                        <td><img src={`http://localhost:8000/${item.image2}`} width="50px" alt={item.name} /></td>
+                        <td><img src={`http://localhost:8000/${item.image3}`} width="50px" alt={item.name} /></td>
+                        <td><img src={`http://localhost:8000/${item.image4}`} width="50px" alt={item.name} /></td>
+                        <td>{item.quantityL == 0 && item.quantityM == 0 && item.quantityXL == 0 ? <p style={{ color: 'red', fontWeight: "bold" }}>Hết hàng</p> : <p style={{ color: '#0ccf0f', fontWeight: "bold" }}>Còn hàng</p>}</td>
+                        <td>
+                            <Link to={`../edit-product/${item.id}`} className="btn btn-success btn-sm fs-4 text">Chỉnh sửa</Link>
+                        </td>
+                    </tr >
+                )
+            });
+        }
     }
     return (
         <div className="container px-4 mt-3">
@@ -144,7 +171,7 @@ function ViewProduct() {
                                     <th>Hình ảnh 4</th>
                                     <th>Trạng thái sản phẩm</th>
                                     <th>Chỉnh sửa</th>
-                                    <th>Xóa</th>
+                                    {role == 1 ? <th>Xóa</th> : ""}
                                 </tr>
                             </thead>
                             <tbody>

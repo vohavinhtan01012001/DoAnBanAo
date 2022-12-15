@@ -13,6 +13,32 @@ function Account() {
     const history = useNavigate();
     const [loading, setLoading] = useState(true);
     const [order, setOrder] = useState([]);
+    const [viewAccount, setAccount] = useState([]);
+    useEffect(() => {
+        let isMounted = true;
+        document.title = "Danh sách tài khoản";
+
+        axios.get(`/api/view-accountAdd`).then(res => {
+            if (isMounted) {
+                if (res.data.status === 200) {
+                    setAccount(res.data.user);
+                    setLoading(false);
+                }
+            }
+        });
+        return () => {
+            isMounted = false
+        };
+    }, []);
+
+    var emailToken = localStorage.getItem('auth_email');
+    var user_id = "";
+    viewAccount.map((item,index)=>{
+        if(item.email == emailToken) {
+            user_id = item.id;
+        }
+        return user_id;
+    })
 
     const logoutSubmit = (e) => {
         e.preventDefault();
@@ -24,6 +50,7 @@ function Account() {
                 localStorage.removeItem('auth_address');
                 localStorage.removeItem('auth_phone');
                 localStorage.removeItem('mapbox.eventData.uuid:');
+                localStorage.removeItem('auth_role');
                 window.location.reload();
                 swal('Đăng xuất thành công', res.data.message, "success");
                 history("/");
@@ -151,7 +178,7 @@ function Account() {
                                     <span>:</span>
                                     <span>{phone}</span>
                                 </div>
-                                <Link to="/address" className='app_container-edit'>
+                                <Link to={`/address/${user_id}`} className='app_container-edit'>
                                     <div className='app_container-edit--text' >Chỉnh sửa</div>
                                     <div className='app_container-edit--icon'>
                                         <FontAwesomeIcon icon={faPenToSquare} />

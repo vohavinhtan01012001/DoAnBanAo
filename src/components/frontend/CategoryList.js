@@ -1,7 +1,7 @@
 import { faChevronRight, faMinus, faPlus, faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import swal from "sweetalert";
 import Footer from "../../layouts/frontend/Footer";
@@ -16,6 +16,69 @@ function Tshirts() {
     const [category, setCategory] = useState([]);
 
     const productCount = product.length;
+
+    const [shouldRefresh, setRefresh] = useState(false);
+
+
+    //sắp xếp
+    function handleOption(e) {
+        if (e.target.value == 'Tên: A--Z') {
+            const result = product.sort(function (a, b) {
+                let left = a.name;
+                let right = b.name;
+                return left === right ? 0 : left > right ? 1 : -1;
+            });
+            setRefresh(!shouldRefresh);
+            setProduct(result);
+        }
+        else if (e.target.value == 'Tên: Z--A'){
+            const result = product.sort(function (a, b) {
+                let left = a.name;
+                let right = b.name;
+                return left === right ? 0 : left < right ? 1 : -1;
+            });
+            setRefresh(!shouldRefresh);
+            setProduct(result);
+        }
+        else if (e.target.value == 'Mới nhất'){
+            const result = product.sort(function (a, b) {
+                let left = a.id;
+                let right = b.id;
+                return left === right ? 0 : left < right ? 1 : -1;
+            });
+            setRefresh(!shouldRefresh);
+            setProduct(result);
+        }
+        else if (e.target.value == 'Cũ nhất'){
+            const result = product.sort(function (a, b) {
+                let left = a.id;
+                let right = b.id;
+                return left === right ? 0 : left > right ? 1 : -1;
+            });
+            setRefresh(!shouldRefresh);
+            setProduct(result);
+        }
+        else if (e.target.value == 'Giá:Tăng dần'){
+            const result = product.sort(function (a, b) {
+                let left = a.price;
+                let right = b.price;
+                return left === right ? 0 : left > right ? 1 : -1;
+            });
+            setRefresh(!shouldRefresh);
+            setProduct(result);
+        }
+        else if (e.target.value == 'Giá:Giảm dần'){
+            const result = product.sort(function (a, b) {
+                let left = a.price;
+                let right = b.price;
+                return left === right ? 0 : left < right ? 1 : -1;
+            });
+            setRefresh(!shouldRefresh);
+            setProduct(result);
+        }
+    }
+
+
     //xử lý hiện sản phẩm
     const { slug } = useParams();
     useEffect(() => {
@@ -45,114 +108,99 @@ function Tshirts() {
         };
     }, [slug, history]);
 
-    var his = "";
-    const handleOption = (e) => {
-        if (e.target.value === 'Tên: A--Z') {
-            his = e.target.value;
-        }
-        return his;
-    }
-
-
+    //xuất dữ liệu 
     var showProductsList = "";
     if (loading) {
         return (<div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>)
     }
     else {
-        {
-            if (productCount) {
-                /* product.sort(function (a, b) {
-                    let left = a.name;
-                    let right = b.name;
-                    return left === right ? 0 : left > right ? 1 : -1;
-                }); */
-                showProductsList = product.map((item, index) => {
-                    if (item.quantityM == 0 && item.quantityL == 0 && item.quantityXL == 0) {
-                        return (
-                            <div key={index} className="col-lg-4 col-md-4 col-sm-6 col-xs-6">
-                                <div className="content__product">
-                                    <div className="content__product-item">
-                                        <img src={`http://localhost:8000/${item.image}`}
-                                            className="content__product-img">
-                                        </img>
-                                        <img src={Im}
-                                            className="content__product-img2">
-                                        </img>
-                                        <p className="content__product-text">
-                                            {item.name}
-                                        </p>
+        if (productCount) {
+            showProductsList = product.map((item, index) => {
+                if (item.quantityM == 0 && item.quantityL == 0 && item.quantityXL == 0) {
+                    return (
+                        <div key={index} className="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                            <div className="content__product">
+                                <div className="content__product-item">
+                                    <img src={`http://localhost:8000/${item.image}`}
+                                        className="content__product-img">
+                                    </img>
+                                    <img src={Im}
+                                        className="content__product-img2">
+                                    </img>
+                                    <p className="content__product-text">
+                                        {item.name}
+                                    </p>
+                                </div>
+                                <div className="content-product-item2">
+                                    <div className="content__product-text2">
+                                        VERGENCY
                                     </div>
-                                    <div className="content-product-item2">
-                                        <div className="content__product-text2">
-                                            VERGENCY
-                                        </div>
-                                        <div className="content__product-evaluate">
-                                            <FontAwesomeIcon icon={faStar} />
-                                            <FontAwesomeIcon icon={faStar} />
-                                            <FontAwesomeIcon icon={faStar} />
-                                            <FontAwesomeIcon icon={faStar} />
-                                            <FontAwesomeIcon icon={faStar} />
-                                        </div>
-                                        <div className="content__product-price">
-                                            <div className="content__product-price--item1 error">
-                                                Hết hàng
-                                            </div>
-                                        </div>
-                                        <div className="content__product-new">new</div>
-                                        {item.promotion ? <div className="content__product-sale">{item.promotion.discount + "%"}</div> : ""}
+                                    <div className="content__product-evaluate">
+                                        <FontAwesomeIcon icon={faStar} />
+                                        <FontAwesomeIcon icon={faStar} />
+                                        <FontAwesomeIcon icon={faStar} />
+                                        <FontAwesomeIcon icon={faStar} />
+                                        <FontAwesomeIcon icon={faStar} />
                                     </div>
+                                    <div className="content__product-price">
+                                        <div className="content__product-price--item1 error">
+                                            Hết hàng
+                                        </div>
+                                    </div>
+                                    <div className="content__product-new">new</div>
+                                    {item.promotion ? <div className="content__product-sale">{"-" + item.promotion.discount + "%"}</div> : ""}
                                 </div>
                             </div>
-                        )
-                    }
-                    else {
-                        return (
-                            <div key={index} className="col-lg-4 col-md-4 col-sm-6 col-xs-6">
-                                <div className="content__product">
-                                    <Link to={`/${item.categorys.name}/${item.id}`} className="content__product-item">
-                                        <img src={`http://localhost:8000/${item.image}`}
-                                            className="content__product-img">
-                                        </img>
-                                        <p className="content__product-text">
-                                            {item.name}
-                                        </p>
-                                    </Link>
-                                    <div className="content-product-item2">
-                                        <div className="content__product-text2">
-                                            VERGENCY
-                                        </div>
-                                        <div className="content__product-evaluate">
-                                            <FontAwesomeIcon icon={faStar} />
-                                            <FontAwesomeIcon icon={faStar} />
-                                            <FontAwesomeIcon icon={faStar} />
-                                            <FontAwesomeIcon icon={faStar} />
-                                            <FontAwesomeIcon icon={faStar} />
-                                        </div>
-                                        <div className="content__product-price">
-                                            {item.promotion ?
-                                                <div className="content__product-price--item1">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format((item.price * item.promotion.discount) / 100)}</div> :
-                                                <div className="content__product-price--item1">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</div>}
-                                            {item.promotion ? <del className="content__product-price--item2">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</del> : ""}
-                                        </div>
-                                        <div className="content__product-new">new</div>
-                                        {item.promotion ? <div className="content__product-sale">{item.promotion.discount + "%"}</div> : ""}
+                        </div>
+                    )
+                }
+                else {
+                    return (
+                        <div key={index} className="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                            <div className="content__product">
+                                <Link to={`/${item.categorys.name}/${item.id}`} className="content__product-item">
+                                    <img src={`http://localhost:8000/${item.image}`}
+                                        className="content__product-img">
+                                    </img>
+                                    <p className="content__product-text">
+                                        {item.name}
+                                    </p>
+                                </Link>
+                                <div className="content-product-item2">
+                                    <div className="content__product-text2">
+                                        VERGENCY
                                     </div>
+                                    <div className="content__product-evaluate">
+                                        <FontAwesomeIcon icon={faStar} />
+                                        <FontAwesomeIcon icon={faStar} />
+                                        <FontAwesomeIcon icon={faStar} />
+                                        <FontAwesomeIcon icon={faStar} />
+                                        <FontAwesomeIcon icon={faStar} />
+                                    </div>
+                                    <div className="content__product-price">
+                                        {item.promotion ?
+                                            <div className="content__product-price--item1">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format((item.price * (100 - item.promotion.discount)) / 100)}</div> :
+                                            <div className="content__product-price--item1">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</div>}
+                                        {item.promotion ? <del className="content__product-price--item2">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</del> : ""}
+                                    </div>
+                                    <div className="content__product-new">new</div>
+                                    {item.promotion ? <div className="content__product-sale">{"-" + item.promotion.discount + "%"}</div> : ""}
                                 </div>
                             </div>
-                        )
-                    }
-                })
-            }
-            else {
-                showProductsList = <h2 className="error" style={{ textAlign: "center", paddingTop: "30px" }}>Hiện tại sản phẩm đang cập nhật. Bạn quay lại sau nhé !</h2>
-            }
+                        </div>
+                    )
+                }
+            })
+        }
+        else {
+            showProductsList = <h2 className="error" style={{ textAlign: "center", paddingTop: "30px" }}>Hiện tại sản phẩm đang cập nhật. Bạn quay lại sau nhé !</h2>
         }
     }
 
     return (
         <React.Fragment>
             <Header />
-            <div className="app__container">
+            <div className="app__container" id="ssa">
                 <div className="grid wide">
                     <div className="row">
                         <div className="app__container--category">
@@ -171,17 +219,15 @@ function Tshirts() {
                             <div className="tshirts__title">
                                 <h3 className="tshirts__title--heading">{category.name}</h3>
                                 <div className="tshirts__title--sort">
-                                    <p className="tshirts__title--text">Sắp xếp theo:</p>
+                                    <p className="tshirts__title--text" style={{marginBottom:"0"}}>Sắp xếp theo:</p>
                                     <div className="tshirts__title--option">
-                                        <select onClick={handleOption} id="search" className="tshirts__title--select">
+                                        <select onClick={e => { handleOption(e) }} id="search" className="tshirts__title--select">
+                                            <option >Cũ nhất</option>
                                             <option >Mới nhất</option>
-                                            <option >Sản phẩm nổi bật</option>
                                             <option >Giá:Tăng dần</option>
                                             <option >Giá:Giảm dần</option>
                                             <option >Tên: A--Z</option>
                                             <option >Tên: Z--A</option>
-                                            <option >Cũ nhất</option>
-                                            <option >Bán chạy nhất</option>
                                         </select>
                                     </div>
                                 </div>
@@ -195,7 +241,7 @@ function Tshirts() {
                                 <div className="row">
                                     <div className="col l-12">
                                         <div className="tshirts__more--text">
-                                            <Link to="/">Xem thêm {viewProduct.length - 10} sản phẩm khác</Link>
+                                            <a href="#ssa" >Xem thêm sản phẩm khác</a>
                                         </div>
                                     </div>
                                 </div>

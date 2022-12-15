@@ -108,17 +108,24 @@ function Cart() {
     }, [history]);
 
     var productList = ""
-    var note = ""
+    /* var note = "" */
     var productConti = ""
     var pay = ""
     var sumPrice = 0;
+    var sumQ = 0;
     if (loading) {
         return (<div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>)
     }
     else {
         if (cart.length > 0) {
             productList = cart.map((item, index) => {
-                sumPrice += (item.product.price * item.product_qty);
+                sumQ++;
+                if(item.product.promotion){
+                    sumPrice += (((item.product.price * (100 - item.product.promotion.discount))/100) * item.product_qty);
+                }
+                else{
+                    sumPrice += (item.product.price * item.product_qty);
+                }
                 return (
                     sumPrice,
                     <nav key={index} className="cart__product--item">
@@ -133,8 +140,14 @@ function Cart() {
                                 <Link to={`/${item.product.categorys.name}/${item.product_id}`} className="cart__product--name">{item.product.name}</Link>
                                 <p className="cart__product--size">{item.size}</p>
                                 <div className="cart__product--price">
-                                    <p className="cart__product--priceNow">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.product.price)}</p>
-                                    <del>(420.000đ)</del>
+                                    {
+                                        item.product.promotion ?
+                                            <>
+                                                <p className="cart__product--priceNow">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format((item.product.price * (100 - item.product.promotion.discount))/100)}</p>
+                                                <del>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.product.price)}</del>
+                                            </> :
+                                            <p className="cart__product--priceNow">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.product.price)}</p>
+                                    }
                                 </div>
                                 <div className="input-group fs-4 text">
                                     <input type="button" value="-" onClick={() => handleDecrement(item.id)} className="qty-btn" />
@@ -144,9 +157,6 @@ function Cart() {
                             </div>
                             <div className="cart__product--contentLeft">
                                 <div onClick={(e) => {
-                                    /* if (window.confirm('Bạn có chắc muốn xóa không?')) {
-                                        deleteCartItem(e, item.id);
-                                    } */
                                     swal({
                                         title: "Thông báo!",
                                         text: "Bạn có chắc muốn xóa không!",
@@ -170,19 +180,23 @@ function Cart() {
                                         }
                                     })
                                 }} className="cart__product--delete" style={{ cursor: 'pointer' }}>Xóa sản phẩm</div>
-                                <div className="cart__product--money">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.product.price * item.product_qty)}</div>
+                                {
+                                    item.product.promotion ? 
+                                    <div className="cart__product--money">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(((item.product.price * (100 - item.product.promotion.discount))/100)* item.product_qty)}</div>:
+                                    <div className="cart__product--money">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.product.price * item.product_qty)}</div>
+                                }
                             </div>
                         </div>
                     </nav>
                 )
             })
-            note = (<div className="cart__note">
+           /*  note = (<div className="cart__note">
                 <h2 className="cart__note--text">Ghi chú đơn hàng</h2>
                 <textarea name="txtComment" id="txtComment" className="fs-3 text" rows="8" cols="80"></textarea>
-            </div>)
+            </div>) */
             productConti = (
-                <Button className="cart__other" style={{background:"black",border:"none"}}>
-                    <Link to="/category/t-shirts" className="cart__other--text" style={{color:"white"}}>TIẾP TỤC MUA SẢN PHẨM KHÁC</Link>
+                <Button className="cart__other" style={{ background: "black", border: "none" }}>
+                    <Link to="/category/t-shirts" className="cart__other--text" style={{ color: "white" }}>TIẾP TỤC MUA SẢN PHẨM KHÁC</Link>
                 </Button>
             )
             pay = (<div className="cart__order">
@@ -195,11 +209,11 @@ function Cart() {
                             Tổng tiền
                         </h2>
                         <h2 className="cart__order--price">
-                        {Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(sumPrice)}
+                            {Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(sumPrice)}
                         </h2>
                     </div>
-                    <Button className="cart__order--paying" style={{background:"red",border:"none"}}>
-                        <Link to="/pay" className="cart__order--link" style={{color:"white"}}>
+                    <Button className="cart__order--paying" style={{ background: "red", border: "none" }}>
+                        <Link to="/pay" className="cart__order--link" style={{ color: "white" }}>
                             THANH TOÁN
                         </Link>
                     </Button>
@@ -208,7 +222,7 @@ function Cart() {
         }
         else {
             productList = (<h2 className="error">Giỏ hàng của bạn đang trống!</h2>)
-            note = ""
+            /* note = "" */
             productConti = (
                 <div className="cart__other">
                     <Link to="/category/t-shirts" className="cart__other--text">TIẾP TỤC MUA SẢN PHẨM KHÁC</Link>
@@ -246,9 +260,9 @@ function Cart() {
                                 <div className="cart__product">
                                     {productList}
                                 </div>
-                                <div className="col-lg-8 col-sm-12 col-xs-12">
+                                {/* <div className="col-lg-8 col-sm-12 col-xs-12">
                                     {note}
-                                </div>
+                                </div> */}
                                 <div className="col-lg-8 col-sm-12 col-xs-12">
                                     {productConti}
                                 </div>

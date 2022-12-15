@@ -120,7 +120,7 @@ function ProductDetails() {
                                             {
                                                 item.promotion ?
                                                     <>
-                                                        <span className="price-new-related flexbox-content text-left">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format((item.price * item.promotion.discount) / 100)}</span>
+                                                        <span className="price-new-related flexbox-content text-left">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format((item.price * (100 - item.promotion.discount))/100)}</span>
                                                         <del className="price-old-related flexbox-content">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</del>
                                                     </> :
                                                     <span className="price-new-related flexbox-content text-left">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</span>
@@ -312,7 +312,7 @@ function ProductDetails() {
                                 {
                                     product.promotion ?
                                         <>
-                                            <h2 className="error">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format((product.price * product.promotion.discount) / 100)}</h2>
+                                            <h2 className="error">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format((product.price * (100 - product.promotion.discount))/100)}</h2>
                                             <del><h4>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.price)}</h4></del>
                                         </> :
                                         <h2 className="error">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.price)}</h2>

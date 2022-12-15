@@ -46,7 +46,12 @@ function OrderItems() {
     }
     else {
         display_products = ordersItems.map((item, index) => {
-            sumPrice += item.product.price * (item.qtyM + item.qtyL + item.qtyXL)
+            if(item.product.promotion){
+                sumPrice += ((item.product.price * (100 - item.product.promotion.discount))/100) * (item.qtyM + item.qtyL + item.qtyXL)
+            }
+            else{
+                sumPrice += item.product.price * (item.qtyM + item.qtyL + item.qtyXL)
+            }
             return (
                 <div key={index} className='app__container-product' style={{ marginBottom: "20px" }}>
                     <nav className="cart__product--item" style={{ paddingTop: "20px",borderBottom:"none" }}>
@@ -63,7 +68,9 @@ function OrderItems() {
                                 <p className="cart__product--size" style={{ color: "#333" }}>{item.qtyM > 0 ? "M" : item.qtyL > 0 ? "L" : item.qtyXL > 0 ? "XL" : ""}</p>
                             </div>
                             <div className="cart__product--contentLeft">
-                                <p className="cart__product--money" style={{ color: "#333" }}>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.product.price * (item.qtyM + item.qtyL + item.qtyXL))}</p>
+                                {item.product.promotion ? 
+                                <p className="cart__product--money" style={{ color: "#333" }}>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(((item.product.price * (100 - item.product.promotion.discount))/100) * (item.qtyM + item.qtyL + item.qtyXL))}</p>:
+                                <p className="cart__product--money" style={{ color: "#333" }}>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.product.price * (item.qtyM + item.qtyL + item.qtyXL))}</p>} 
                             </div>
                         </div>
                     </nav>

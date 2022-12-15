@@ -21,6 +21,7 @@ function Pay() {
         name: '',
         phone: '',
         address: '',
+        note: '',
     });
     const [error, setError] = useState([]);
 
@@ -47,7 +48,7 @@ function Pay() {
             isMounted = false
         };
     }, [history]);
-    if(cart.length == 0 ){
+    if (cart.length == 0) {
         history('/cart')
     }
 
@@ -63,6 +64,7 @@ function Pay() {
             name: checkoutInput.name,
             phone: checkoutInput.phone,
             address: checkoutInput.address,
+            note: checkoutInput.note,
         }
         axios.post(`/api/place-order`, data).then((res) => {
             if (res.data.status === 200) {
@@ -87,7 +89,7 @@ function Pay() {
 
     const handlAccountFalse = (e) => {
         e.preventDefault();
-        if(onAddress) {
+        if (onAddress) {
             setAddress(false);
         }
     }
@@ -99,19 +101,19 @@ function Pay() {
             <>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Họ và tên người nhận</Form.Label>
-                    <Form.Control onChange={handleInput} name="name" value={checkoutInput.name = localStorage.getItem("auth_name")} className='fs-4 text' style={{ padding: "10px" }} type="email" placeholder="Họ và tên..." />
+                    <Form.Control disabled onChange={handleInput} name="name" value={checkoutInput.name = localStorage.getItem("auth_name")} className='fs-4 text' style={{ padding: "10px" }} type="email" placeholder="Họ và tên..." />
                     <Form.Text className="fs-5 text " style={{ color: "red" }}>
                         {error.name == "The name field is required." ? "Vui lòng nhập tên!" : ""}
                     </Form.Text>
                 </Form.Group><Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Địa chỉ người nhận</Form.Label>
-                    <Form.Control onChange={handleInput} name="address" value={checkoutInput.address = localStorage.getItem("auth_address")} className='fs-4 text' style={{ padding: "10px" }} type="email" placeholder="Địa chỉ..." />
+                    <Form.Control disabled onChange={handleInput} name="address" value={checkoutInput.address = localStorage.getItem("auth_address")} className='fs-4 text' style={{ padding: "10px" }} type="email" placeholder="Địa chỉ..." />
                     <Form.Text className="fs-5 text " style={{ color: "red" }}>
                         {error.address == "The address field is required." ? "Vui lòng nhập địa chỉ!" : ""}
                     </Form.Text>
                 </Form.Group><Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Số điện thoại</Form.Label>
-                    <Form.Control onChange={handleInput} name="phone" value={checkoutInput.phone = localStorage.getItem("auth_phone")} className='fs-4 text' style={{ padding: "10px" }} type="email" placeholder="Số điện thoại..." />
+                    <Form.Control disabled onChange={handleInput} name="phone" value={checkoutInput.phone = localStorage.getItem("auth_phone")} className='fs-4 text' style={{ padding: "10px" }} type="email" placeholder="Số điện thoại..." />
                     <Form.Text className="fs-5 text " style={{ color: "red" }}>
                         {error.phone == "The phone field is required." ? "Vui lòng nhập số điện thoại!" : ""}
                     </Form.Text>
@@ -167,7 +169,12 @@ function Pay() {
     else {
         if (cart.length > 0) {
             products = cart.map((item, index) => {
-                sumPrice += (item.product.price * item.product_qty);
+                if (item.product.promotion) {
+                    sumPrice += (((item.product.price * (100 - item.product.promotion.discount)) / 100) * item.product_qty);
+                }
+                else {
+                    sumPrice += (item.product.price * item.product_qty);
+                }
                 return (
                     <nav key={index} className="cart__product--item" style={{ paddingTop: "20px" }}>
                         <div>
@@ -183,7 +190,11 @@ function Pay() {
                                 <p className="cart__product--size" style={{ color: "#737373" }}>{item.size}</p>
                             </div>
                             <div className="cart__product--contentLeft">
-                                <p className="cart__product--money" style={{ color: "#737373" }}>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.product.price * item.product_qty)}</p>
+                                {
+                                    item.product.promotion ?
+                                        <p className="cart__product--money" style={{ color: "#737373" }}>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(((item.product.price * (100 - item.product.promotion.discount)) / 100) * item.product_qty)}</p> :
+                                        <p className="cart__product--money" style={{ color: "#737373" }}>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.product.price * item.product_qty)}</p>
+                                }
                             </div>
                         </div>
                     </nav>
@@ -210,16 +221,20 @@ function Pay() {
                                 </li>
 
                             </ul>
-                            <div style={{display:"flex",alignItems:"center"}}>
+                            <div style={{ display: "flex", alignItems: "center" }}>
                                 <Button onClick={handlAccount} className='fs-3 text' variant="primary" type="button">
                                     Lấy thông tin của bạn
                                 </Button>
-                                <Button onClick={handlAccountFalse} className='fs-3 text' variant="primary" type="button" style={{background:"#aaa",border:"none",padding:"5px",marginLeft:"20px"}}>
+                                <Button onClick={handlAccountFalse} className='fs-3 text' variant="primary" type="button" style={{ background: "#aaa", border: "none", padding: "5px", marginLeft: "20px" }}>
                                     Sửa thông tin
                                 </Button>
                             </div>
                             <Form className='fs-4 text' style={{ paddingTop: "30px" }}>
                                 {formAddress}
+                                <div className="cart__note">
+                                    <h2 className="cart__note--text" >Ghi chú đơn hàng</h2>
+                                    <textarea  onChange={handleInput} name="note" value={checkoutInput.note} id="txtComment" className="fs-3 text" rows="8" cols="80"></textarea>
+                                </div>
                                 <div className="ship" style={{ paddingTop: "30px" }}>
                                     <h2>Phương thức thanh toán</h2>
                                     <div className='ship_content fs-4 text' style={{ display: "flex" }}>

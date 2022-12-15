@@ -54,59 +54,87 @@ function ViewPromotion() {
         })
     }
     var productIndex = 0;
+    var role = localStorage.getItem('auth_role');
     var viewpromotion_HTMLTABLE = "";
     if (loading) {
         return <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
     }
     else {
-        viewpromotion_HTMLTABLE = promotionList.map((item, index) => {
-            productIndex = 0;
-            viewProduct.map((product, index) => {
-                if (product.promotion_id == item.id) {
-                    productIndex++;
-                }
-            })
-            return (
-                <tr id={item.id} key={index}>
-                    <td className='fs-4 text'>{item.id}</td>
-                    <td className='fs-4 text'>{item.title}</td>
-                    <td className='fs-4 text'>{item.discount}%</td>
-                    {productIndex >= 1 ?
-                        <td className='fs-4 text' style={{ color: '#0ccf0f', fontWeight: "bold", fontSize: "1.6rem" }}>Đang hoạt động</td> :
-                        <td className='fs-4 text' style={{ color: 'red', fontWeight: "bold", fontSize: "1.6rem" }}>Chưa hoạt động</td>}
-                    <td className='fs-4 text'><Link to={`${item.id}`} className="btn btn-success btn-lg">Xem sản phẩm </Link></td>
-                    <td className='fs-4 text'><Link to={`../upload-productPor/${item.id}`} className="btn btn-success btn-lg">Thêm sản phẩm </Link></td>
-                    <td>
-                        <Link to={`../edit-promotion/${item.id}`} className="btn btn-success btn-lg">Chỉnh sửa</Link>
-                    </td>
-                    <td>
-                        <button type="button" onClick={(e) => {
-                            swal({
-                                title: "Thông báo!",
-                                text: "Bạn có chắc muốn xóa không!",
-                                icon: "warning",
-                                buttons: [
-                                    'Không',
-                                    'Có'
-                                ],
-                                dangerMode: true,
-                            }).then(function (isConfirm) {
-                                if (isConfirm) {
-                                    swal({
-                                        title: 'Thành công!',
-                                        text: 'Đã xóa thành công!',
-                                        icon: 'success'
-                                    }).then(function () {
-                                        deletePromotion(e, item.id);
-                                    });
-                                } else {
-
-                                }
-                            })
-                        }} className='btn btn-danger btn-sm fs-4 text'>Xóa</button></td>
-                </tr>
-            )
-        });
+        if(role == 1){
+            viewpromotion_HTMLTABLE = promotionList.map((item, index) => {
+                productIndex = 0;
+                viewProduct.map((product, index) => {
+                    if (product.promotion_id == item.id) {
+                        productIndex++;
+                    }
+                })
+                return (
+                    <tr id={item.id} key={index}>
+                        <td className='fs-4 text'>{item.id}</td>
+                        <td className='fs-4 text'>{item.title}</td>
+                        <td className='fs-4 text'>{item.discount}%</td>
+                        {productIndex >= 1 ?
+                            <td className='fs-4 text' style={{ color: '#0ccf0f', fontWeight: "bold", fontSize: "1.6rem" }}>Đang hoạt động</td> :
+                            <td className='fs-4 text' style={{ color: 'red', fontWeight: "bold", fontSize: "1.6rem" }}>Chưa hoạt động</td>}
+                        <td className='fs-4 text'><Link to={`${item.id}`} className="btn btn-success btn-lg">Xem sản phẩm </Link></td>
+                        <td className='fs-4 text'><Link to={`../upload-productPor/${item.id}`} className="btn btn-success btn-lg">Thêm sản phẩm </Link></td>
+                        <td>
+                            <Link to={`../edit-promotion/${item.id}`} className="btn btn-success btn-lg">Chỉnh sửa</Link>
+                        </td>
+                        <td>
+                            <button type="button" onClick={(e) => {
+                                swal({
+                                    title: "Thông báo!",
+                                    text: "Bạn có chắc muốn xóa không!",
+                                    icon: "warning",
+                                    buttons: [
+                                        'Không',
+                                        'Có'
+                                    ],
+                                    dangerMode: true,
+                                }).then(function (isConfirm) {
+                                    if (isConfirm) {
+                                        swal({
+                                            title: 'Thành công!',
+                                            text: 'Đã xóa thành công!',
+                                            icon: 'success'
+                                        }).then(function () {
+                                            deletePromotion(e, item.id);
+                                        });
+                                    } else {
+    
+                                    }
+                                })
+                            }} className='btn btn-danger btn-sm fs-4 text'>Xóa</button></td>
+                    </tr>
+                )
+            });
+        }
+        else{
+            viewpromotion_HTMLTABLE = promotionList.map((item, index) => {
+                productIndex = 0;
+                viewProduct.map((product, index) => {
+                    if (product.promotion_id == item.id) {
+                        productIndex++;
+                    }
+                })
+                return (
+                    <tr id={item.id} key={index}>
+                        <td className='fs-4 text'>{item.id}</td>
+                        <td className='fs-4 text'>{item.title}</td>
+                        <td className='fs-4 text'>{item.discount}%</td>
+                        {productIndex >= 1 ?
+                            <td className='fs-4 text' style={{ color: '#0ccf0f', fontWeight: "bold", fontSize: "1.6rem" }}>Đang hoạt động</td> :
+                            <td className='fs-4 text' style={{ color: 'red', fontWeight: "bold", fontSize: "1.6rem" }}>Chưa hoạt động</td>}
+                        <td className='fs-4 text'><Link to={`${item.id}`} className="btn btn-success btn-lg">Xem sản phẩm </Link></td>
+                        <td className='fs-4 text'><Link to={`../upload-productPor/${item.id}`} className="btn btn-success btn-lg">Thêm sản phẩm </Link></td>
+                        <td>
+                            <Link to={`../edit-promotion/${item.id}`} className="btn btn-success btn-lg">Chỉnh sửa</Link>
+                        </td>
+                    </tr>
+                )
+            });
+        }
     }
     return (
         <div className="container px-4">
@@ -127,7 +155,7 @@ function ViewPromotion() {
                                 <th>Xem sản phẩm có sử dụng khuyến mãi</th>
                                 <th>Thêm sản phẩm áp dụng khuyến mãi</th>
                                 <th>Chỉnh sửa chương trình khuyến mãi</th>
-                                <th>Xóa</th>
+                                {role == 1 ? <th>Xóa </th> : ""}
                             </tr>
                         </thead>
                         <tbody>

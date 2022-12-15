@@ -39,6 +39,7 @@ function Login() {
                     localStorage.setItem('auth_name', res.data.username);
                     localStorage.setItem('auth_address', res.data.address);
                     localStorage.setItem('auth_phone', res.data.phone);
+                    localStorage.setItem('auth_role', res.data.role_as);
                     if(res.data.role === 'admin'){
                         history('/admin/view-product');
                         window.location.reload();
