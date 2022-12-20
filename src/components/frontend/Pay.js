@@ -28,7 +28,7 @@ function Pay() {
 
     //Đổ dữ liệu cart
     useEffect(() => {
-
+        document.title = "Thanh toán";
         let isMounted = true;
 
         axios.get(`/api/cart`).then(res => {
@@ -68,7 +68,7 @@ function Pay() {
         }
         axios.post(`/api/place-order`, data).then((res) => {
             if (res.data.status === 200) {
-                swal("Thành công", res.data.message, "success");
+                swal("Mua hàng thành công", res.data.message, "success");
                 setError([]);
                 history("/");
             }
@@ -146,13 +146,6 @@ function Pay() {
             </>
         )
     }
-
-
-
-
-
-
-
     /* var orderinfo_data = {
         name: checkoutInput.name,
         phone: checkoutInput.phone,

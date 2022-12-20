@@ -8,7 +8,9 @@ import Footer from "../../layouts/frontend/Footer";
 import Header from "../../layouts/frontend/Header";
 import MenuCategory from "../../layouts/frontend/MenuCategory";
 import Im from "../../assets/frontend/img/detail/lss.png";
+import Pagination from "../pagination/Pagination";
 
+let PageSize = 6;
 function Tshirts() {
     const history = useNavigate();
     const [loading, setLoading] = useState(true);
@@ -31,7 +33,7 @@ function Tshirts() {
             setRefresh(!shouldRefresh);
             setProduct(result);
         }
-        else if (e.target.value == 'Tên: Z--A'){
+        else if (e.target.value == 'Tên: Z--A') {
             const result = product.sort(function (a, b) {
                 let left = a.name;
                 let right = b.name;
@@ -40,7 +42,7 @@ function Tshirts() {
             setRefresh(!shouldRefresh);
             setProduct(result);
         }
-        else if (e.target.value == 'Mới nhất'){
+        else if (e.target.value == 'Mới nhất') {
             const result = product.sort(function (a, b) {
                 let left = a.id;
                 let right = b.id;
@@ -49,7 +51,7 @@ function Tshirts() {
             setRefresh(!shouldRefresh);
             setProduct(result);
         }
-        else if (e.target.value == 'Cũ nhất'){
+        else if (e.target.value == 'Cũ nhất') {
             const result = product.sort(function (a, b) {
                 let left = a.id;
                 let right = b.id;
@@ -58,7 +60,7 @@ function Tshirts() {
             setRefresh(!shouldRefresh);
             setProduct(result);
         }
-        else if (e.target.value == 'Giá:Tăng dần'){
+        else if (e.target.value == 'Giá:Tăng dần') {
             const result = product.sort(function (a, b) {
                 let left = a.price;
                 let right = b.price;
@@ -67,7 +69,7 @@ function Tshirts() {
             setRefresh(!shouldRefresh);
             setProduct(result);
         }
-        else if (e.target.value == 'Giá:Giảm dần'){
+        else if (e.target.value == 'Giá:Giảm dần') {
             const result = product.sort(function (a, b) {
                 let left = a.price;
                 let right = b.price;
@@ -78,11 +80,19 @@ function Tshirts() {
         }
     }
 
+    //phân trang
+   /*  const [currentPage, setCurrentPage] = useState(1);
+
+    const currentTableData = useMemo(() => {
+        const firstPageIndex = (currentPage - 1) * PageSize;
+        const lastPageIndex = firstPageIndex + PageSize;
+        return product.slice(firstPageIndex, lastPageIndex);
+    }, [currentPage, product]); */
 
     //xử lý hiện sản phẩm
     const { slug } = useParams();
     useEffect(() => {
-
+        document.title="Danh sách sản phẩm"
         let isMounted = true;
 
         const category_slug = slug;
@@ -219,9 +229,9 @@ function Tshirts() {
                             <div className="tshirts__title">
                                 <h3 className="tshirts__title--heading">{category.name}</h3>
                                 <div className="tshirts__title--sort">
-                                    <p className="tshirts__title--text" style={{marginBottom:"0"}}>Sắp xếp theo:</p>
+                                    <p className="tshirts__title--text" style={{ marginBottom: "0" }}>Sắp xếp theo:</p>
                                     <div className="tshirts__title--option">
-                                        <select onClick={e => { handleOption(e) }} id="search" className="tshirts__title--select">
+                                        <select onChange={e => { handleOption(e) }} id="search" className="tshirts__title--select">
                                             <option >Cũ nhất</option>
                                             <option >Mới nhất</option>
                                             <option >Giá:Tăng dần</option>
@@ -235,6 +245,17 @@ function Tshirts() {
                             <div className="tshirts__content">
                                 <div className="row">
                                     {showProductsList}
+                                </div>
+                                <div className="row">
+                                    <div style={{width:"100%",padding:"20px",marginLeft:"30%" }}>
+                                        {/* <Pagination
+                                            className="pagination-bar"
+                                            currentPage={currentPage}
+                                            totalCount={product.length}
+                                            pageSize={PageSize}
+                                            onPageChange={page => setCurrentPage(page)}
+                                        /> */}
+                                    </div>
                                 </div>
                             </div>
                             {/*  <div className="tshirts__more">

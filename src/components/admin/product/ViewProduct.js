@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
+import Pagination from '../../pagination/Pagination';
 
+let PageSize = 5;
 function ViewProduct() {
     const [loading, setLoading] = useState(true);
     const [viewProduct, setProduct] = useState([]);
-    const [message,setMessage] = useState('');
+    const [message, setMessage] = useState('');
+
 
     //Xử lý search
     const handleInput = (e) => {
@@ -14,7 +17,6 @@ function ViewProduct() {
             setMessage(e.target.value);
         }
     }
-
     const slug = message;
     useEffect(() => {
         if (slug != "") {
@@ -29,10 +31,21 @@ function ViewProduct() {
         }
     }, [message])
 
+
+    //phân trang
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const currentTableData = useMemo(() => {
+        const firstPageIndex = (currentPage - 1) * PageSize;
+        const lastPageIndex = firstPageIndex + PageSize;
+        return viewProduct.slice(firstPageIndex, lastPageIndex);
+    }, [currentPage, viewProduct]);
+
+
     //Xử lý xuất dữ liệu
     useEffect(() => {
         let isMounted = true;
-        document.title = "View Product";
+        document.title = "Danh sách sản phẩm";
 
         axios.get(`/api/view-product`).then(res => {
             if (isMounted) {
@@ -47,6 +60,7 @@ function ViewProduct() {
         };
     }, []);
 
+
     //Xử lý xóa
     const deleteProduct = (e, id) => {
         e.preventDefault();
@@ -60,22 +74,23 @@ function ViewProduct() {
             }
         })
     }
+    
     var role = localStorage.getItem('auth_role');
     var display_Productdata = "";
     if (loading) {
         return <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
     }
     else {
-        if(role == 1){
-            display_Productdata = viewProduct.map((item, index) => {
+        if (role == 1) {
+            display_Productdata = currentTableData.map((item, index) => {
                 return (
                     <tr id={item.id} key={index}>
                         <td className='fs-4 text'>{item.id}</td>
                         <td className='fs-4 text'>{item.name}</td>
                         <td className='fs-4 text'>{item.categorys.name}</td>
                         <td className='fs-4 text'>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</td>
-                        <td className='fs-4 text'>{item.promotion ? item.promotion.discount+"%":"0%"}</td>
-                        <td className='fs-4 text'>{item.promotion ? Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format((item.price * (100 - item.promotion.discount))/100) : Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price) }</td>
+                        <td className='fs-4 text'>{item.promotion ? item.promotion.discount + "%" : "0%"}</td>
+                        <td className='fs-4 text'>{item.promotion ? Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format((item.price * (100 - item.promotion.discount)) / 100) : Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</td>
                         <td className='fs-4 text'>{item.quantityM}</td>
                         <td className='fs-4 text'>{item.quantityL}</td>
                         <td className='fs-4 text'>{item.quantityXL}</td>
@@ -94,7 +109,7 @@ function ViewProduct() {
                                     text: "Bạn có chắc muốn xóa không!",
                                     icon: "warning",
                                     buttons: [
-                                        'Không',    
+                                        'Không',
                                         'Có'
                                     ],
                                     dangerMode: true,
@@ -108,7 +123,7 @@ function ViewProduct() {
                                             deleteProduct(e, item.id);
                                         });
                                     } else {
-    
+
                                     }
                                 })
                             }} className='btn btn-danger btn-sm fs-4 text'>Xóa</button></td>
@@ -116,16 +131,16 @@ function ViewProduct() {
                 )
             });
         }
-        else{
-            display_Productdata = viewProduct.map((item, index) => {
+        else {
+            display_Productdata = currentTableData.map((item, index) => {
                 return (
                     <tr id={item.id} key={index}>
                         <td className='fs-4 text'>{item.id}</td>
                         <td className='fs-4 text'>{item.name}</td>
                         <td className='fs-4 text'>{item.categorys.name}</td>
                         <td className='fs-4 text'>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</td>
-                        <td className='fs-4 text'>{item.promotion ? item.promotion.discount+"%":"0%"}</td>
-                        <td className='fs-4 text'>{item.promotion ? Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format((item.price * (100 - item.promotion.discount))/100) : Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price) }</td>
+                        <td className='fs-4 text'>{item.promotion ? item.promotion.discount + "%" : "0%"}</td>
+                        <td className='fs-4 text'>{item.promotion ? Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format((item.price * (100 - item.promotion.discount)) / 100) : Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</td>
                         <td className='fs-4 text'>{item.quantityM}</td>
                         <td className='fs-4 text'>{item.quantityL}</td>
                         <td className='fs-4 text'>{item.quantityXL}</td>
@@ -144,7 +159,7 @@ function ViewProduct() {
     }
     return (
         <div className="container px-4 mt-3">
-                <input type="text" placeholder="Nhập tên sản phẩm cần tìm kiếm..." className="admin__search--input" style={{margin:"20px",marginLeft:"0"}} onKeyDown={handleInput} />
+            <input type="text" placeholder="Nhập tên sản phẩm cần tìm kiếm..." className="admin__search--input" style={{ margin: "20px", marginLeft: "0" }} onKeyDown={handleInput} />
             <div className="card">
                 <div className="card-header">
                     <h2>Danh sách sản phẩm
@@ -178,6 +193,14 @@ function ViewProduct() {
                                 {display_Productdata}
                             </tbody>
                         </table>
+                        
+                        <Pagination
+                            className="pagination-bar"
+                            currentPage={currentPage}
+                            totalCount={viewProduct.length}
+                            pageSize={PageSize}
+                            onPageChange={page => setCurrentPage(page)}
+                        />
                     </div>
                 </div>
             </div>

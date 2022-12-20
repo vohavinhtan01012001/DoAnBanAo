@@ -9,6 +9,7 @@ function ViewPromotion() {
     const [promotionList, setPromotionList] = useState([]);
 
     useEffect(() => {
+        document.title ="Danh sách chương trình khuyến mãi";
         let isMounted = true;
         axios.get(`/api/view-promotion`).then(res => {
             if (isMounted) {

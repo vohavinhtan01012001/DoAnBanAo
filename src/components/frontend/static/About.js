@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Footer from '../../../layouts/frontend/Footer';
 import Header from '../../../layouts/frontend/Header';
 import about1 from "../../../assets/frontend/img/about/img1.png";
@@ -6,6 +6,9 @@ import about2 from "../../../assets/frontend/img/about/img2.png";
 import about3 from "../../../assets/frontend/img/about/img3.png";
 
 function About() {
+    useEffect(() => {
+        document.title = "Giới thiệu";
+    },[])
     return ( 
         <React.Fragment>
             <Header />

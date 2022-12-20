@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import swal from 'sweetalert'
 import { useNavigate } from 'react-router-dom'
 import { Link } from "react-router-dom";
-import { faAddressBook, faArrowRight, faChevronRight, faEnvelope, faLocationDot, faLock, faPhone, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faChevronRight, faEnvelope, faLocationDot, faLock, faPhone, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../../../assets/frontend/css/grid.css";
 import Footer from "../../../layouts/frontend/Footer";
@@ -19,6 +19,10 @@ function Register() {
         phone: '',
         error_list: [],
     });
+
+    useEffect(() => {
+        document.title = "Đăng ký";
+    },[])
 
     const handleInput = (e) => {
         e.persist();

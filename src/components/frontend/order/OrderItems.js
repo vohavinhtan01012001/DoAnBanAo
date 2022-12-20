@@ -19,6 +19,7 @@ function OrderItems() {
 
     const { id } = useParams();
     useEffect(() => {
+        document.title = "Đơn hàng";
         let isMounted = true;
         const order_id = id;
         axios.get(`/api/home-orderItems/${order_id}`).then(res => {

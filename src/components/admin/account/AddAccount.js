@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
 
@@ -13,6 +13,9 @@ function AddAccount() {
         role_as: 0,
         error_list: [],
     });
+    useEffect(() => {
+        document.title = "Thêm tài khoản";
+    },[])
 
     const handleInput = (e) => {
         e.persist();

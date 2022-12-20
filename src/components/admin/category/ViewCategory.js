@@ -12,6 +12,7 @@ function ViewCategory() {
 
 
     useEffect(() => {
+        document.title ="Danh sách loại sản phẩm";
         let isMounted = true;
 
         axios.get(`/api/view-category`).then(res => {

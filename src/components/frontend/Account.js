@@ -16,7 +16,7 @@ function Account() {
     const [viewAccount, setAccount] = useState([]);
     useEffect(() => {
         let isMounted = true;
-        document.title = "Danh sách tài khoản";
+        document.title = "Thông tin của bạn";
 
         axios.get(`/api/view-accountAdd`).then(res => {
             if (isMounted) {
@@ -82,8 +82,6 @@ function Account() {
         };
     }, [])
     var display_products = "";
-    var display_ship = "";
-    var sumPrice = 0;
     var indexShow = 0;
     var i = 0;
     if (loading) {
@@ -97,7 +95,11 @@ function Account() {
                     return (
                         <div key={index} className='app__container-product' style={{ marginBottom: "20px" }}>
                             <div style={{ fontWeight: "bold", paddingLeft: "20px", paddingBottom: "20px", color: "#333", display: "block" }}>
-                                <h2 style={{ fontWeight: "bold", marginRight: "10px" }}>Đơn hàng {indexShow} </h2>
+                                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                                    <h2 style={{ fontWeight: "bold", marginRight: "10px" }}>Đơn hàng {indexShow} </h2>
+                                    {item.status === 1 ? <p className='fs-4 text' style={{color:'#0ccf0f',fontWeight:"bold",fontSize:"1.6rem"}}>Đã được xác nhận</p>:
+                                    <p className='fs-4 text' style={{color:'red',fontWeight:"bold",fontSize:"1.6rem"}}>Chưa xác nhận</p>}
+                                </div>
                                 <div className='container__account-name' style={{ fontWeight: "bold", color: "#333" }}>
                                     <span>Tên người nhận </span>
                                     <span>:</span>

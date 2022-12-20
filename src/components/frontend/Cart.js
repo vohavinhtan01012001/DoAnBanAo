@@ -86,7 +86,7 @@ function Cart() {
 
     //Đổ dữ liệu cart
     useEffect(() => {
-
+        document.title = "Giỏ hàng";
         let isMounted = true;
 
         axios.get(`/api/cart`).then(res => {

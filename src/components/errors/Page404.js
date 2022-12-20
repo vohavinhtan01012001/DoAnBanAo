@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Footer from "../../layouts/frontend/Footer";
 import Header from "../../layouts/frontend/Header";
 import page404 from "../../assets/frontend/img/error/404.png";
 function Page404() {
+    useEffect(() => {
+        document.title = "404";
+    },[])
     return (
         <React.Fragment>
             <Header />

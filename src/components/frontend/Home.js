@@ -20,6 +20,7 @@ function Home() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        document.title = "Trang chủ";
         let isMounted = true;
         axios.get(`/api/home-product`).then(res => {
             if (isMounted) {

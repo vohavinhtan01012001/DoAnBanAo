@@ -12,6 +12,7 @@ function EditPromotion() {
     const { id } = useParams();
     const promotion_id = id;
     useEffect(() => {
+        document.title ="Chỉnh sửa chương trình khuyến mãi";
         axios.get(`/api/edit-promotion/${promotion_id}`).then(res => {
             if (res.data.status === 200) {
                 setPromotion(res.data.promotion);

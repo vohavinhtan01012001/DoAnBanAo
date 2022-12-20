@@ -43,6 +43,7 @@ function AddProduct() {
     }
 
     useEffect(() => {
+        document.title ="Thêm sản phẩm";
         axios.get('api/all-category').then(res => {
             if (res.data.status === 200) {
                 setProduct({

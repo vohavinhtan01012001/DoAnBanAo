@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import swal from 'sweetalert';
@@ -11,6 +11,10 @@ function Category() {
         descrip: '',
         error_list: '',
     });
+
+    useEffect(() => {
+        document.title = "Thêm loại sản phẩm";
+    },[])
 
     const handleInput = (e) => {
         e.persist();

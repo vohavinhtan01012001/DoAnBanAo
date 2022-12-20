@@ -17,6 +17,7 @@ function Search() {
     }
     const slug = message;
     useEffect(() => {
+        document.title="Tìm kiếm";
         if (slug != "") {
             axios.get(`/api/search/${slug}`).then(res => {
                 if (res.data.status === 200) {

@@ -55,7 +55,7 @@ function ProductDetails() {
     const { categoryName } = useParams();
     const { id } = useParams();
     useEffect(() => {
-
+        document.title = "Chi tiết sản phẩm";
         let isMounted = true;
 
         const category_slug = categoryName;

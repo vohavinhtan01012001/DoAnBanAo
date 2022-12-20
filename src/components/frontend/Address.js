@@ -10,36 +10,56 @@ import Header from "../../layouts/frontend/Header";
 function Address() {
     const history = useNavigate();
     const [loading, setLoading] = useState(true);
-    const [addressInput,setAddress] = useState([]);
+    const [addressInput, setAddress] = useState([]);
     const [error, setError] = useState([]);
     const { id } = useParams();
 
     useEffect(() => {
+        document.title = "Thông tin của bạn";
         const address_id = id;
-        console.log(address_id)
-        axios.get(`/api/edit-account/${address_id}`).then(res=>{
-            if(res.data.status === 200)
-            {
+        axios.get(`/api/edit-account/${address_id}`).then(res => {
+            if (res.data.status === 200) {
                 setAddress(res.data.user);
             }
-            else if(res.data.status === 404)
-            {
-                swal("Error",res.data.message,"error");
+            else if (res.data.status === 404) {
+                swal("Error", res.data.message, "error");
                 history('/account');
             }
             setLoading(false);
         });
 
-    }, [id,history]);
+    }, [id, history]);
 
-    const handleInput = (e)=>{
+    const handleInput = (e) => {
         e.persist();
-        setAddress({...addressInput,[e.target.name]: e.target.value});
+        setAddress({ ...addressInput, [e.target.name]: e.target.value });
     }
 
     const updateAddress = (e) => {
         e.preventDefault();
-        const address_id = id;
+        const data = {
+            name: addressInput.name,
+            address: addressInput.address,
+            phone: addressInput.phone,
+        };
+
+        axios.get('/sanctum/csrf-cookie').then(response => {
+            axios.post('/api/edit-user', data).then(res => {
+                if (res.data.status === 200) {
+                    swal("Đăng ký Thành công", res.data.message, "success");
+                    localStorage.setItem('auth_name', data.name);
+                    localStorage.setItem('auth_address', data.address);
+                    localStorage.setItem('auth_phone', data.phone);
+                }
+               /*  else {
+                    setRegister({ ...registerInput, error_list: res.data.validation_errors });
+                } */
+            });
+        });
+
+
+
+        /* const address_id = id;
 
         const data = {
             name: addressInput.name,
@@ -58,9 +78,9 @@ function Address() {
                 swal("Success", res.data.message,'success');
                 history('/account');
             }
-        })
+        }) */
     }
-    
+
     if (loading) {
         return <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
     }

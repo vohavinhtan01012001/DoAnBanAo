@@ -1,18 +1,51 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import swal from 'sweetalert';
-
+import Pagination from '../../pagination/Pagination';
 
 function ViewProductCate() {
     const history = useNavigate();
     const [loading, setLoading] = useState(true);
     const [viewProduct, setProduct] = useState([]);
 
+    const [message, setMessage] = useState('');
+
+
+    //Xử lý search
+    const handleInput = (e) => {
+        if (e.key === 'Enter') {
+            setMessage(e.target.value);
+        }
+    }
+
+    const slug = message;
+    useEffect(() => {
+        document.title ="Danh sách sản phẩm theo loại";
+        if (slug != "") {
+            axios.get(`/api/search/${slug}`).then(res => {
+                if (res.data.status === 200) {
+                    setProduct(res.data.product);
+                }
+                else if (res.data.status === 404) {
+
+                }
+            });
+        }
+    }, [message])
+
+    //phân trang
+/*     const [currentPage, setCurrentPage] = useState(1);
+
+    const currentTableData = useMemo(() => {
+        const firstPageIndex = (currentPage - 1) * PageSize;
+        const lastPageIndex = firstPageIndex + PageSize;
+        return viewProduct ? viewProduct.slice(firstPageIndex, lastPageIndex) : "";
+    }, [currentPage, viewProduct]); */
 
     useEffect(() => {
         let isMounted = true;
-        document.title = "View Product";
+        document.title = `Danh sách sản phẩm`;
 
         axios.get(`/api/view-product`).then(res => {
             if (isMounted) {
@@ -190,6 +223,7 @@ function ViewProductCate() {
     }
     return (
         <div className="container px-4 mt-3">
+            <input type="text" placeholder="Nhập tên sản phẩm cần tìm kiếm..." className="admin__search--input" style={{ margin: "20px", marginLeft: "0" }} onKeyDown={handleInput} />
             <div className="card">
                 <div className="card-header">
                     <h2>Danh sách sản phẩm của loại {category_name}
@@ -221,8 +255,15 @@ function ViewProductCate() {
                                 {display_Productdata}
                             </tbody>
                         </table>
-                        {display_DeleteButton}
+                        {/* <Pagination
+                            className="pagination-bar"
+                            currentPage={currentPage}
+                            totalCount={viewProduct.length}
+                            pageSize={PageSize}
+                            onPageChange={page => setCurrentPage(page)}
+                        /> */}
                     </div>
+                    {display_DeleteButton}
                 </div>
             </div>
         </div >

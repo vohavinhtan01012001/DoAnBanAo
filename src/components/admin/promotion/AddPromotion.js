@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import swal from "sweetalert";
 
@@ -9,6 +9,10 @@ function AddPromotion() {
         discount: '',
     });
     const [errorlist, setError] = useState([]);
+
+    useEffect(() => {
+        document.title = "Thêm chương trình khuyến mãi";
+    },[])
 
     const handleInput = (e) => {
         e.persist();

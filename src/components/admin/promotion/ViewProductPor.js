@@ -19,6 +19,7 @@ function ViewProductPor() {
 
     const slug = message;
     useEffect(() => {
+        document.title ="Danh sách sản phẩm";
         if (slug != "") {
             axios.get(`/api/search/${slug}`).then(res => {
                 if (res.data.status === 200) {

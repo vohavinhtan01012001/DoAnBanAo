@@ -1,11 +1,14 @@
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Footer from "../../../layouts/frontend/Footer";
 import Header from "../../../layouts/frontend/Header";
 
 function Blog() {
+    useEffect(() => {
+        document.title = "Tin tức";
+    },[])
     const key = 'pk.eyJ1IjoidmluaHRhbjAxMDEyMDAxIiwiYSI6ImNsYXIxbjR4azAxenYzcW1saWZ3N3M3bGgifQ.XdLXDFNYnDlgy95gWsbGZQ'
     return (
         <React.Fragment>

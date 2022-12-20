@@ -1,12 +1,15 @@
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Footer from "../../../layouts/frontend/Footer";
 import Header from "../../../layouts/frontend/Header";
 import MapBox from "./MapBox";
 
 function Contact() {
+    useEffect(() => {
+        document.title = "Thông tin liên hệ";
+    },[])
     return (
         <React.Fragment>
             <Header />

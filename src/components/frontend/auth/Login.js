@@ -1,6 +1,6 @@
 import { faArrowRight, faChevronRight, faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import swal from 'sweetalert';
 import { Link } from "react-router-dom";
@@ -9,15 +9,17 @@ import "../../../assets/frontend/css/grid.css";
 import Footer from "../../../layouts/frontend/Footer";
 import Header from "../../../layouts/frontend/Header";
 function Login() {
-
-
     const history = useNavigate();
-
     const [loginInput, setLoginInput] = useState({
         email: '',
         password: '',
         error_list: []
     });
+
+    useEffect(() => {
+        document.title = "Đăng nhập";
+    },[])
+
     const handleInput = (e) => {
         e.persist();
         setLoginInput({

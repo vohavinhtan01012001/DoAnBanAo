@@ -4,13 +4,13 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import swal from "sweetalert";
 
 function Order() {
-    document.title = "Danh sách đơn hàng";
     const history = useNavigate();
     const [loading, setLoading] = useState(true);
     const [orders, setOrders] = useState([]);
 
     //đổ dữ liệu order
     useEffect(() => {
+        document.title ="Danh sách đơn hàng";
         let isMounted = true;
         axios.get(`/api/orders`).then(res => {
             if (isMounted) {

@@ -19,6 +19,7 @@ function AddProductPor() {
 
     const slug = message;
     useEffect(() => {
+        document.title ="Thêm chương trình khuyến mãi";
         if (slug != "") {
             axios.get(`/api/search/${slug}`).then(res => {
                 if (res.data.status === 200) {

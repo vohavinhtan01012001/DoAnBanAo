@@ -13,6 +13,7 @@ function EditCategory() {
     const { id } = useParams();
     const category_id = id;
     useEffect(() => {
+        document.title="Chỉnh sửa loại sản phẩm";
         axios.get(`/api/edit-category/${category_id}`).then(res=>{
             if(res.data.status === 200)
             {
