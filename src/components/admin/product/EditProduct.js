@@ -49,21 +49,6 @@ function EditProduct() {
         document.title ="Chỉnh sửa sản phẩm";
         axios.get('api/all-category').then(res => {
             if (res.data.status === 200) {
-                setProduct({
-                    ...productInput,
-                    category_id: '',
-                    name: '',
-                    price: '',
-                    size: '',
-                    quantityM: '',
-                    quantityL: '',
-                    quantityXL: '',
-                    image: '',
-                    image2: '',
-                    image3: '',
-                    image4: '',
-                    description: '',
-                });
                 setCategorylist(res.data.category);
             }
         })

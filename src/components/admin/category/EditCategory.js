@@ -28,7 +28,6 @@ function EditCategory() {
         });
 
     }, [category_id,history]);
-/*     console.log(category_id); */
 
     const handleInput = (e)=>{
         e.persist();
@@ -38,7 +37,10 @@ function EditCategory() {
     const updateCategory = (e) => {
         e.preventDefault();
         const category_id = id;
-        const data = categoryInput;
+        const data = {
+            name : categoryInput.name,
+            description : categoryInput.description,
+        };
         axios.put(`/api/upload-category/${category_id}`,data).then(res => {
             if(res.data.status === 200){
                 swal("Success", res.data.message,'success');
@@ -76,7 +78,7 @@ function EditCategory() {
                                 </div>
                                 <div className="form-group-lg mb-4">
                                     <label>Miêu tả</label>
-                                    <textarea name="description" onChange={handleInput} value={categoryInput.description} className="form-control form-control-lg fs-4 text"></textarea>
+                                    <textarea type="text" name="description" onChange={handleInput} value={categoryInput.description} className="form-control form-control-lg fs-4 text"/>
                                 </div>
                             </div>
                         </div>

@@ -20,7 +20,7 @@ function Blog() {
                             <div className="app__container--category">
                                 <Link to="/" className="app__container--link">Trang chủ</Link>
                                 <FontAwesomeIcon icon={faChevronRight} />
-                                <p className="app__container--text">Blog - Tin tức</p>
+                                <p className="app__container--text">Tin tức</p>
                             </div>
                         </div>
                     </div>

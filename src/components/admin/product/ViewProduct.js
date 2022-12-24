@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
 import Pagination from '../../pagination/Pagination';
 
-let PageSize = 5;
+let PageSize = 7;
 function ViewProduct() {
     const [loading, setLoading] = useState(true);
     const [viewProduct, setProduct] = useState([]);
@@ -74,7 +74,7 @@ function ViewProduct() {
             }
         })
     }
-    
+
     var role = localStorage.getItem('auth_role');
     var display_Productdata = "";
     if (loading) {
@@ -90,7 +90,9 @@ function ViewProduct() {
                         <td className='fs-4 text'>{item.categorys.name}</td>
                         <td className='fs-4 text'>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</td>
                         <td className='fs-4 text'>{item.promotion ? item.promotion.discount + "%" : "0%"}</td>
-                        <td className='fs-4 text'>{item.promotion ? Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format((item.price * (100 - item.promotion.discount)) / 100) : Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</td>
+                        <td className='fs-4 text'>{item.promotion ?
+                            Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format((item.price * (100 - item.promotion.discount)) / 100) :
+                            Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</td>
                         <td className='fs-4 text'>{item.quantityM}</td>
                         <td className='fs-4 text'>{item.quantityL}</td>
                         <td className='fs-4 text'>{item.quantityXL}</td>
@@ -98,7 +100,10 @@ function ViewProduct() {
                         <td><img src={`http://localhost:8000/${item.image2}`} width="50px" alt={item.name} /></td>
                         <td><img src={`http://localhost:8000/${item.image3}`} width="50px" alt={item.name} /></td>
                         <td><img src={`http://localhost:8000/${item.image4}`} width="50px" alt={item.name} /></td>
-                        <td>{item.quantityL == 0 && item.quantityM == 0 && item.quantityXL == 0 ? <p style={{ color: 'red', fontWeight: "bold" }}>Hết hàng</p> : <p style={{ color: '#0ccf0f', fontWeight: "bold" }}>Còn hàng</p>}</td>
+                        <td>{item.quantityL == 0 && item.quantityM == 0 && item.quantityXL == 0 ?
+                            <p style={{ color: 'red', fontWeight: "bold" }}>Hết hàng</p> :
+                            <p style={{ color: '#0ccf0f', fontWeight: "bold" }}>Còn hàng</p>}
+                        </td>
                         <td>
                             <Link to={`../edit-product/${item.id}`} className="btn btn-success btn-sm fs-4 text">Chỉnh sửa</Link>
                         </td>
@@ -193,7 +198,7 @@ function ViewProduct() {
                                 {display_Productdata}
                             </tbody>
                         </table>
-                        
+
                         <Pagination
                             className="pagination-bar"
                             currentPage={currentPage}

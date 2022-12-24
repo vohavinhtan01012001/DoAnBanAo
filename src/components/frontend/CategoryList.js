@@ -20,6 +20,13 @@ function Tshirts() {
     const productCount = product.length;
 
     const [shouldRefresh, setRefresh] = useState(false);
+    const [message, setMessage] = useState('')
+
+    const callbackFunction = (childData) => {
+        setMessage(childData)
+        setRefresh(!shouldRefresh);
+    }
+    const [productitem, setProductItem] = useState([]);
 
 
     //sắp xếp
@@ -81,26 +88,26 @@ function Tshirts() {
     }
 
     //phân trang
-   /*  const [currentPage, setCurrentPage] = useState(1);
-
-    const currentTableData = useMemo(() => {
-        const firstPageIndex = (currentPage - 1) * PageSize;
-        const lastPageIndex = firstPageIndex + PageSize;
-        return product.slice(firstPageIndex, lastPageIndex);
-    }, [currentPage, product]); */
+    /*  const [currentPage, setCurrentPage] = useState(1);
+ 
+     const currentTableData = useMemo(() => {
+         const firstPageIndex = (currentPage - 1) * PageSize;
+         const lastPageIndex = firstPageIndex + PageSize;
+         return product.slice(firstPageIndex, lastPageIndex);
+     }, [currentPage, product]); */
 
     //xử lý hiện sản phẩm
     const { slug } = useParams();
     useEffect(() => {
-        document.title="Danh sách sản phẩm"
+        document.title = "Danh sách sản phẩm"
         let isMounted = true;
-
         const category_slug = slug;
         axios.get(`/api/fetchproducts/${category_slug}`).then(res => {
             if (isMounted) {
                 if (res.data.status === 200) {
                     setProduct(res.data.product_data.product);
                     setCategory(res.data.product_data.category);
+                    setProductItem(res.data.product_data.product);
                     setLoading(false);
                 }
                 else if (res.data.status === 400) {
@@ -117,6 +124,41 @@ function Tshirts() {
             isMounted = false
         };
     }, [slug, history]);
+
+    //Xử lý bộ lọc
+    useEffect(() => {
+        if (message == 1) {
+            const result = productitem.filter(function (a) {
+                return a.price <= 200000;
+            });
+            setRefresh(!shouldRefresh);
+            setProduct(result);
+        }
+        else if (message == 2) {
+            setProduct(product);
+            const result = productitem.filter(function (a) {
+                return a.price >= 200000 && a.price <= 400000;
+            });
+            setRefresh(!shouldRefresh);
+            setProduct(result);
+        }
+        else if (message == 3) {
+            setProduct(product);
+            const result = productitem.filter(function (a) {
+                return a.price >= 400000 && a.price <= 800000;
+            });
+            setRefresh(!shouldRefresh);
+            setProduct(result);
+        }
+        else if (message == 4) {
+            setProduct(product);
+            const result = productitem.filter(function (a) {
+                return a.price >= 800000;
+            });
+            setRefresh(!shouldRefresh);
+            setProduct(result);
+        }
+    }, [message])
 
     //xuất dữ liệu 
     var showProductsList = "";
@@ -224,12 +266,12 @@ function Tshirts() {
                 </div>
                 <div className="grid wide">
                     <div className="row">
-                        <MenuCategory />
+                        <MenuCategory parentCallback={callbackFunction} />
                         <div className="col l-9">
                             <div className="tshirts__title">
                                 <h3 className="tshirts__title--heading">{category.name}</h3>
                                 <div className="tshirts__title--sort">
-                                    <p className="tshirts__title--text" style={{ marginBottom: "0" }}>Sắp xếp theo:</p>
+                                    <p className="tshirts__title--text" style={{ marginBottom: "0" }}>Sắp xếp:</p>
                                     <div className="tshirts__title--option">
                                         <select onChange={e => { handleOption(e) }} id="search" className="tshirts__title--select">
                                             <option >Cũ nhất</option>
@@ -246,27 +288,7 @@ function Tshirts() {
                                 <div className="row">
                                     {showProductsList}
                                 </div>
-                                <div className="row">
-                                    <div style={{width:"100%",padding:"20px",marginLeft:"30%" }}>
-                                        {/* <Pagination
-                                            className="pagination-bar"
-                                            currentPage={currentPage}
-                                            totalCount={product.length}
-                                            pageSize={PageSize}
-                                            onPageChange={page => setCurrentPage(page)}
-                                        /> */}
-                                    </div>
-                                </div>
                             </div>
-                            {/*  <div className="tshirts__more">
-                                <div className="row">
-                                    <div className="col l-12">
-                                        <div className="tshirts__more--text">
-                                            <a href="#ssa" >Xem thêm sản phẩm khác</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> */}
                         </div>
                     </div>
 

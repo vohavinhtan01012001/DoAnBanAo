@@ -62,6 +62,8 @@ function DetailOrder() {
     var sumPrice = 0;
     var display_detailOrder = "";
     var display_button = "";
+    var status = 0;
+    var pay = 0;
     if (loading) {
         return <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
     }
@@ -80,14 +82,21 @@ function DetailOrder() {
                     <td className='fs-4 text'>{item.qtyXL}</td>
                     <td className='fs-4 text'>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</td>
                     {item.product.promotion ?
-                        <td className='fs-4 text'>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format((item.price * (100 - item.product.promotion.discount))/100)}</td> :
+                        <td className='fs-4 text'>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format((item.price * (100 - item.product.promotion.discount)) / 100)}</td> :
                         <td className='fs-4 text'>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</td>
                     }
                     <td className='fs-4 text'>{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.sumPrice)}</td>
                 </tr >
             )
         });
-        order.map(e => e.status) == 0 ?
+        order.map(e => {
+            status = e.status;
+            pay = e.pay;
+        })
+        console.log(status)
+        console.log(status == 1 && pay == 0);
+        if (status == 0 && pay == 0) {
+
             display_button = (<button className="btn btn-primary btn-lg float-end fs-4 text" style={{ background: "red", border: "none" }} onClick={(e) => {
                 swal({
                     title: "Thông báo!",
@@ -111,8 +120,38 @@ function DetailOrder() {
 
                     }
                 })
-            }}>Xác nhận đơn hàng</button>) :
-            display_button = (<button disabled className="btn btn-primary btn-lg float-end fs-4 text" style={{ background: "red", border: "none" }}>Đã xác nhận</button>)
+            }}>Xác nhận đơn hàng</button>)
+        }
+        else if (status == 1 && pay == 0) {
+            display_button = (<button className="btn btn-primary btn-lg float-end fs-4 text" style={{ background: "red", border: "none" }} onClick={(e) => {
+                swal({
+                    title: "Thông báo!",
+                    text: "Bạn chắc chắn là xác nhận đơn?",
+                    icon: "info",
+                    buttons: [
+                        'Không',
+                        'Có'
+                    ],
+                    dangerMode: true,
+                }).then(function (isConfirm) {
+                    if (isConfirm) {
+                        swal({
+                            title: 'Thành công!',
+                            text: 'Đã xác nhận đơn hàng!',
+                            icon: 'success'
+                        }).then(function () {
+                            uploadOrder(e);
+                        });
+                    } else {
+
+                    }
+                })
+            }}>Xác nhận đã thanh toán</button>)
+        }
+        else {
+            display_button = (<button disabled className="btn btn-primary btn-lg float-end fs-4 text" style={{ background: "red", border: "none" }}>Đã thanh toán</button>)
+        }
+
     }
     return (
         <div className="container px-4 mt-3">
