@@ -107,14 +107,15 @@ function Cart() {
         };
     }, [history]);
 
-    var productList = ""
-    /* var note = "" */
-    var productConti = ""
-    var pay = ""
-    var sumPrice = 0;
-    var sumQ = 0;
+    let productList = ""
+    /* let note = "" */
+    let productConti = ""
+    let pay = ""
+    let sumPrice = 0;
+    let sumQ = 0;
+    let load = "";
     if (loading) {
-        return (<div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>)
+        load = (<div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>)
     }
     else {
         if (cart.length > 0) {
@@ -234,48 +235,51 @@ function Cart() {
     return (
         <React.Fragment>
             <Header />
-            <div className="app__container">
-                <div className="grid wide">
-                    <div className="row">
-                        <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 pd5">
-                            <div className="app__container--category">
-                                <Link to="/" className="app__container--link">Trang chủ</Link>
-                                <FontAwesomeIcon icon={faChevronRight} />
-                                <p className="app__container--text">Giỏ hàng</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="app__container--cart">
+          { load == "" ?
+          ( <>
+                <div className="app__container">
                     <div className="grid wide">
                         <div className="row">
-                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <h1 className="cart__product--text">
-                                    Giỏ hàng
-                                </h1>
+                            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 pd5">
+                                <div className="app__container--category">
+                                    <Link to="/" className="app__container--link">Trang chủ</Link>
+                                    <FontAwesomeIcon icon={faChevronRight} />
+                                    <p className="app__container--text">Giỏ hàng</p>
+                                </div>
                             </div>
                         </div>
-                        <div className="row">
-                            <div className="col-lg-8 col-sm-12 col-xs-12">
-                                <div className="cart__product">
-                                    {productList}
+                    </div>
+                    <div className="app__container--cart">
+                        <div className="grid wide">
+                            <div className="row">
+                                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <h1 className="cart__product--text">
+                                        Giỏ hàng
+                                    </h1>
                                 </div>
-                                {/* <div className="col-lg-8 col-sm-12 col-xs-12">
-                                    {note}
-                                </div> */}
+                            </div>
+                            <div className="row">
                                 <div className="col-lg-8 col-sm-12 col-xs-12">
-                                    {productConti}
+                                    <div className="cart__product">
+                                        {productList}
+                                    </div>
+                                    {/* <div className="col-lg-8 col-sm-12 col-xs-12">
+                                        {note}
+                                    </div> */}
+                                    <div className="col-lg-8 col-sm-12 col-xs-12">
+                                        {productConti}
+                                    </div>
+                                </div>
+                                <div className="col-lg-4 col-sm-12 col-xs-12">
+                                    {pay}
                                 </div>
                             </div>
-                            <div className="col-lg-4 col-sm-12 col-xs-12">
-                                {pay}
-                            </div>
+    
                         </div>
-
                     </div>
                 </div>
-            </div>
-            <Footer />
+                <Footer />
+           </>):load}
         </React.Fragment>
     );
 }

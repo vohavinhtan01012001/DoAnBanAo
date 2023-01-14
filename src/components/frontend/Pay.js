@@ -154,8 +154,8 @@ function Pay() {
         payment_id: '',
     } */
 
-    var sumPrice = 0;
-    var products = "";
+    let sumPrice = 0;
+    let products = "";
     if (loading) {
         return (<div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>)
     }

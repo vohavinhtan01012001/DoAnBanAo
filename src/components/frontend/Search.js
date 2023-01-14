@@ -17,7 +17,7 @@ function Search() {
     }
     const slug = message;
     useEffect(() => {
-        document.title="Tìm kiếm";
+        document.title = "Tìm kiếm";
         if (slug != "") {
             axios.get(`/api/search/${slug}`).then(res => {
                 if (res.data.status === 200) {
@@ -30,13 +30,21 @@ function Search() {
         }
     }, [message])
 
+    useEffect(() => {
+        if (slug != "") {
+            axios.get(`/api/searchdep/${slug}`).then(res => {
+                if (res.data.status === 200) {
+                    setProduct(res.data.product);
+                }
+                else if (res.data.status === 404) {
+
+                }
+            });
+        }
+    }, [message])
+
 
     var showProductsList = "";
-    /*  if (loading) {
-         return (<div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>)
-     }
-     else { */
-
     if (product.length > 0) {
         showProductsList = product.map((item, index) => {
             if (item.quantityM == 0 && item.quantityL == 0 && item.quantityXL == 0) {
@@ -70,7 +78,7 @@ function Search() {
                                 </div>
                             </div>
                             <div className="content__product-new">new</div>
-                            {item.promotion ? <div className="content__product-sale">{"-"+item.promotion.discount+"%"}</div>:""}
+                            {item.promotion ? <div className="content__product-sale">{"-" + item.promotion.discount + "%"}</div> : ""}
                         </div>
                     </div>
                 </div>)
@@ -99,13 +107,13 @@ function Search() {
                                 <FontAwesomeIcon icon={faStar} />
                             </div>
                             <div className="content__product-price">
-                            {item.promotion ? 
-                                    <div className="content__product-price--item1">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format((item.price * (100 - item.promotion.discount))/100)}</div> : 
-                                    <div className="content__product-price--item1">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</div> }
-                                    {item.promotion ? <del className="content__product-price--item2">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</del>:""}
+                                {item.promotion ?
+                                    <div className="content__product-price--item1">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format((item.price * (100 - item.promotion.discount)) / 100)}</div> :
+                                    <div className="content__product-price--item1">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</div>}
+                                {item.promotion ? <del className="content__product-price--item2">{Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</del> : ""}
                             </div>
                             <div className="content__product-new">new</div>
-                            {item.promotion ? <div className="content__product-sale">{"-"+item.promotion.discount+"%"}</div>:""}
+                            {item.promotion ? <div className="content__product-sale">{"-" + item.promotion.discount + "%"}</div> : ""}
                         </div>
                     </div>
                 </div>)
@@ -115,7 +123,7 @@ function Search() {
 
     return (
         <React.Fragment>
-            <Header parentCallback={callbackFunction} />
+            <Header parentCallback={callbackFunction}  /* parentCallback={callbackFunction} */ />
             <div className="app__container">
                 <div className="grid wide">
                     <div className="row">

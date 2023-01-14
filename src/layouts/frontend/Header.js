@@ -206,7 +206,7 @@ function Header(props) {
                 <Link to="/about" className='header__menu-link'>GIỚI THIỆU</Link>
             </li>
             <li className='header__menu-item'>
-                <a href="https://www.facebook.com/phat.ngo.5454" target="_blank" rel="noreferrer" className='header__navbar-link' style={{textDecoration:"none",color:"white",fontSize:"1.6rem",display:"block",padding:"13px"}} >FANPAGE</a>
+                <a href="https://www.facebook.com/" target="_blank" rel="noreferrer" className='header__navbar-link' style={{textDecoration:"none",color:"white",fontSize:"1.6rem",display:"block",padding:"13px"}} >FANPAGE</a>
             </li>
             <li className='header__menu-item'>
             <a href="https://www.instagram.com/" target="_blank" rel="noreferrer" className='header__navbar-link' style={{textDecoration:"none",color:"white",fontSize:"1.6rem",display:"block",padding:"13px"}} >INTAGRAM</a>
@@ -236,7 +236,6 @@ function Header(props) {
     )
     useEffect(() => {
         let isMounted = true;
-
         axios.get(`/api/cart`).then(res => {
             if (isMounted) {
                 if (res.data.status === 200) {

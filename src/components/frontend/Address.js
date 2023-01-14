@@ -80,52 +80,55 @@ function Address() {
             }
         }) */
     }
-
+    let load = "";
     if (loading) {
-        return <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        load = (<div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>)
     }
     return (
         <React.Fragment>
             <Header />
-            <div className="app__container">
-                <div className="grid wide">
-                    <div className="row">
-                        <div className="app__container--category">
-                            <Link to="/" className="app__container--link">Trang chủ</Link>
-                            <FontAwesomeIcon icon={faChevronRight} />
-                            <Link to="/Account" className="app__container--link">Tài khoản</Link>
-                            <FontAwesomeIcon icon={faChevronRight} />
-                            <p className="app__container--text">Địa chỉ</p>
+            {load == "" ? 
+            (<>
+                <div className="app__container">
+                    <div className="grid wide">
+                        <div className="row">
+                            <div className="app__container--category">
+                                <Link to="/" className="app__container--link">Trang chủ</Link>
+                                <FontAwesomeIcon icon={faChevronRight} />
+                                <Link to="/Account" className="app__container--link">Tài khoản</Link>
+                                <FontAwesomeIcon icon={faChevronRight} />
+                                <p className="app__container--text">Địa chỉ</p>
+                            </div>
                         </div>
-                    </div>
-                    <div className='row'>
-                        <div className='app__container--address'>
-                            <h2 className="heading__text">Thông tin địa chỉ</h2>
-                            <form className="formAddress" onSubmit={updateAddress}>
-                                <div className="formLogin__email">
-                                    <input type="text" onChange={handleInput} value={addressInput.name} name="name" placeholder='Họ và tên' className="formLogin__email--input" />
-                                </div>
-                                <div className="formLogin__email">
-                                    <input type="text" onChange={handleInput} value={addressInput.address} name="address" placeholder="Địa chỉ" className="formLogin__password--input" />
-                                </div>
-                                <div className="formLogin__email">
-                                    <input type="text" onChange={handleInput} value={addressInput.phone} name="phone" placeholder="Số điện thoại" className="formLogin__password--input" />
-                                </div>
-                                <div className="formAddress__btn">
-                                    <button type="submit" className="formAddress__btn--Address">
-                                        Cập nhật
-                                    </button>
-                                    <div className="formBack">
-                                        <p>hoặc </p>
-                                        <Link to='/account' className="formBack--text">Hủy</Link>
+                        <div className='row'>
+                            <div className='app__container--address'>
+                                <h2 className="heading__text">Thông tin địa chỉ</h2>
+                                <form className="formAddress" onSubmit={updateAddress}>
+                                    <div className="formLogin__email">
+                                        <input type="text" onChange={handleInput} value={addressInput.name} name="name" placeholder='Họ và tên' className="formLogin__email--input" />
                                     </div>
-                                </div>
-                            </form>
+                                    <div className="formLogin__email">
+                                        <input type="text" onChange={handleInput} value={addressInput.address} name="address" placeholder="Địa chỉ" className="formLogin__password--input" />
+                                    </div>
+                                    <div className="formLogin__email">
+                                        <input type="text" onChange={handleInput} value={addressInput.phone} name="phone" placeholder="Số điện thoại" className="formLogin__password--input" />
+                                    </div>
+                                    <div className="formAddress__btn">
+                                        <button type="submit" className="formAddress__btn--Address">
+                                            Cập nhật
+                                        </button>
+                                        <div className="formBack">
+                                            <p>hoặc </p>
+                                            <Link to='/account' className="formBack--text">Hủy</Link>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <Footer />
+                <Footer />
+            </>):load}
         </React.Fragment>
     );
 }

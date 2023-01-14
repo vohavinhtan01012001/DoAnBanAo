@@ -8,10 +8,8 @@ import Footer from "../../layouts/frontend/Footer";
 import Header from "../../layouts/frontend/Header";
 import MenuCategory from "../../layouts/frontend/MenuCategory";
 import Im from "../../assets/frontend/img/detail/lss.png";
-import Pagination from "../pagination/Pagination";
 
-let PageSize = 6;
-function Tshirts() {
+function CategoryList() {
     const history = useNavigate();
     const [loading, setLoading] = useState(true);
     const [product, setProduct] = useState([]);
@@ -161,9 +159,10 @@ function Tshirts() {
     }, [message])
 
     //xuất dữ liệu 
-    var showProductsList = "";
+    let showProductsList = "";
+    let load = "";
     if (loading) {
-        return (<div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>)
+        load = (<div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>)
     }
     else {
         if (productCount) {
@@ -252,51 +251,55 @@ function Tshirts() {
     return (
         <React.Fragment>
             <Header />
-            <div className="app__container" id="ssa">
-                <div className="grid wide">
-                    <div className="row">
-                        <div className="app__container--category">
-                            <Link to="/" className="app__container--link">Trang chủ</Link>
-                            <FontAwesomeIcon icon={faChevronRight} />
-                            <div className="app__container--link">Danh mục</div>
-                            <FontAwesomeIcon icon={faChevronRight} />
-                            <p className="app__container--text">{category.name}</p>
+            {load == "" ?
+                (<>
+                    <div className="app__container" id="ssa">
+                        <div className="grid wide">
+                            <div className="row">
+                                <div className="app__container--category">
+                                    <Link to="/" className="app__container--link">Trang chủ</Link>
+                                    <FontAwesomeIcon icon={faChevronRight} />
+                                    <div className="app__container--link">Danh mục</div>
+                                    <FontAwesomeIcon icon={faChevronRight} />
+                                    <p className="app__container--text">{category.name}</p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div className="grid wide">
-                    <div className="row">
-                        <MenuCategory parentCallback={callbackFunction} />
-                        <div className="col l-9">
-                            <div className="tshirts__title">
-                                <h3 className="tshirts__title--heading">{category.name}</h3>
-                                <div className="tshirts__title--sort">
-                                    <p className="tshirts__title--text" style={{ marginBottom: "0" }}>Sắp xếp:</p>
-                                    <div className="tshirts__title--option">
-                                        <select onChange={e => { handleOption(e) }} id="search" className="tshirts__title--select">
-                                            <option >Cũ nhất</option>
-                                            <option >Mới nhất</option>
-                                            <option >Giá:Tăng dần</option>
-                                            <option >Giá:Giảm dần</option>
-                                            <option >Tên: A--Z</option>
-                                            <option >Tên: Z--A</option>
-                                        </select>
+                        <div className="grid wide">
+                            <div className="row">
+                                <MenuCategory parentCallback={callbackFunction} />
+                                <div className="col l-9">
+                                    <div className="tshirts__title">
+                                        <h3 className="tshirts__title--heading">{category.name}</h3>
+                                        <div className="tshirts__title--sort">
+                                            <p className="tshirts__title--text" style={{ marginBottom: "0" }}>Sắp xếp:</p>
+                                            <div className="tshirts__title--option">
+                                                <select onChange={e => { handleOption(e) }} id="search" className="tshirts__title--select">
+                                                    <option >Cũ nhất</option>
+                                                    <option >Mới nhất</option>
+                                                    <option >Giá:Tăng dần</option>
+                                                    <option >Giá:Giảm dần</option>
+                                                    <option >Tên: A--Z</option>
+                                                    <option >Tên: Z--A</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="tshirts__content">
+                                        <div className="row">
+                                            {showProductsList}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div className="tshirts__content">
-                                <div className="row">
-                                    {showProductsList}
-                                </div>
-                            </div>
+
                         </div>
                     </div>
-
-                </div>
-            </div>
-            <Footer />
+                    <Footer />
+                </>
+                ) : load}
         </React.Fragment>
     );
 }
 
-export default Tshirts;
+export default CategoryList;
