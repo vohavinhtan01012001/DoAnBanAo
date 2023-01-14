@@ -27,10 +27,7 @@ function Navbar({onNavbarClick}) {
                             {/* <button className="admin__search--Sidebar" >
                                 <FontAwesomeIcon icon={faSearch} />
                             </button> */}
-                            <input type="text" placeholder="Nhập thông tin tìm kiếm..." className="admin__search--input" />
-                            <button className="admin__search--btn" >
-                                <FontAwesomeIcon icon={faSearch} />
-                            </button>
+                            
                         </div>
                     </div>
                     <div className="col">
@@ -38,7 +35,7 @@ function Navbar({onNavbarClick}) {
                             <button className="navbar__admin--background">
                                 <FontAwesomeIcon icon={faSun} />
                             </button>
-                            <Link to="/" className="navbar__admin--exit">
+                            <Link to="/account" className="navbar__admin--exit">
                                 <FontAwesomeIcon icon={faRightFromBracket} />
                             </Link>
                         </div>

@@ -1,6 +1,6 @@
 import { faArrowRight, faChevronRight, faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import swal from 'sweetalert';
 import { Link } from "react-router-dom";
@@ -9,15 +9,17 @@ import "../../../assets/frontend/css/grid.css";
 import Footer from "../../../layouts/frontend/Footer";
 import Header from "../../../layouts/frontend/Header";
 function Login() {
-
-
     const history = useNavigate();
-
     const [loginInput, setLoginInput] = useState({
         email: '',
         password: '',
         error_list: []
     });
+
+    useEffect(() => {
+        document.title = "Đăng nhập";
+    },[])
+
     const handleInput = (e) => {
         e.persist();
         setLoginInput({
@@ -39,13 +41,16 @@ function Login() {
                     localStorage.setItem('auth_name', res.data.username);
                     localStorage.setItem('auth_address', res.data.address);
                     localStorage.setItem('auth_phone', res.data.phone);
-                    swal('Đăng nhập thành công', res.data.message, 'success');
+                    localStorage.setItem('auth_role', res.data.role_as);
                     if(res.data.role === 'admin'){
-                        history('/admin/dashboard');
+                        history('/admin/view-product');
+                        window.location.reload();
                     }
                     else{
                         history('/');
+                        window.location.reload();
                     }
+                    swal('Đăng nhập thành công', res.data.message, 'success');
                 }
                 else if (res.data.status === 401) {
                     swal('Thông báo', res.data.message, 'warning');

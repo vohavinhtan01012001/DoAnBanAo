@@ -10,7 +10,7 @@ function Footer() {
                 <div className="footer__color">
                     <div className="grid wide">
                         <div className="row ">
-                            <div className="col l-3 m-4 c-12 ">
+                            <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12 pd5">
                                 <div className="foorter__content">
                                     <h2 className="foorter__content-title">
                                         THÔNG TIN LIÊN HỆ:
@@ -34,7 +34,7 @@ function Footer() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col l-3 m-4 c-12 ">
+                            <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12 pd5">
                                 <div className="foorter__content">
                                     <h2 className="foorter__content-title">
                                         CHÍNH SÁCH HỖ TRỢ:
@@ -58,7 +58,7 @@ function Footer() {
                                     </ul>
                                 </div>
                             </div>
-                            <div className="col l-3 m-4 c-12 ">
+                            <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12 pd5">
                                 <div className="foorter__content">
                                     <h2 className="foorter__content-title">
                                         THÔNG TIN LIÊN KẾT:
@@ -81,7 +81,7 @@ function Footer() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col l-3 m-4 c-12 ">
+                            <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12 pd5">
                                 <div className="foorter__content">
                                     <h2 className="foorter__content-title">
                                         THEO DÕI FANPAGE CHÚNG TÔI ĐỂ CẬP NHẬT XU HƯỚNG THỜI TRANG HOT NHẤT:

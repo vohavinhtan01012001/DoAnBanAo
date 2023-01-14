@@ -1,120 +1,105 @@
-import React, { useState } from "react";
 import axios from 'axios';
-import swal from 'sweetalert'
-import { useNavigate } from 'react-router-dom'
-import { Link } from "react-router-dom";
-import { faArrowRight, faChevronRight, faEnvelope, faLock, faUser } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import swal from 'sweetalert';
 
 function AddAccount() {
-    const history = useNavigate();
     const [registerInput, setRegister] = useState({
         name: '',
         email: '',
         password: '',
         address: '',
         phone: '',
+        role_as: 0,
         error_list: [],
     });
+    useEffect(() => {
+        document.title = "Thêm tài khoản";
+    },[])
 
     const handleInput = (e) => {
         e.persist();
-        setRegister({ ...registerInput, [e.target.name]: e.target.value });
+        setRegister({ ...registerInput, [e.target.name]: e.target.value })
     }
 
-    const registerSubmit = (e) => {
+    const submitAccount = (e) => {
         e.preventDefault();
+
         const data = {
             name: registerInput.name,
             email: registerInput.email,
             password: registerInput.password,
             address: registerInput.address,
             phone: registerInput.phone,
+            role_as:(registerInput.role_as == 'Nhân viên' ? registerInput.role_as = 2 : registerInput.role_as = 0)
         }
+
         axios.get('/sanctum/csrf-cookie').then(response => {
             axios.post('/api/register', data).then(res => {
                 if (res.data.status === 200) {
-                    localStorage.setItem('auth_token', res.data.token);
-                    localStorage.setItem('auth_name', res.data.username);
-                    localStorage.setItem('auth_email', res.data.email);
-                    localStorage.setItem('auth_address', res.data.address);
-                    localStorage.setItem('auth_phone', res.data.phone);
                     swal("Đăng ký Thành công", res.data.message, "success");
-                    history('/');
-                    axios.post('/api/logout').then(res => {
-                        if (res.data.status === 200) {
-                            localStorage.removeItem('auth_token');
-                            localStorage.removeItem('auth_name');
-                            localStorage.removeItem('auth_email');
-                            localStorage.setItem('auth_address');
-                            localStorage.setItem('auth_phone');
-                        }
-                    });
                 }
                 else {
                     setRegister({ ...registerInput, error_list: res.data.validation_errors });
                 }
             });
         });
-
-    };
+    }
 
     return (
-        <React.Fragment>
-            <div className="app__container">
-                <div className="grid wide">
-                    <div className="">
-                        <div className="app__container--formLogin">
-                            <h1 className="formLogin__heading">
-                                Tạo tài khoản
-                            </h1>
-                            <form onSubmit={registerSubmit}>
-                                <div className="formLogin__email">
-                                    <div className="formLogin__email--icon">
-                                        <FontAwesomeIcon icon={faUser} />
-                                    </div>
-                                    <input type="text" name="name" placeholder="Họ và Tên" onChange={handleInput} value={registerInput.name} className="formLogin__email--input" />
+        <div className="container px-4 fs-4 text ">
+            <div className="card mt-4">
+                <div className="card-header ">
+                    <h2 >Thêm tài khoản
+                        <Link to="/admin/view-account" className="btn btn-primary btn-lg float-end fs-4 text">Xem tài khoản</Link>
+                    </h2>
+                </div>
+                <div className="card-body">
+                    <form onSubmit={submitAccount} encType="multipart/form-data">
+
+                        <div className="tab-content" id="myTabContent">
+                            <div className="tab-pane card-body border fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                <div className="form-group mb-3">
+                                    <label>Họ và tên</label>
+                                    <input type="text" name="name" onChange={handleInput} value={registerInput.name} className="form-control fs-4 text" />
+                                    <small className="text-danger">{registerInput.error_list.name ? "Vui lòng nhập tên!" : ""}</small>
                                 </div>
-                                <span className='error fs-4 text'>{registerInput.error_list.name ? "Vui lòng nhập tên của bạn!" : ""}</span>
-                                <div className="formLogin__email">
-                                    <div className="formLogin__email--icon">
-                                        <FontAwesomeIcon icon={faEnvelope} />
-                                    </div>
-                                    <input type="gmail" name="email" placeholder="Email" onChange={handleInput} value={registerInput.email} className="formLogin__email--input" />
+                                <div className="form-group mb-3">
+                                    <label>Email</label>
+                                    <input type="gmail" name="email" onChange={handleInput} value={registerInput.email} className="form-control fs-4 text" />
+                                    <small className="text-danger">{registerInput.error_list.email ? "Vui lòng nhập Email!" : ""}</small>
                                 </div>
-                                <span className='error fs-4 text'>{registerInput.error_list.email == "The email has already been taken." ? "Email này đã được đăng ký!" : registerInput.error_list.email ? "Email không hợp lệ!" : ""}</span>
-                                <div className="formLogin__password">
-                                    <div className="formLogin__password--icon">
-                                        <FontAwesomeIcon icon={faLock} />
-                                    </div>
-                                    <input type="password" name="password" placeholder="Mật khẩu" onChange={handleInput} value={registerInput.password} className="formLogin__password--input" />
+                                <div className="form-group mb-3">
+                                    <label>Địa chỉ</label>
+                                    <textarea type="text" name="address" onChange={handleInput} value={registerInput.address} className="form-control fs-4 text" />
+                                    <small className="text-danger">{registerInput.error_list.address ? "Vui lòng nhập Địa chỉ!" : ""}</small>
                                 </div>
-                                <span className='error fs-4 text'>{registerInput.error_list.password == "The password must be at least 8 characters." ? "Mật khẩu bắt buộc phải 8 kí tự trở lên!" : registerInput.error_list.password ? "Vui lòng nhập mật khẩu của bạn!" : ""}</span>
-                                <div className="formLogin__email">
-                                    <div className="formLogin__email--icon">
-                                        <FontAwesomeIcon icon={faEnvelope} />
-                                    </div>
-                                    <input type="text" name="address" placeholder="Địa chỉ" onChange={handleInput} value={registerInput.address} className="formLogin__email--input" />
+                                <div className="form-group mb-3">
+                                    <label>Số điện thoại</label>
+                                    <input type="text" name="phone" onChange={handleInput} value={registerInput.phone} className="form-control fs-4 text" />
+                                    <small className="text-danger">{registerInput.error_list.phone ? "Vui lòng nhập số điện thoại!" : ""}</small>
                                 </div>
-                                <span className='error fs-4 text'>{registerInput.error_list.address ? "Vui lòng nhập địa chỉ của bạn!" : ""}</span>
-                                <div className="formLogin__email">
-                                    <div className="formLogin__email--icon">
-                                        <FontAwesomeIcon icon={faEnvelope} />
-                                    </div>
-                                    <input type="text" name="phone" placeholder="Số điện thoại" onChange={handleInput} value={registerInput.phone} className="formLogin__email--input" />
+                                <div className="form-group mb-3">
+                                    <label>Phân quyền</label>
+                                    <select name="role_as" onChange={handleInput} value={registerInput.role_as} className="form-control fs-4 text" >
+                                        <option>Lựa chọn</option>
+                                        <option>Khách hàng</option>
+                                        <option>Nhân viên</option>
+                                    </select>
+                                    <small className="text-danger">{registerInput.error_list.role_as ? "Vui lòng nhập Phân quyền!" : ""}</small>
                                 </div>
-                                <span className='error fs-4 text'>{registerInput.error_list.phone ? "Vui lòng nhập số điện thoại của bạn!" : ""}</span>
-                                <div className="formLogin__btn">
-                                    <button type="submit" className="formLogin__btn--login">
-                                        Tạo tài khoản
-                                    </button>
+                                <div className="form-group mb-3">
+                                    <label>Mật khẩu</label>
+                                    <input type="password" name="password" onChange={handleInput} value={registerInput.password} className="form-control fs-4 text" />
+                                    <small className="text-danger">{registerInput.error_list.password ? "Vui lòng nhập Mật khẩu!" : ""}</small>
                                 </div>
-                            </form>
+                            </div>
                         </div>
-                    </div>
+                        <button type="submit" className="btn btn-primary btn-lg px-4 mt-2 float-end fs-4 text">Thêm tài khoản</button>
+                    </form>
                 </div>
             </div>
-        </React.Fragment>
+        </div>
     );
 }
 

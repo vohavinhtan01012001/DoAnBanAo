@@ -1,7 +1,5 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom"
-import Dashboard from "./components/admin/Dashboard";
-import Profile from "./components/admin/Profile";
 import Login from "./components/frontend/auth/Login";
 import Register from "./components/frontend/auth/Register";
 import Home from "./components/frontend/Home";
@@ -17,15 +15,26 @@ import EditCategory from "./components/admin/category/EditCategory";
 import AddProduct from "./components/admin/product/AddProduct";
 import ViewProduct from "./components/admin/product/ViewProduct";
 import EditProduct from "./components/admin/product/EditProduct";
-import AddAccount from "./components/admin/account/AddAccount";
 import ViewAccount from "./components/admin/account/ViewAccount";
-import EditAccount from "./components/admin/account/EditAccount";
-import Tshirts from "./components/frontend/category/Tshirts";
-import Shirts from "./components/frontend/category/Shirts";
-import Sweaters from "./components/frontend/category/Sweaters";
-import Hoodies from "./components/frontend/category/Hoodies";
-import Jacker from "./components/frontend/category/Jacker";
-import Polo from "./components/frontend/category/Polo";
+import CategoryList from "./components/frontend/CategoryList";
+import ProductDetails from "./components/frontend/ProductDetails";
+import Cart from "./components/frontend/Cart";
+import Blog from "./components/frontend/static/Blog";
+import Contact from "./components/frontend/static/Contact";
+import About from "./components/frontend/static/About";
+import Pay from "./components/frontend/Pay";
+import Order from "./components/admin/order/Order";
+import DetailOrder from "./components/admin/order/DetailOrder";
+import Search from "./components/frontend/Search";
+import OrderItems from "./components/frontend/order/OrderItems";
+import ViewProductCate from "./components/admin/category/ViewProductCate";
+import AddAccount from "./components/admin/account/AddAccount";
+import ViewPromotion from "./components/admin/promotion/ViewPromotion";
+import AddPromotion from "./components/admin/promotion/AddPromotion";
+import EditPromotion from "./components/admin/promotion/EditPromotion";
+import AddProductPor from "./components/admin/promotion/AddProductPor";
+import ViewProductPor from "./components/admin/promotion/ViewProductPor";
+
 
 axios.defaults.baseURL = "http://localhost:8000";
 axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -37,36 +46,63 @@ axios.interceptors.request.use(function (config) {
   return config;
 });
 
+
+//xử lý refreshToken
+/* axios.interceptors.response.use(
+  (response) => response,
+  async (error)=>{
+    if(error.response.status === 401){
+      try
+        const token = localStorage.getItem('auth_token').refreshToken();
+        localStorage.setItem("token", data.token);
+      }
+      catch(error){
+        return Promise.reject(error);
+      }
+    }
+    return Promise.reject(error);
+  }
+); */
+
+
 function App() {
   return (
     <div className="App">
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/t-shirts" element={<Tshirts />} />
-          <Route path="/shirts" element={<Shirts />} />
-          <Route path="/sweaters" element={<Sweaters />} />
-          <Route path="/hoodies" element={<Hoodies />} />
-          <Route path="/jacker" element={<Jacker />} />
-          <Route path="/polo" element={<Polo />} />
+          <Route path="/:categoryName/:id" element={<ProductDetails />} />
+          <Route path="/category/:slug" element={<CategoryList />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/about" element={<About />} />
+          <Route path="order/:id" element={<OrderItems />} />
+          <Route path="/pay" element={<Pay />} />
+          <Route path="/search" element={<Search />} />
           <Route path="/403" element={<Page403 />} />
           <Route path="/404" element={<Page404 />} />
           <Route path="/login" element={localStorage.getItem('auth_token') ? <Navigate to="/" /> : <Login />} />
           <Route path="/register" element={localStorage.getItem('auth_token') ? <Navigate to="/" /> : <Register />} />
           <Route path="/account" element={localStorage.getItem('auth_token') ? <Account /> : <Navigate to="/" />} />
-          <Route path="/address" element={localStorage.getItem('auth_token') ? <Address /> : <Navigate to="/" />} />
+          <Route path="/address/:id" element={localStorage.getItem('auth_token') ? <Address /> : <Navigate to="/" />} />
           <Route path="/admin" name="Admin" element={<AdminPrivateRoute />} >
-            <Route path='/admin/profile' element={<Profile />} />
-            <Route path='/admin/dashboard' element={<Dashboard />} />
             <Route path='/admin/add-category' element={<Category />} />
             <Route path='/admin/view-category' element={<ViewCategory />} />
+            <Route path='/admin/view-category/:id' element={<ViewProductCate />} />
             <Route path='/admin/edit-category/:id' element={<EditCategory />} />
             <Route path='/admin/add-product' element={<AddProduct />} />
             <Route path='/admin/view-product' element={<ViewProduct />} />
             <Route path='/admin/edit-product/:id' element={<EditProduct />} />
-            <Route path='/admin/add-account' element={<AddAccount />} />
             <Route path='/admin/view-account' element={<ViewAccount />} />
-            <Route path='/admin/edit-account/:id' element={<EditAccount />} />
+            <Route path='/admin/add-account' element={<AddAccount />} />
+            <Route path='/admin/order' element={<Order />} />
+            <Route path='/admin/detail-order/:id' element={<DetailOrder />} />
+            <Route path='/admin/view-promotion' element={<ViewPromotion />} />
+            <Route path='/admin/view-promotion/:id' element={<ViewProductPor />} />
+            <Route path='/admin/add-promotion' element={<AddPromotion />} />
+            <Route path='/admin/edit-promotion/:id' element={<EditPromotion />} />
+            <Route path='/admin/upload-productPor/:id' element={<AddProductPor />} />
           </Route>
         </Routes>
       </Router>

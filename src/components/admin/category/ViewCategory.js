@@ -8,9 +8,11 @@ function ViewCategory() {
 
     const [loading, setLoading] = useState(true);
     const [categorylist, setCategorylist] = useState([]);
+    /* const [viewProduct, setProduct] = useState([]); */
 
 
     useEffect(() => {
+        document.title ="Danh sách loại sản phẩm";
         let isMounted = true;
 
         axios.get(`/api/view-category`).then(res => {
@@ -28,21 +30,22 @@ function ViewCategory() {
 
     }, []);
 
-    //Xử lý xóa
-    const deleteCategory = (e, id) => {
-        e.preventDefault();
-        const thisclicked = e.currentTarget;
-        axios.delete(`/api/delete-category/${id}`).then(res => {
-            if (res.data.status === 200) {
-                swal('Success', res.data.message, "success");
-                thisclicked.closest("tr").remove();
-            }
-            else if (res.data.status === 404) {
-                swal('Success', res.data.message, "success");
-            }
-        })
-    }
-
+    /*     useEffect(() => {
+            let isMounted = true;
+            document.title = "View Product";
+    
+            axios.get(`/api/view-product`).then(res => {
+                if (isMounted) {
+                    if (res.data.status === 200) {
+                        setProduct(res.data.products);
+                        setLoading(false);
+                    }
+                }
+            });
+            return () => {
+                isMounted = false
+            };
+        }, []); */
 
 
     var viewcategory_HTMLTABLE = "";
@@ -50,41 +53,20 @@ function ViewCategory() {
         return <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
     }
     else {
-        viewcategory_HTMLTABLE =
-            categorylist.map((item, index) => {
-                return (
-                    <tr id={item.id} key={index}>
-                        <td className='fs-4 text'>{item.id}</td>
-                        <td className='fs-4 text'>{item.name}</td>
-                        <td className='fs-4 text'>{item.description}</td>
-                        <td>
-                            <Link to={`../edit-category/${item.id}`} className="btn btn-success btn-lg">Chỉnh sửa</Link>
-                        </td>
-                        <td>
-                            <button type="button" onClick={(e) => {
-                                if (window.confirm('Bạn có chắc muốn xóa không?')) {
-                                    deleteCategory(e, item.id);
-                                }
-                            }} className="btn btn-danger btn-lg">Xóa</button>
-                            {/* <Modal id={item.id} className='fs-4 text' show={show} onHide={handleClose} animation={false}>
-                                <Modal.Header closeButton>
-                                    <Modal.Title>Thông báo</Modal.Title>
-                                </Modal.Header>
-                                <Modal.Body>Bạn có chắc muốn xóa không?</Modal.Body>
-                                <Modal.Footer>
-                                    <Button className='fs-4 text' variant="secondary" onClick={handleClose}>
-                                        Thoát
-                                    </Button>
-                                    <Button className='fs-4 text' variant="primary" onClick={(e) => { deleteCategory(e, item.id); setShow(false) }} >
-                                        Xóa
-                                    </Button>
-                                </Modal.Footer>
-                            </Modal> */}
-                        </td>
-                    </tr>
+        viewcategory_HTMLTABLE = categorylist.map((item, index) => {
+            return (
+                <tr id={item.id} key={index}>
+                    <td className='fs-4 text'>{item.id}</td>
+                    <td className='fs-4 text'>{item.name}</td>
+                    <td className='fs-4 text'>{item.description}</td>
+                    <td>
+                        <Link to={`../edit-category/${item.id}`} className="btn btn-success btn-lg">Chỉnh sửa</Link>
+                    </td>
+                    <td className='fs-4 text'><Link to={`${item.id}`} className="btn btn-success btn-lg">Xem sản phẩm </Link></td>
+                </tr>
 
-                )
-            });
+            )
+        });
     }
     return (
         <div className="container px-4">
@@ -100,9 +82,9 @@ function ViewCategory() {
                             <tr>
                                 <th>ID</th>
                                 <th>Tên</th>
-                                <th>Miêu tả</th>
+                                <th>Mô tả</th>
                                 <th>Chỉnh sửa</th>
-                                <th>Xóa</th>
+                                <th>Xem sản phẩm có trong loại</th>
                             </tr>
                         </thead>
                         <tbody>

@@ -3,8 +3,6 @@ import { Route, Redirect, useNavigate, Navigate } from 'react-router-dom';
 import axios from 'axios';
 import MasterLayout from './layouts/admin/MasterLayout';
 import swal from 'sweetalert';
-import Profile from './components/admin/Profile';
-import Dashboard from './components/admin/Dashboard';
 
 function AdminPrivateRoute() {
 

@@ -1,4 +1,4 @@
-import { faAngleDown, faAngleRight, faBagShopping, faBox, faCartShopping, faHouse, faSliders, faTimes, faUserCircle, faUsersGear } from "@fortawesome/free-solid-svg-icons";
+import { faAngleDown, faAngleRight, faBagShopping, faBox, faPercent, faSliders, faTimes, faUserCircle, faUsersGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 function Sidebar({ onCloseClick }) {
     const [menuAdminProduct, setMenuAdminProduct] = useState(false);
     const [menuAdminCategory, setMenuAdminCategory] = useState(false);
-    const [menuAdminAccount, setMenuAdminAccount] = useState(false);
+    const [menuAdminPromotion, setMenuAdminPromotion] = useState(false);
 
     //Xử lý hiện menu sản phẩm
     const handleMenuProduct = () => {
@@ -65,33 +65,35 @@ function Sidebar({ onCloseClick }) {
         listMenuCategory = "";
     }
 
-    //Xử lý account
-    const handleMenuAccount = () => {
-        if (!menuAdminAccount) {
-            setMenuAdminAccount(true);
+     //Xử lý hiện menu Khuyến mãi
+
+     const handleMenuPromotion = () => {
+        if (!menuAdminPromotion) {
+            setMenuAdminPromotion(true);
         }
         else {
-            setMenuAdminAccount(false);
+            setMenuAdminPromotion(false);
         }
     };
 
-    var listMenuAccount = "";
-    var iconMenuAccount = "";
-    if (menuAdminAccount) {
-        iconMenuAccount = (<FontAwesomeIcon icon={faAngleDown} className="menu__admin--icon" />)
-        listMenuAccount = (<ul className='header__menu-list2'>
+    var listMenuPromotion = "";
+    var iconMenuPromotion = "";
+    if (menuAdminPromotion) {
+        iconMenuPromotion = (<FontAwesomeIcon icon={faAngleDown} className="menu__admin--icon" />)
+        listMenuPromotion = (<ul className='header__menu-list2'>
             <li className='haeder__menu-item2'>
-                <Link to="/admin/add-Account" className='header__menu-link2'>Tạo tài khoản</Link>
+                <Link to="/admin/add-Promotion" className='header__menu-link2'>Thêm Khuyến mãi</Link>
             </li>
             <li className='haeder__menu-item2'>
-                <Link to="/admin/view-Account" className='header__menu-link2'>Danh sách tài khoản</Link>
+                <Link to="/admin/view-Promotion" className='header__menu-link2'>Danh sách khuyến mãi</Link>
             </li>
         </ul>)
     }
     else {
-        iconMenuAccount = (<FontAwesomeIcon icon={faAngleRight} className="menu__admin--icon" />)
-        listMenuAccount = "";
+        iconMenuPromotion = (<FontAwesomeIcon icon={faAngleRight} className="menu__admin--icon" />)
+        listMenuPromotion = "";
     }
+
 
     return (
         <nav className="Sidebar__admin">
@@ -107,12 +109,6 @@ function Sidebar({ onCloseClick }) {
                             <FontAwesomeIcon icon={faUserCircle} />
                         </div>
                         <p>Admin</p>
-                    </Link>
-                </li>
-                <li className="admin__menu--account">
-                    <Link to="/admin/dashboard" className="admin__menu--account-link">
-                        <FontAwesomeIcon icon={faHouse} className="account__link--icon" />
-                        <p>Thống kê</p>
                     </Link>
                 </li>
                 <li className="admin__menu--account">
@@ -140,22 +136,28 @@ function Sidebar({ onCloseClick }) {
                     </div>
                 </li>
                 <li className="admin__menu--account">
-                    <Link to="" className="admin__menu--account-link">
+                    <div onClick={handleMenuPromotion} className="admin__menu--account-listMenu">
+                        <div className="admin__menu--account-link">
+                            <div className="admin__menu--account-text">
+                                <FontAwesomeIcon icon={faPercent} className="account__link--icon" />
+                                <p>Quản lý khuyến mãi</p>
+                            </div>
+                            {iconMenuPromotion}
+                        </div>
+                        {listMenuPromotion}
+                    </div>
+                </li>
+                <li className="admin__menu--account">
+                    <Link to="/admin/order" className="admin__menu--account-link">
                         <FontAwesomeIcon icon={faBox} className="account__link--icon" />
                         <p>Quản lý đơn hàng</p>
                     </Link>
                 </li>
                 <li className="admin__menu--account">
-                    <div onClick={handleMenuAccount} className="admin__menu--account-listMenu">
-                        <div className="admin__menu--account-link">
-                            <div className="admin__menu--account-text">
-                                <FontAwesomeIcon icon={faUsersGear} className="account__link--icon" />
-                                <p>Quản lý Tài khoản</p>
-                            </div>
-                            {iconMenuAccount}
-                        </div>
-                        {listMenuAccount}
-                    </div>
+                    <Link to="/admin/view-account" className="admin__menu--account-link">
+                        <FontAwesomeIcon icon={faUsersGear} className="account__link--icon" />
+                        <p>Quản lý tài khoản</p>
+                    </Link>
                 </li>
             </ul>
         </nav>
